@@ -2,8 +2,8 @@ const { Spot } = require('@binance/connector')
 const axios = require('axios');
 let test = async () => {
     console.log("test");
-    const apiKey = process.env.APY_KEY
-    const apiSecret = process.env.SECRET_KEY
+    const apiKey = process.env.TEST_APY_KEY
+    const apiSecret = process.env.TEST_SECRET_KEY
 
     const spotClient = new Spot(apiKey, apiSecret, { baseURL: 'https://testnet.binance.vision'})
     const wsClient = new Spot(apiKey, apiSecret, {
@@ -15,10 +15,8 @@ let test = async () => {
         close: () => wsClient.logger.debug('closed'),
         message: data => wsClient.logger.log(data)
     }
-    // single pair
-    const wsRef = wsClient.tickerWS('bnbusdt', callbacks)
-    setTimeout(() => wsClient.unsubscribe(wsRef), 5000)
-    // console.log(wsRef);
+    a = await spotClient.accountSnapshot('SPOT')
+    console.log(a.data);
     // Get account information
     // spotClient.account().then((response) => spotClient.logger.log(response.data))
     let returnVal = "a"

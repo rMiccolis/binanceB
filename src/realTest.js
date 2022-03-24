@@ -19,9 +19,9 @@ let test = async () => {
             myInfo.coins[iterator.cryptoCurrency] = 1
         }
     }
-    let withdraw = await spotClient.withdrawHistory( {coin: 'usdt',status: 6} )
+    console.log("miningAccountEarning");
     let a = (await spotClient.miningAccountEarning('sha256')).data
-    return {withdraw: withdraw.data, spent: myInfo,resp: a}
+    return {bought: data.data.data, spent: myInfo,resp: a}
     
 }
 

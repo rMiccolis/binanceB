@@ -20,8 +20,9 @@ let test = async () => {
         }
     }
     console.log("miningAccountEarning");
-    let a = (await spotClient.miningAccountEarning('sha256')).data
-    return {bought: data.data.data, spent: myInfo,resp: a}
+    let ticker = await spotClient.account('SPOT')
+    
+    return {ticker: ticker.data}
     
 }
 

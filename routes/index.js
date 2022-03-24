@@ -4,9 +4,10 @@ const test = require('../src/test')
 const realTest = require('../src/realTest')
 
 /* GET home page. */
-router.get('/test', function(req, res, next) {
-  test.test()
-  res.send("ciao");
+router.get('/test', async (req, res, next) => {
+  let data = await test.test()
+  // console.log(data);
+  res.json(data);
 });
 
 router.get('/realTest', async (req, res, next) => {

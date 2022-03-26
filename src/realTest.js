@@ -1,35 +1,26 @@
 const { Spot } = require('@binance/connector')
+
+const walletInfo = require('./wallet/walletInfo')
 let test = async () => {
     const apiKey = process.env.APY_KEY
     const apiSecret = process.env.SECRET_KEY
 
     const spotClient = new Spot(apiKey, apiSecret)
-    let epoch = new Date(2021,0,1)
-    let allHistoryTime = (Date.now() - epoch)
-    let data = await spotClient.paymentHistory(0, {beginTime: allHistoryTime, endTime: Date.now()})
-    let myInfo = {totalSpent: 0, coins: {}}
-    for (const iterator of data.data.data) {
-        let date = toDateTime(iterator.createTime)
-        let yyyy = date.getFullYear()
-        let mm = date.getMonth()
-        let dd = date.getDay()
-        iterator.date = `${yyyy}/${mm}/${dd}`
-        if (iterator.status == "Completed"){
-            myInfo.totalSpent += parseFloat(iterator.sourceAmount)
-            myInfo.coins[iterator.cryptoCurrency] = 1
-        }
-    }
-    console.log("miningAccountEarning");
-    let ticker = await spotClient.account('SPOT')
     
-    return {ticker: ticker.data}
     
-}
+    
+    let account = await spotClient.account('SPOT')
+    account.data.balances = account.data.balances.filter(elem => parseFloat(elem.free) > 0 )
 
-function toDateTime(secs) {
-    var t = new Date(0, 0, 0); // Epoch
-    t.setSeconds(secs);
-    return t;
+    let paymentHistory = await walletInfo.getTradesFromDate(spotClient)
+    let totalSpentHistory = await walletInfo.getTotalSpentHistory(spotClient)
+    
+    return {
+        account: account.data,
+        paymentHistory: paymentHistory,
+        totalSpentHistory: totalSpentHistory
+    }
+    
 }
 
 module.exports = {

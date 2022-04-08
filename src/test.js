@@ -1,27 +1,41 @@
 const { Spot } = require('@binance/connector')
-const axios = require('axios');
+
+const walletInfo = require('./wallet/walletInfo')
+
 let test = async () => {
-    console.log("test");
-    const apiKey = process.env.APY_KEY
-    const apiSecret = process.env.SECRET_KEY
+    let testApy = false
+    let apiKey = process.env.TEST_APY_KEY
+    let apiSecret = process.env.TEST_SECRET_KEY
+    if (!testApy) {
+        apiKey = process.env.APY_KEY
+        apiSecret = process.env.SECRET_KEY
+    }  
 
-    const spotClient = new Spot(apiKey, apiSecret, { baseURL: 'https://testnet.binance.vision'})
-
-    let ticker = await spotClient.account()
-    console.log(ticker);
+    const spotClient = new Spot(apiKey, apiSecret)
     
-    return ticker.data
+    let coinInfo = (await spotClient.exchangeInfo({ symbol: 'BNBUSDT' })).data
+    // return coinInfo
 
-    // const wsClient = new Spot(apiKey, apiSecret, {
-    //     wsURL: 'wss://testnet.binance.vision' // wsURL defaults to wss://stream.binance.com:9443
-    // })
-    // const callbacks = {
-    //     open: () => wsClient.logger.debug('open'),
-    //     close: () => wsClient.logger.debug('closed'),
-    //     message: data => wsClient.logger.log(data)
+    return (await spotClient.newOrderTest('BNBUSDT', 'BUY', 'LIMIT', {
+        price: '500',
+        quantity: 0.1,
+        timeInForce: 'GTC'
+      })).data
+    
+    // let account = await spotClient.account('SPOT')
+    // account.data.balances = account.data.balances.filter(elem => parseFloat(elem.free) > 0 )
+
+    // let paymentHistory = await walletInfo.getTradesFromDate(spotClient)
+    // let totalSpentHistory = await walletInfo.getTotalSpentHistory(spotClient)
+    
+    // return {
+    //     account: account.data,
+    //     paymentHistory: paymentHistory,
+    //     totalSpentHistory: totalSpentHistory
     // }
     
 }
+
 module.exports = {
     test
 }

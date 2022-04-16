@@ -19,7 +19,7 @@ let getDatabase = async function (dbName) {
 let aggregate = async function (collection, query={}, dbName='binanceDB') {
   let db = await getDatabase(dbName);
   let coll = db.collection(collection);
-  let curs = coll.aggregate([{$match: query}]);
+  let curs = coll.aggregate(query);
   return await curs.toArray();
 }
 
@@ -30,8 +30,19 @@ let insertOne = async function (collection, doc={}, dbName='binanceDB') {
   return result;
 }
 
+let updateOne = async function (collection, filter=null, updateDocument=null, dbName='binanceDB') {
+  if (filter == null || updateDocument == null) {
+    return {data: "No data to update"}
+  }
+  let db = await getDatabase(dbName);
+  let coll = db.collection(collection);
+  let result = await coll.updateOne(filter, {$set: updateDocument});;
+  return result;
+}
+
 module.exports = {
   aggregate,
   getDatabase,
-  insertOne
+  insertOne,
+  updateOne
 }

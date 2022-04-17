@@ -1,13 +1,21 @@
 let getAllOrders = async (binance, couple="BNBUSDT") => {
-    let openOrders = await binance.allOrders(couple, {
-        orderId: 52
-      });
-    return openOrders;
+    try {
+        let allOrders = await binance.allOrders(couple, {
+            orderId: 52
+          });
+        return allOrders;
+    } catch (error) {
+        return "Error - Unable to retrieve all orders!";
+    }
 }
 
 let getOpenOrders = async (binance, couple="BNBUSDT") => {
-    let openOrders = await binance.openOrders({ symbol: couple });
-    return openOrders;
+    try {
+        let openOrders = await binance.openOrders({ symbol: couple });
+        return openOrders;
+    } catch (error) {
+        return "Error - Unable to retrieve open orders!";
+    }
 }
 
 let placeOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => {
@@ -25,13 +33,17 @@ let placeOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => 
             });
         return order.data;
     } catch (error) {
-        return "Error during placeOrder!"
+        return "Error during " + couple + " placeOrder!";
     }
 }
 
 let cancelOpenOrders = async (binance, couple) => {
-    let cancelOrders = await binance.cancelOpenOrders(couple)
-    return cancelOrders.data;
+    try {
+        let cancelOrders = await binance.cancelOpenOrders(couple)
+        return cancelOrders.data;
+    } catch (error) {
+        return "Error - Unable to cancel " + couple + " orders!";
+    }
 }
 
 module.exports = {

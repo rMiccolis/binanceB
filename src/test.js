@@ -15,11 +15,6 @@ let test = async () => {
 
     // const spotClient = await new Spot(apiKey, apiSecret)
     const spotClient = new Spot(apiKey, apiSecret, { baseURL: process.env.testNetBaseUrl})
-    
-    // let coinInfo = (await spotClient.exchangeInfo({ symbol: 'BNBUSDT' })).data
-    // return coinInfo
-
-    let account = await spotClient.account('SPOT');
 
     let openOrders = await trades.getOpenOrders(spotClient)
 

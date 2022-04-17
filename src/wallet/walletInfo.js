@@ -9,7 +9,7 @@ let getTradesFromDate = async (binance, dateFrom=new Date(2021,0,1)) => {
         }
         return paymentHistory.data.data
     } catch (error) {
-        return "error - no trades found!";
+        return "Error - No trades found!";
     }
 }
 
@@ -26,12 +26,21 @@ let getTotalSpentHistory = async (binance, dateFrom=new Date(2021,0,1)) => {
         }
         return myInfo
     } catch (error) {
-        return "error - no history found!";
+        return "Error - No history found!";
     }
-    
+}
+
+let getAccountData = async (binance) => {
+    try {
+        let accountData = await binance.account('SPOT');
+        return accountData.data;
+    } catch (error) {
+        return "Error - Unable to retrieve account info!"
+    }
 }
 
 module.exports = {
     getTradesFromDate,
-    getTotalSpentHistory
+    getTotalSpentHistory,
+    getAccountData,
 }

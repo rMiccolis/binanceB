@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/test', async (req, res, next) => {
-  let data = await test.test()
+  let data = await test.test();
   res.json(data);
 });
 

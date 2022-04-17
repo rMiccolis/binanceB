@@ -1,6 +1,7 @@
 const { Spot } = require('@binance/connector')
 const { aggregate, insertOne, updateOne } = require('../src/utils/mongodb')
 const walletInfo = require('./wallet/walletInfo')
+const trades = require('./wallet/trades')
 
 let test = async () => {
     // let dbUser = (await aggregate("users", [{$match: {id: 'Bob617'}}]))
@@ -17,33 +18,14 @@ let test = async () => {
     
     // let coinInfo = (await spotClient.exchangeInfo({ symbol: 'BNBUSDT' })).data
     // return coinInfo
-    // try {
-    //     let order = (await spotClient.newOrder('BNBUSDT', 'BUY', 'LIMIT', {
-    //         price: '300',
-    //         quantity: 0.1,
-    //         timeInForce: 'GTC'
-    //       })).data;
-    //       console.log(order);
-    // } catch (error) {
-    //     console.log(error);
-    //     return {}
-    // }
-
 
     let account = await spotClient.account('SPOT');
-    
-    // account.data.balances = account.data.balances.filter(elem => parseFloat(elem.free) > 0 )
 
-    // let paymentHistory = await walletInfo.getTradesFromDate(spotClient)
-    // let totalSpentHistory = await walletInfo.getTotalSpentHistory(spotClient)
+    let openOrders = await trades.getOpenOrders(spotClient)
 
-    // await spotClient.cancelOpenOrders('BNBUSDT')
-
-    let openOrders = await spotClient.allOrders('BNBUSDT', {
-        orderId: 52
-      })
-    openOrders.data = openOrders.data.filter(elem => elem.status != "CANCELED" )
+    let testOrReal = (dbUser.id == 'test') ? "SPOTNET TEST DATA" : "Bob617 REAL DATA";
     return {
+        testOrReal,
         openOrders: openOrders.data,
         account: account.data,
         // paymentHistory: paymentHistory,

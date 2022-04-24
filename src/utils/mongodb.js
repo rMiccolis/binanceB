@@ -1,7 +1,7 @@
 const mongodb = require('mongodb')
 let client;
 
-let getDatabase = async function (dbName) {
+let getDatabaseInstance = async function (dbName) {
   const { MongoClient } = mongodb;
     const url = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false';
     if (!client) {
@@ -17,14 +17,14 @@ let getDatabase = async function (dbName) {
 }
 
 let aggregate = async function (collection, query={}, dbName='binanceDB') {
-  let db = await getDatabase(dbName);
+  let db = await getDatabaseInstance(dbName);
   let coll = db.collection(collection);
   let curs = coll.aggregate(query);
   return await curs.toArray();
 }
 
 let insertOne = async function (collection, doc={}, dbName='binanceDB') {
-  let db = await getDatabase(dbName);
+  let db = await getDatabaseInstance(dbName);
   let coll = db.collection(collection);
   let result = await coll.insertOne(doc);
   return result;
@@ -34,7 +34,7 @@ let updateOne = async function (collection, filter=null, updateDocument=null, db
   if (filter == null || updateDocument == null) {
     return {data: "No data to update"}
   }
-  let db = await getDatabase(dbName);
+  let db = await getDatabaseInstance(dbName);
   let coll = db.collection(collection);
   let result = await coll.updateOne(filter, {$set: updateDocument});;
   return result;
@@ -42,7 +42,7 @@ let updateOne = async function (collection, filter=null, updateDocument=null, db
 
 module.exports = {
   aggregate,
-  getDatabase,
+  getDatabaseInstance,
   insertOne,
   updateOne
 }

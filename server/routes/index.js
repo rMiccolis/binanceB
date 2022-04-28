@@ -5,11 +5,16 @@ const { aggregate, insertOne, updateOne } = require('../src/utils/mongodb')
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {
-  res.send("Benvenuto sul bot di binance vai su <a href='http://localhost:3000/test'>pagina test</a> per testare");
+  res.send("<div>Benvenuto sul bot di binance vai su:<br>- <a href='http://localhost:3000/test'>test generale</a> per un semplice test<br>- <a href='http://localhost:3000/testticker'>test ticker</a></div>");
 });
 
 router.get('/test', async (req, res, next) => {
   let data = await test.test();
+  res.json(data);
+});
+
+router.get('/testticker', async (req, res, next) => {
+  let data = await test.testTicker();
   res.json(data);
 });
 

@@ -5,9 +5,9 @@
  *
  * {@link https://binance-docs.github.io/apidocs/spot/en/#all-orders-user_data}
  * 
- * @param {*} binance The binance spot client Object
+ * @param {Object} binance The binance spot client Object
  * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
- * @return {*} Binance response data
+ * @return {Object} Binance response data
  */
 let getAllOrders = async (binance, couple="BNBUSDT") => {
     try {
@@ -27,9 +27,9 @@ let getAllOrders = async (binance, couple="BNBUSDT") => {
  *
  * {@link https://binance-docs.github.io/apidocs/spot/en/#current-open-orders-user_data}
  * 
- * @param {*} binance The binance spot client Object
+ * @param {Object} binance The binance spot client Object
  * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
- * @return {*} Binance response data
+ * @return {Object} Binance response data
  */
 let getOpenOrders = async (binance, couple="BNBUSDT") => {
     try {
@@ -116,9 +116,9 @@ let testOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => {
  *
  * {@link https://binance-docs.github.io/apidocs/spot/en/#cancel-all-open-orders-on-a-symbol-trade}
  *
- * @param {*} binance The binance spot client Object
+ * @param {Object} binance The binance spot client Object
  * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
- * @return {*} Binance response data
+ * @return {Object} Binance response data
  */
 let cancelOpenOrders = async (binance, couple) => {
     try {

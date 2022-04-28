@@ -20,5 +20,5 @@ app.use('/', indexRouter);
 let port = 3000
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
-    console.log("try it out on", "http://localhost:3000/test");
+    console.log("try it out on", "http://localhost:3000");
   })

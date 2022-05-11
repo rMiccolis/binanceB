@@ -34,8 +34,9 @@ let getAllOrders = async (binance, couple="BNBUSDT") => {
 let getOpenOrders = async (binance, couple="BNBUSDT") => {
     try {
         let openOrders = await binance.openOrders({ symbol: couple });
-        return openOrders;
+        return openOrders.data;
     } catch (error) {
+        console.log(error);
         return "Error - Unable to retrieve open orders!";
     }
 }
@@ -56,7 +57,7 @@ let getOpenOrders = async (binance, couple="BNBUSDT") => {
  * @param {Float} qty The quantity of principal asset to buy
  * @return {Object} Binance response data
  */
-let placeOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => {
+let placeOrder = async (binance, couple='BNBUSDT', sellBuy='SELL', limit='LIMIT', price, qty) => {
     try {
         if (typeof price == 'string') {
             price = parseFloat(price)
@@ -71,6 +72,7 @@ let placeOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => 
             });
         return order.data;
     } catch (error) {
+        console.log(error.response.data);
         return "Error during " + couple + " placeOrder!";
     }
 }
@@ -128,11 +130,54 @@ let cancelOpenOrders = async (binance, couple) => {
         return "Error - Unable to cancel " + couple + " orders!";
     }
 }
+/**
+   * Symbol Price Ticker<br>
+   *
+   * GET /api/v3/ticker/price
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
+   *
+   * @param {string} [symbol]
+  */
+let tickerPrice = async (binance, couple='') => {
+    try {
+        let tickerPrice = await binance.tickerPrice(couple);
+        return parseFloat(tickerPrice.data.price);
+    } catch (error) {
+        console.log(error);
+        return "Error - Unable to get ticker price for: " + couple + " !";
+    }
+}
+
+/**
+   * Exchange Information<br>
+   *
+   * GET /api/v3/exchangeInfo<br>
+   *
+   * Current exchange trading rules and symbol information
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
+   *
+   * @param {object} [options]
+   * @param {string} [options.symbol] - symbol
+   * @param {Array} [options.symbols] - an array of symbols
+   *
+   */
+let exchangeInfo = async (binance, symbol='BNBUSDT') => {
+    try {
+        let exchangeInfo = await binance.exchangeInfo({symbol: symbol});
+        return exchangeInfo.data;
+    } catch (error) {
+        console.log(error);
+        return "Error - Unable to get ticker price for: " + symbol + " !";
+    }
+}
 
 module.exports = {
     getOpenOrders,
     getAllOrders,
     placeOrder,
     testOrder,
-    cancelOpenOrders
+    cancelOpenOrders,
+    tickerPrice,
+    exchangeInfo
 }

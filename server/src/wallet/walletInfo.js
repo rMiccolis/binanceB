@@ -35,6 +35,22 @@ let getAccountData = async (binance) => {
         let accountData = await binance.account('SPOT');
         return accountData.data;
     } catch (error) {
+        console.log(error);
+        return "Error - Unable to retrieve account info!"
+    }
+}
+
+let getSymbolQty = async (binance, symbol) => {
+    try {
+        let accountData = await binance.account('SPOT');
+        for (const asset of accountData.data.balances) {
+            if (asset.asset == symbol) {
+                return asset.free
+            }
+        }
+        return 0;
+    } catch (error) {
+        console.log(error);
         return "Error - Unable to retrieve account info!"
     }
 }
@@ -43,4 +59,5 @@ module.exports = {
     getTradesFromDate,
     getTotalSpentHistory,
     getAccountData,
+    getSymbolQty
 }

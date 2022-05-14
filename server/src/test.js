@@ -17,6 +17,7 @@ let test = async () => {
   const spotClient = new Spot(apiKey, apiSecret, { baseURL: process.env.testNetBaseUrl });
 
   let testOrReal = dbUser.id == "test" ? "SPOTNET TEST DATA" : "Bob617 REAL DATA";
+  return await walletInfo.getAccountData(spotClient)
   let strings = await bot(spotClient, buyQty);
   console.log(strings);
   //   setInterval(bot, 2000, spotClient);
@@ -33,9 +34,10 @@ let test = async () => {
 
 let bot = async (spotClient, buyQty) => {
   let openOrders = await trades.getOpenOrders(spotClient, "BNBUSDT");
+  return openOrders
   openOrders.forEach(async (element) => {
-    
-    await trades.cancelOpenOrders(spotClient, "BNBUSDT");
+    console.log(element);
+    // await trades.cancelOpenOrders(spotClient, "BNBUSDT");
   });
 
   let marketPrice = await trades.tickerPrice(spotClient, "BNBUSDT");
@@ -46,6 +48,7 @@ let bot = async (spotClient, buyQty) => {
 
   let exchangeInfo = await trades.exchangeInfo(spotClient, "BNBUSDT");
   // console.log(exchangeInfo);
+  // console.log(exchangeInfo);
   let decimals = 0;
   for (const filter of exchangeInfo.symbols[0].filters) {
     if (filter.filterType == "PRICE_FILTER") {
@@ -53,25 +56,26 @@ let bot = async (spotClient, buyQty) => {
       // if (buyorder < marketPrice * filter.multiplierDown) buyorder = marketPrice * filter.multiplierDown;
       // if (sellorder > marketPrice * filter.multiplierUp) sellorder = marketPrice * filter.multiplierUp;
       // if (sellorder < marketPrice * filter.multiplierDown) sellorder = marketPrice * filter.multiplierDown;
-      
-      let tickString = filter.tickSize.toString().split('.')
+
+      let tickString = filter.tickSize.toString().split(".");
       if (tickString.length > 1) {
         for (const iterator of tickString) {
-            if (iterator != '1') {
-                decimals++;
-            } else {
-              break
-            }
+          if (iterator != "1") {
+            decimals++;
+          } else {
+            break;
+          }
         }
       }
     }
   }
-  buyorder = buyorder.toFixed(decimals)
-  sellorder = sellorder.toFixed(decimals)
-  console.log("price:", marketPrice, "buy:", buyorder, "sell:", sellorder);
+  buyorder = parseFloat(buyorder.toFixed(decimals));
+  sellorder = parseFloat(sellorder.toFixed(decimals));
+  buyvolume = parseFloat(buyvolume.toFixed(decimals));
+  console.log("price:", marketPrice, "buy:", buyorder, "buyQty", buyvolume, "sell:", sellorder);
   // return exchangeInfo;
-  
-  let response = await trades.placeOrder(spotClient, "BNBUSDT", "BUY", "LIMIT", buyorder, buyvolume);
+
+  let response = await trades.placeOrder(spotClient, "BNBUSDT", "BUY", "LIMIT", 290, buyvolume);
   await trades.placeOrder(spotClient, "BNBUSDT", "SELL", "LIMIT", sellorder, buyvolume);
   // openOrders = await trades.getOpenOrders(spotClient, "BNBUSDT");
   return response;

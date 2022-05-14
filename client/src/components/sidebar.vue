@@ -1,13 +1,13 @@
 <template>
     <!-- <button v-if="open">heidofheiofhe</button> -->
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+      <a class="closebtn" @click="closeNav()"
         >&times;</a
       >
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <a href="#"><i class="bi bi-person"></i> <span v-if="open">{{sidebarElements.account}}</span></a>
+      <hr class="dropdown-divider divider">
+      <a href="#"><i class="bi bi-house"></i> <span v-if="open">{{sidebarElements.home}}</span></a>
+      <a href="#"><i class="bi bi-gear"></i> <span v-if="open">{{sidebarElements.settings}}</span></a>
     </div>
 </template>
 
@@ -20,6 +20,8 @@ const props = defineProps({
   },
 });
 
+let sidebarElements = ref({account: 'Account', home: 'Home', settings: 'Settings'})
+
 //function section
 /* Set the width of the side navigation to 250px */
 function openNav() {
@@ -31,19 +33,20 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "50px";
 }
 
-watch(
-  () => props.open,
-  (value, oldValue) => {
+watch( () => props.open, (value, oldValue) => {
     if (value == false) {
       closeNav();
     } else {
       openNav();
     }
-  }
-);
+  });
 </script>
 
 <style scoped>
+.divider {
+  color: white;
+}
+
 /* The side navigation menu */
 .sidenav {
   height: 100%; /* 100% Full-height */
@@ -60,7 +63,7 @@ watch(
 
 /* The navigation menu links */
 .sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 8px 1vw;
   text-decoration: none;
   font-size: 25px;
   color: #818181;

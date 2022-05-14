@@ -59,12 +59,12 @@ let getOpenOrders = async (binance, couple="BNBUSDT") => {
  */
 let placeOrder = async (binance, couple='BNBUSDT', sellBuy='SELL', limit='LIMIT', price, qty) => {
     try {
-        if (typeof price == 'string') {
-            price = parseFloat(price)
-        }
-        if (typeof qty == 'string') {
-            qty = parseFloat(qty)
-        }
+        // if (typeof price == 'string') {
+        //     price = parseFloat(price)
+        // }
+        // if (typeof qty == 'string') {
+        //     qty = parseFloat(qty)
+        // }
         let order = await binance.newOrder(couple, sellBuy, limit, {
             price: price,
             quantity: qty,
@@ -72,8 +72,8 @@ let placeOrder = async (binance, couple='BNBUSDT', sellBuy='SELL', limit='LIMIT'
             });
         return order.data;
     } catch (error) {
-        console.log(error.response.data);
-        return "Error during " + couple + " placeOrder!";
+        // console.log(error.response.data);
+        return "Error during " + couple + " placeOrder:\n" + error.response.data.msg;
     }
 }
 

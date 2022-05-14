@@ -11,6 +11,7 @@ function ciao() {
 
 <template>
   <div>
+    
     <button class="btn btn-info ciao" @click="ciao();">ciao</button>
     <sidebar :open="open" />
   </div>

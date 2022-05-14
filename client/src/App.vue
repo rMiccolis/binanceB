@@ -1,30 +1,50 @@
+<template>
+  <v-app>
+    <v-toolbar color="white" elevation="0"><v-btn color="pink" dark @click.stop="openDrawer()"> <i class="bi bi-list"></i> </v-btn></v-toolbar>
+    <!-- <v-sheet height="100%" class="overflow-hidden" style="position: relative"> -->
+
+    <v-navigation-drawer v-model="drawer" app temporary>
+      <v-list-item>
+        <v-list-item-avatar>
+          <i class="bi bi-person" style="font-size:40px;"></i>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title class="ml-5">John Leider</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Home</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      
+    </v-navigation-drawer>
+  <!-- </v-sheet> -->
+    
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+    <v-footer app> footer </v-footer>
+  </v-app>
+</template>
+
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
 import sidebar from "@/components/sidebar.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
+let drawer = ref(false);
 
-let open = ref(false);
+let openDrawer = () => {
+  drawer.value = !drawer.value;
 
-function openSidebar() {
-  open.value = true;
-}
-
-function closeSidebar() {
-  open.value = false
 }
 
 </script>
 
-<template>
-  <header>
-  <!-- <RouterLink to="/">Home</RouterLink> -->
-  </header>
-  <sidebar :open="open" @close="closeSidebar" @open="openSidebar"/>
-  <button class="btn btn-info" @click="openSidebar()">ciao APP.VUE</button>
-
-  <RouterView />
-</template>
-
 <style>
-/* @import '@/assets/base.css'; */
+
 </style>

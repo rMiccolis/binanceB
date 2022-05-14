@@ -3,19 +3,24 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 const dotenv = require('dotenv');
-
+const auth = require('./middleware/auth.middleware')
 dotenv.config();
 let indexRouter = require('./routes/index');
+let accountApiRouter = require('./routes/index');
 
 let app = express();
 
+//middlewares
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(auth.accountCheck)
 
-app.use('/', indexRouter);
+//routes
+app.use('/general', indexRouter);
+app.use('api/account/', accountApiRouter)
 
 let port = 3000
 app.listen(port, () => {

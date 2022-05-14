@@ -3,15 +3,10 @@ const { aggregate, insertOne, updateOne } = require("../src/utils/mongodb");
 const walletInfo = require("./wallet/walletInfo");
 const trades = require("./wallet/trades");
 
-let test = async () => {
+let test = async (user) => {
   // let dbUser = (await aggregate("users", [{$match: {id: 'Bob617'}}]))
-  let dbUser = await aggregate("users", [{ $match: { id: "test" } }]);
-  if (dbUser.length < 1) {
-    return { err: "no APY_KEY found!" };
-  }
-  dbUser = dbUser[0];
-  let apiKey = dbUser.APY_KEY;
-  let apiSecret = dbUser.SECRET_KEY;
+  let apiKey = user.APY_KEY;
+  let apiSecret = user.SECRET_KEY;
   let buyQty = 100;
   // const spotClient = await new Spot(apiKey, apiSecret)
   const spotClient = new Spot(apiKey, apiSecret, { baseURL: process.env.testNetBaseUrl });

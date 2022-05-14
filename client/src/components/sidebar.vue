@@ -1,39 +1,51 @@
 <template>
-    <!-- <button v-if="open">heidofheiofhe</button> -->
     <div id="mySidenav" class="sidenav">
-      <a class="closebtn" @click="closeNav()"
-        >&times;</a
+      <a class="icon-list" @click="toggleNav()"
+        ><i class="bi bi-list"></i></a
       >
-      <a href="#"><i class="bi bi-person"></i> <span v-if="open">{{sidebarElements.account}}</span></a>
+      <a href="#"><i class="bi bi-person"></i> <transition name='fade'> <span v-if="open">{{sidebarElements.account}}</span> </transition></a>
       <hr class="dropdown-divider divider">
-      <a href="#"><i class="bi bi-house"></i> <span v-if="open">{{sidebarElements.home}}</span></a>
-      <a href="#"><i class="bi bi-gear"></i> <span v-if="open">{{sidebarElements.settings}}</span></a>
+      <a href="#"><i class="bi bi-house"></i> <span class="labels" v-if="open">{{sidebarElements.home}}</span></a>
+      <a href="#"><i class="bi bi-gear"></i> <span class="labels" v-if="open">{{sidebarElements.settings}}</span></a>
     </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, defineEmits } from 'vue'
 const props = defineProps({
   open: {
     type: Boolean,
-    required: true,
+    default: false
   },
 });
 
+const emit = defineEmits(['open', 'close'])
+
 let sidebarElements = ref({account: 'Account', home: 'Home', settings: 'Settings'})
+
+function toggleNav() {
+  props.open == true ? closeNav() : openNav()
+}
 
 //function section
 /* Set the width of the side navigation to 250px */
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
+  emit("open");
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
+  emit("close");
   document.getElementById("mySidenav").style.width = "50px";
 }
 
+onMounted(() => {
+  closeNav();
+})
+
 watch( () => props.open, (value, oldValue) => {
+  console.log("props.open = ", value);
     if (value == false) {
       closeNav();
     } else {
@@ -45,6 +57,13 @@ watch( () => props.open, (value, oldValue) => {
 <style scoped>
 .divider {
   color: white;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 
 /* The side navigation menu */
@@ -74,6 +93,11 @@ watch( () => props.open, (value, oldValue) => {
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   color: #f1f1f1;
+}
+
+.icon-list{
+  color: #f1f1f1;
+  font-size: 0.875em;
 }
 
 /* Position and style the close button (top right corner) */

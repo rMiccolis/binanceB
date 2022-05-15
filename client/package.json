@@ -8,6 +8,9 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@capacitor/android": "^3.5.1",
+    "@capacitor/cli": "^3.5.1",
+    "@capacitor/core": "^3.5.1",
     "@mdi/font": "5.9.55",
     "@popperjs/core": "^2.11.5",
     "bootstrap": "^5.1.3",

@@ -1,24 +1,21 @@
 var express = require("express");
 var router = express.Router();
-const walletInfo = require("./wallet/walletInfo");
-const db = require("../src/utils/mongodb");
+const { Spot } = require("@binance/connector");
+const walletInfo = require("../src/wallet/walletInfo");
+
+
 /* GET account data. */
 router.get("/", async (req, res, next) => {
-    let userId = req.params.userId;
-    let dbUser = await db.aggregate("users", [{ $match: { id: userId } }]);
-    if (dbUser.length < 1) {
-        return { err: "no APY_KEY found!" };
-    }
-    if (userId != 'test') {
+    let user = req.locals.user;
+    if (user.id != 'test') {
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
     }
-    dbUser = dbUser[0];
-    let apiKey = dbUser.APY_KEY;
-    let apiSecret = dbUser.SECRET_KEY;
-    let buyQty = 100;
+    let apiKey = user.APY_KEY;
+    let apiSecret = user.SECRET_KEY;
     // const spotClient = await new Spot(apiKey, apiSecret)
     const spotClient = new Spot(apiKey, apiSecret, { baseURL: process.env.testNetBaseUrl });
-    return await walletInfo.getAccountData(spotClient);
+    let data = await walletInfo.getAccountData(spotClient);
+    res.json(data);
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const db = require("../src/utils/mongodb");
 
 let accountCheck = async (req, res, next) => {
-    let userId = req.params.userId;
+    let userId = req.query.userId;
     if (!userId) {
         return res.json({ err: "no APY_KEY found!" });
     }
@@ -13,7 +13,7 @@ let accountCheck = async (req, res, next) => {
     if (userId != 'test') {
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
     }
-    req.params.user = dbUser[0]
+    req.locals = {user: dbUser[0]}
     next()
 }
 

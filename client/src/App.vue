@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-list-item>
         <v-list-item-avatar>
-          <i class="bi bi-person" style="font-size: 40px"></i>
+          <i class="bi bi-person" style="font-size: 10"></i>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -33,8 +33,11 @@
     </v-navigation-drawer>
     <!-- </v-sheet> -->
     <v-toolbar color="white" elevation="2"
-      ><v-btn color="pink" dark @click.stop="openDrawer()">
-        <i class="bi bi-list"></i> </v-btn
+      >
+      <v-btn color="blue" outlined dark @click.stop="openDrawer()">
+        <!-- <i class="bi bi-list"></i>  -->
+        <v-icon size="40" color="blue darken-2"> mdi-menu </v-icon>
+        </v-btn
     ></v-toolbar>
 
     <v-main>
@@ -42,20 +45,19 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-    <v-footer app> footer </v-footer>
+    <v-footer app> Memmboll </v-footer>
   </v-app>
 </template>
 
 <script setup>
 import sidebar from "@/components/sidebar.vue";
 import { onBeforeMount, ref } from "vue";
-import axios from 'axios'
+import axios from "axios";
 let drawer = ref(false);
 
 let openDrawer = () => {
   drawer.value = !drawer.value;
 };
-
 </script>
 
 <style>

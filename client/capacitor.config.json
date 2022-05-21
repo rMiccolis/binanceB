@@ -1,6 +1,6 @@
 {
   "appId": "com.binanceB.app",
   "appName": "client",
-  "webDir": "www",
+  "webDir": "dist",
   "bundledWebRuntime": false
 }

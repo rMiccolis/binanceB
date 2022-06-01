@@ -6,13 +6,13 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "@binance/connector": "^1.8.1",
-    "cookie-parser": "~1.4.4",
+    "@binance/connector": "^1.10.0",
+    "cookie-parser": "~1.4.6",
     "cors": "^2.8.5",
-    "debug": "~2.6.9",
-    "dotenv": "^16.0.0",
-    "express": "~4.16.1",
-    "mongodb": "^4.5.0",
-    "morgan": "~1.9.1"
+    "debug": "~4.3.4",
+    "dotenv": "^16.0.1",
+    "express": "~4.18.1",
+    "mongodb": "^4.6.0",
+    "morgan": "~1.10.0"
   }
 }

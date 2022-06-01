@@ -9,7 +9,7 @@ let test = async (user) => {
   let apiSecret = user.SECRET_KEY;
   let buyQty = 100;
   // const spotClient = await new Spot(apiKey, apiSecret)
-  const spotClient = new Spot(apiKey, apiSecret, { baseURL: process.env.testNetBaseUrl });
+  const spotClient = new Spot(apiKey, apiSecret, { baseURL: req.locals.url });
 
   let testOrReal = dbUser.id == "test" ? "SPOTNET TEST DATA" : "Bob617 REAL DATA";
   return await walletInfo.getAccountData(spotClient)

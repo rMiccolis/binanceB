@@ -7,15 +7,14 @@ const walletInfo = require("../src/wallet/walletInfo");
 /* GET account data. */
 router.get("/", async (req, res, next) => {
     let user = req.locals.user;
-    if (user.id != 'test') {
-        console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
-    }
     let apiKey = user.APY_KEY;
     let apiSecret = user.SECRET_KEY;
-    // const spotClient = await new Spot(apiKey, apiSecret)
-    const spotClient = new Spot(apiKey, apiSecret, { baseURL: process.env.testNetBaseUrl });
+    // const spotClient = new Spot(apiKey, apiSecret, { baseURL: req.locals.url });
+    const spotClient = new Spot(apiKey, apiSecret);
     let data = await walletInfo.getAccountData(spotClient);
-    res.json(data);
+    // console.log(data);
+    data.balances = data.balances.filter(el => parseFloat(el.free) > 0)
+    res.json(data)
 });
 
 module.exports = router;

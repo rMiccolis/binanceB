@@ -8,6 +8,7 @@ const auth = require('./middleware/auth.middleware')
 dotenv.config();
 let indexRouter = require('./routes/index');
 let accountApiRouter = require('./api/account.api');
+let earnApiRouter = require('./api/earn.api');
 
 let app = express();
 
@@ -23,6 +24,7 @@ app.use(auth.accountCheck)
 //routes
 app.use('/general', indexRouter);
 app.use('/api/account', accountApiRouter)
+app.use('/api/earn', earnApiRouter)
 
 let port = 3000
 app.listen(port, () => {

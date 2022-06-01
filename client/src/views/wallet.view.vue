@@ -59,13 +59,17 @@
                       <h3>Staking:</h3>
                     </v-col>
                   </v-row>
-                  <div v-if="accountInfo">
-                    <div v-for="(item, key) in accountInfo.balances" :key="key">
+                  <div v-if="accountInfo && accountInfo.data">
+                    <div
+                      v-for="(item, key) in accountInfo.data.balances"
+                      :key="key"
+                    >
                       <v-row>
                         <v-col v-for="(element, name) in item" :key="name">
                           <!-- <h3>{{ name }}:</h3> -->
-                          {{ element }}
+                          <div class="pa-2">{{ element }}</div>
                         </v-col>
+                        <v-divider></v-divider>
                       </v-row>
                     </div>
                   </div>
@@ -85,16 +89,39 @@ import { ref, watch } from "vue";
 import axios from "axios";
 
 let accountInfo = ref(null);
-let userId = "test";
+let userId = "Bob617";
+// let userId = "test";
 
 let getAccountInfo = async () => {
-  accountInfo.value = (
+  console.log(accountInfo.value);
+  if (accountInfo?.value?.timestamp) {
+    let now = Date.now();
+    let refreshTime = now - accountInfo.value.timestamp;
+    console.log(Math.floor(refreshTime / 1000), Math.floor(refreshTime / 1000) < 5);
+    if (Math.floor(refreshTime / 1000) < 10) {
+      return;
+    }
+  }
+  console.log("fetching");
+  let dataFetched = (
     await axios({
       method: "get",
       url: "http://localhost:3000/api/account",
       params: { userId },
     })
   ).data;
+  accountInfo.value = {
+    timestamp: Date.now(),
+    data: dataFetched,
+  };
+  // let a = (
+  //   await axios({
+  //     method: "get",
+  //     url: "http://localhost:3000/api/earn/blocked",
+  //     params: { userId },
+  //   })
+  // ).data;
+  // console.log(a);
   // accountInfo.value = {
   //   makerCommission: 0,
   //   takerCommission: 0,

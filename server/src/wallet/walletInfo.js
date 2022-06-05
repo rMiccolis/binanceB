@@ -9,7 +9,7 @@ let getTradesFromDate = async (binance, dateFrom=new Date(2021,0,1)) => {
         }
         return paymentHistory.data.data
     } catch (error) {
-        return "Error - No trades found!";
+        throw {error: true, message: "Error - No trades found!", devError: error}
     }
 }
 
@@ -26,7 +26,7 @@ let getTotalSpentHistory = async (binance, dateFrom=new Date(2021,0,1)) => {
         }
         return myInfo
     } catch (error) {
-        return "Error - No history found!";
+        throw {error: true, message: "Error - No history found!", devError: error}
     }
 }
 
@@ -35,8 +35,8 @@ let getAccountData = async (binance) => {
         let accountData = await binance.account('SPOT');
         return accountData.data;
     } catch (error) {
-        console.log(error);
-        return "Error - Unable to retrieve account info!"
+        console.log(error.response.data);
+        throw {error: true, message: "Error - Unable to retrieve account info!", devError: error.response.data}
     }
 }
 
@@ -50,8 +50,7 @@ let getSymbolQty = async (binance, symbol) => {
         }
         return 0;
     } catch (error) {
-        console.log(error);
-        return "Error - Unable to retrieve account info!"
+        throw {error: true, message: "Error - Unable to retrieve account info!", devError: error.request}
     }
 }
 

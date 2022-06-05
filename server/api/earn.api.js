@@ -5,7 +5,7 @@ const earn = require("../src/wallet/earn");
 
 
 /* GET account data. */
-router.get("/blocked", async (req, res, next) => {
+router.get("/staking", async (req, res, next) => {
     let user = req.locals.user;
     if (user.id != 'test') {
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");

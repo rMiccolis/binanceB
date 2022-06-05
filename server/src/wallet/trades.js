@@ -36,7 +36,7 @@ let getOpenOrders = async (binance, couple="BNBUSDT") => {
         let openOrders = await binance.openOrders({ symbol: couple });
         return openOrders.data;
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return "Error - Unable to retrieve open orders!";
     }
 }
@@ -72,7 +72,7 @@ let placeOrder = async (binance, couple='BNBUSDT', sellBuy='SELL', limit='LIMIT'
             });
         return order.data;
     } catch (error) {
-        // console.log(error.response.data);
+        console.log(error.response.data);
         return "Error during " + couple + " placeOrder:\n" + error.response.data.msg;
     }
 }
@@ -144,7 +144,7 @@ let tickerPrice = async (binance, couple='') => {
         let tickerPrice = await binance.tickerPrice(couple);
         return parseFloat(tickerPrice.data.price);
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return "Error - Unable to get ticker price for: " + couple + " !";
     }
 }
@@ -167,7 +167,7 @@ let exchangeInfo = async (binance, symbol='BNBUSDT') => {
         let exchangeInfo = await binance.exchangeInfo({symbol: symbol});
         return exchangeInfo.data;
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return "Error - Unable to get ticker price for: " + symbol + " !";
     }
 }

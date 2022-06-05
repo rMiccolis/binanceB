@@ -19,7 +19,7 @@
                 <v-expansion-panel-text>
                   <v-row class="pa-2" no-gutters>
                     <div v-if="accountInfo">
-                      <div v-for="(item, key) in accountInfo" :key="key">
+                      <div v-for="(item, key) in accountInfo.data" :key="key">
                         <v-col>
                           <v-list-item v-if="typeof item != 'object'">
                             <v-list-item-content>

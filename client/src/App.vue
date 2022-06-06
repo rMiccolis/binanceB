@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app theme="dark">
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-list-item>
         <v-list-item-avatar>
@@ -32,7 +32,7 @@
       </v-list-item>
     </v-navigation-drawer>
     <!-- </v-sheet> -->
-    <v-toolbar color="white" elevation="2"
+    <v-toolbar elevation="2"
       >
       <v-btn color="blue" outlined dark @click.stop="openDrawer()">
         <!-- <i class="bi bi-list"></i>  -->

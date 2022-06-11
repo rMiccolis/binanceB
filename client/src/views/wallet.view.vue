@@ -24,25 +24,25 @@ onMounted(async () => {
 });
 
 let getAccountInfo = async () => {
-  // if (accountInfo?.value?.timestamp) {
-  //   let now = Date.now();
-  //   let refreshTime = now - accountInfo.value.timestamp;
-  //   if (Math.floor(refreshTime / 1000) < maxRefreshTimeSecs) {
-  //     return;
-  //   }
-  // }
+  if (accountInfo?.value?.timestamp) {
+    let now = Date.now();
+    let refreshTime = now - accountInfo.value.timestamp;
+    if (Math.floor(refreshTime / 1000) < maxRefreshTimeSecs) {
+      return;
+    }
+  }
 
-  // let dataFetched = (
-  //   await axios({
-  //     method: "get",
-  //     url: "http://localhost:3000/api/account",
-  //     params: { userId },
-  //   })
-  // ).data;
-  // accountInfo.value = {
-  //   timestamp: Date.now(),
-  //   data: dataFetched,
-  // };
+  let dataFetched = (
+    await axios({
+      method: "get",
+      url: "http://localhost:3000/api/account",
+      params: { userId },
+    })
+  ).data;
+  accountInfo.value = {
+    timestamp: Date.now(),
+    data: dataFetched,
+  };
 
   // PROVA ANDROID
   // setTimeout(() => {
@@ -62,6 +62,7 @@ let getAccountInfo = async () => {
   //     permissions: ["SPOT"],
   //   };
   // }, 500);
+  
 };
 </script>
 

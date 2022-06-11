@@ -24,31 +24,31 @@ onMounted(async () => {
 });
 
 let getStakingInfo = async () => {
-  // if (stakingInfo?.value?.timestamp) {
-  //   let now = Date.now();
-  //   let refreshTime = now - stakingInfo.value.timestamp;
-  //   if (Math.floor(refreshTime / 1000) < maxRefreshTimeSecs) {
-  //     return;
-  //   }
-  // }
-  // let stakingData = (
-  //   await axios({
-  //     method: "get",
-  //     url: "http://localhost:3000/api/earn/staking",
-  //     params: { userId },
-  //   })
-  // ).data;
-  // stakingInfo.value = {
-  //   timestamp: Date.now(),
-  //   data: stakingData.map((el) => ({
-  //     asset: el.asset,
-  //     amount: el.amount,
-  //     duration: el.duration,
-  //     nextInterestPay: el.nextInterestPay,
-  //     interestEndDate: new Date(el.interestEndDate).toLocaleDateString(),
-  //     apy: el.apy,
-  //   })),
-  // };
+  if (stakingInfo?.value?.timestamp) {
+    let now = Date.now();
+    let refreshTime = now - stakingInfo.value.timestamp;
+    if (Math.floor(refreshTime / 1000) < maxRefreshTimeSecs) {
+      return;
+    }
+  }
+  let stakingData = (
+    await axios({
+      method: "get",
+      url: "http://localhost:3000/api/earn/staking",
+      params: { userId },
+    })
+  ).data;
+  stakingInfo.value = {
+    timestamp: Date.now(),
+    data: stakingData.map((el) => ({
+      asset: el.asset,
+      amount: el.amount,
+      duration: el.duration,
+      nextInterestPay: el.nextInterestPay,
+      interestEndDate: new Date(el.interestEndDate).toLocaleDateString(),
+      apy: el.apy,
+    })),
+  };
 
   //PROVA ANDROID
   // setTimeout(() => {
@@ -65,6 +65,7 @@ let getStakingInfo = async () => {
   //     })),
   //   }
   // }, 500);
+
 };
 </script>
 

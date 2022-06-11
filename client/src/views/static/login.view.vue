@@ -9,7 +9,7 @@
       color="blue"
       clearable
     ></v-text-field>
-    
+
     <v-text-field
       v-model="psw"
       shaped
@@ -23,25 +23,23 @@
       @update:model-value="a"
     ></v-text-field>
 
-    <v-btn flat color="blue" @click="myalert()">
-      Submit
-    </v-btn>
-    
+    <v-row class="pb-4" justify="center">
+      <v-btn flat color="blue" @click="myalert()"> Submit </v-btn>
+    </v-row>
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
-let error = ref(true)
-let show = ref(false)
-let userId = ref("")
-let psw = ref("")
-let a = ref("")
+let error = ref(true);
+let show = ref(false);
+let userId = ref("");
+let psw = ref("");
+let a = ref("");
 
 let myalert = () => {
-  alert('Voooleeeeeeeeeeeeeeeevi')
-}
-
+  alert("Voooleeeeeeeeeeeeeeeevi");
+};
 </script>
 
 <style scoped>

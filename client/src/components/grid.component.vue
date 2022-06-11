@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { onMounted, watch, ref, defineProps } from "vue";
+import { onMounted, watch, ref } from "vue";
 import axios from "axios";
 
 const props = defineProps({

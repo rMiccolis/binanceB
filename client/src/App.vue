@@ -115,7 +115,7 @@ import { watch, ref, onMounted } from "vue";
 import axios from "axios";
 let drawer = ref(false);
 
-let darkTheme = ref("dark");
+let darkTheme = ref("light");
 let themeColor = ref("blue");
 let themeIcon = ref("bi bi-brightness-high");
 let root = ref(document.querySelector(":root"));

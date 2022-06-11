@@ -23,7 +23,7 @@
       @update:model-value="a"
     ></v-text-field>
 
-    <v-btn flat color="blue">
+    <v-btn flat color="blue" @click="myalert()">
       Submit
     </v-btn>
     
@@ -36,7 +36,11 @@ let error = ref(true)
 let show = ref(false)
 let userId = ref("")
 let psw = ref("")
+let a = ref("")
 
+let myalert = () => {
+  alert('Voooleeeeeeeeeeeeeeeevi')
+}
 
 </script>
 

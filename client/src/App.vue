@@ -16,7 +16,7 @@
         <v-list-item-content>
           <v-list-item-title
             ><router-link :to="{ name: 'home', params: { userId: 'test' } }"
-              >Home</router-link
+              >Statistics</router-link
             ></v-list-item-title
           >
         </v-list-item-content>
@@ -30,22 +30,56 @@
           >
         </v-list-item-content>
       </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title
+            ><router-link :to="{ name: 'wallet', params: { userId: 'test' } }"
+              >Staking</router-link
+            ></v-list-item-title
+          >
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title
+            ><router-link :to="{ name: 'wallet', params: { userId: 'test' } }"
+              >Bot Settings</router-link
+            ></v-list-item-title
+          >
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title
+            ><router-link :to="{ name: 'wallet', params: { userId: 'test' } }"
+              >Account</router-link
+            ></v-list-item-title
+          >
+        </v-list-item-content>
+      </v-list-item>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block> Logout </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
     <!-- </v-sheet> -->
-    <v-toolbar elevation="2"
-      >
+    <v-toolbar elevation="2">
       <v-btn color="blue" outlined dark @click.stop="openDrawer()">
         <!-- <i class="bi bi-list"></i>  -->
         <v-icon size="40" color="blue darken-2"> mdi-menu </v-icon>
-        </v-btn
-    ></v-toolbar>
+      </v-btn></v-toolbar
+    >
 
     <v-main>
       <v-container app fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
-    <v-footer app> Memmboll </v-footer>
+    <v-footer app
+      >User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
+      <span class="text-success ms-1"> Running!</span>
+    </v-footer>
   </v-app>
 </template>
 
@@ -61,4 +95,7 @@ let openDrawer = () => {
 </script>
 
 <style>
+a {
+  color: white;
+}
 </style>

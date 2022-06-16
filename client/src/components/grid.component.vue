@@ -9,9 +9,13 @@
               :key="key"
               class="text-left text-capitalize"
             >
-              <span style="text-transform:uppercase">{{ key.replace(/_/g, ' ') }}</span>
+              <span style="text-transform: uppercase">{{
+                key.replace(/_/g, " ")
+              }}</span>
             </th>
-            <th v-if="detailData.length > 0"><span style="text-transform:uppercase">Details</span></th>
+            <th v-if="detailData.length > 0">
+              <span style="text-transform: uppercase">Details</span>
+            </th>
           </tr>
         </thead>
         <tbody v-if="data">
@@ -35,27 +39,29 @@
     </div>
     <v-dialog v-model="openModal" scrollable>
       <v-card>
-        <v-card-title><span style="text-transform:uppercase">details</span></v-card-title>
+        <v-card-title
+          ><span style="text-transform: uppercase"
+            >details:
+            <v-icon size="small" color="blue" class="cursor-pointer me-2"
+              >mdi-clipboard-list-outline</v-icon
+            ></span
+          ></v-card-title
+        >
         <v-divider></v-divider>
-        <v-card-text style="height: 50vh; width: 85vw;">
-          <v-table density="default">
-        <thead>
-          <tr>
-            <th
-              v-for="(item, key) in detailData[0]"
-              :key="key"
-              class="text-left text-capitalize"
-            >
-              <span style="text-transform:uppercase">{{ key.replace(/_/g, ' ') }}</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody v-if="detailData.length > 0">
-          <tr v-for="(item, key) in detailData" :key="key">
-            <td v-for="(elem, name) in item" :key="name">{{ elem }}</td>
-          </tr>
-        </tbody>
-      </v-table>
+        <v-card-text style="height: 50vh; width: 85vw">
+          <div v-for="(elem, name) in detailShown" :key="name">
+            <v-list-item>
+              <v-list-item-header>
+                <v-list-item-title> <span style="text-transform: uppercase">{{
+                name.replace(/_/g, " ")
+              }}<v-icon size="small" color="blue" class="cursor-pointer ms-5"
+              >mdi-arrow-right-thick</v-icon
+            > </span></v-list-item-title>
+              </v-list-item-header>
+              {{ elem }}
+            </v-list-item>
+            <v-divider></v-divider>
+          </div>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -81,7 +87,8 @@ let openModal = ref(false);
 let detailShown = ref({});
 
 let toggleModal = (key) => {
-  detailShown.value = props.data[key];
+  detailShown.value = props.detailData[key];
+  console.log(detailShown);
   openModal.value = true;
 };
 </script>

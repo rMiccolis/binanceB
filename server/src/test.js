@@ -29,8 +29,8 @@ let bot = async (binance, buyQty) => {
   let exchangeInfo = await trades.exchangeInfo(binance, "BNBUSDT");
 
   let marketPrice = await trades.tickerPrice(binance, "BNBUSDT");
-  let buyorder = marketPrice * (1 + 0.02);
-  let sellorder = marketPrice * (1 - 0.02);
+  let buyorder = marketPrice * (1 - 0.02);
+  let sellorder = marketPrice * (1 + 0.02);
   let baseAmount = await walletInfo.getSymbolQty(binance, "USDT");
   let buyvolume = buyQty / marketPrice;
   
@@ -44,7 +44,7 @@ let bot = async (binance, buyQty) => {
 
       let tickString = filter.tickSize.toString().split(".");
       if (tickString.length > 1) {
-        for (const iterator of tickString) {
+        for (const iterator of tickString[1]) {
           if (iterator != "1") {
             decimals++;
           } else {
@@ -53,6 +53,10 @@ let bot = async (binance, buyQty) => {
         }
       }
     }
+    if (decimals > 0) {
+      decimals++
+    }
+    break
   }
   buyorder = parseFloat(buyorder.toFixed(decimals));
   sellorder = parseFloat(sellorder.toFixed(decimals));

@@ -4,7 +4,7 @@
     <v-row class="pb-4" justify="center"><h1>Staking:</h1></v-row>
     <v-row>
       <v-col>
-        <grid :data="stakingInfo?.data"></grid>
+        <grid :data="stakingInfo?.data" :detail-data="detailData"></grid>
       </v-col>
     </v-row>
   </div>
@@ -18,6 +18,9 @@ let stakingInfo = ref(null);
 let userId = "Bob617";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
+
+let detailData = ref([]);
+let detailHeader = ref([]);
 
 onMounted(async () => {
   await getStakingInfo();
@@ -38,16 +41,18 @@ let getStakingInfo = async () => {
       params: { userId },
     })
   ).data;
+  let tempData = [];
+  for (const el of stakingData) {
+    tempData.push({ asset: el.asset, amount: el.amount, apy: el.apy });
+    detailData.value.push({
+      end_Date: new Date(el.interestEndDate).toLocaleDateString(),
+      duration: el.duration,
+      earn_X_day: el.nextInterestPay,
+    });
+  }
   stakingInfo.value = {
     timestamp: Date.now(),
-    data: stakingData.map((el) => ({
-      asset: el.asset,
-      amount: el.amount,
-      duration: el.duration,
-      nextInterestPay: el.nextInterestPay,
-      interestEndDate: new Date(el.interestEndDate).toLocaleDateString(),
-      apy: el.apy,
-    })),
+    data: tempData
   };
 
   //PROVA ANDROID
@@ -65,7 +70,6 @@ let getStakingInfo = async () => {
   //     })),
   //   }
   // }, 500);
-
 };
 </script>
 

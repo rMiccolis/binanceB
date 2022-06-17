@@ -38,34 +38,38 @@
       <div v-else-if="!data">Loading Staking...</div>
     </div>
     <v-dialog v-model="openModal" scrollable>
-      <v-card>
+      <v-card width="80vw" elevation="10" rounded="10">
         <v-card-title
-          ><span style="text-transform: uppercase"
-            >details:
-            <v-icon size="small" color="blue" class="cursor-pointer me-2"
+          ><span
+            ><v-icon size="small" color="blue" class="cursor-pointer me-2"
               >mdi-clipboard-list-outline</v-icon
-            ></span
-          ></v-card-title
+            >Details:
+          </span></v-card-title
         >
         <v-divider></v-divider>
-        <v-card-text style="height: 50vh; width: 85vw">
-          <div v-for="(elem, name) in detailShown" :key="name">
-            <v-list-item>
-              <v-list-item-header>
-                <v-list-item-title> <span style="text-transform: uppercase">{{
-                name.replace(/_/g, " ")
-              }}<v-icon size="small" color="blue" class="cursor-pointer ms-5"
-              >mdi-arrow-right-thick</v-icon
-            > </span></v-list-item-title>
-              </v-list-item-header>
-              {{ elem }}
-            </v-list-item>
-            <v-divider></v-divider>
-          </div>
+        <!-- <v-card-text style="height: 50vh; width: 85vw"> -->
+          
+        <v-card-text>
+          <v-list-item v-for="(elem, name) in detailShown" :key="name">
+            <v-list-item-header>
+              <v-list-item-title
+                ><span style="text-transform: capitalize">{{
+                  name.replace(/_/g, " ")
+                }}</span></v-list-item-title
+              >
+              <v-list-item-subtitle>{{ elem }}</v-list-item-subtitle>
+            </v-list-item-header>
+          </v-list-item>
         </v-card-text>
-        <v-divider></v-divider>
+
         <v-card-actions>
-          <v-btn color="blue-darken-1" text @click="openModal = false">
+          <v-btn
+            block
+            variant="outlined"
+            color="blue-darken-1"
+            text
+            @click="openModal = false"
+          >
             Close
           </v-btn>
         </v-card-actions>

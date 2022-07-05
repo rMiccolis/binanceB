@@ -15,8 +15,8 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import grid from "../components/grid.component.vue";
 let accountInfo = ref(null);
-let userid = "Bob617";
-// let userid = "test";
+let userId = "Bob617";
+// let userId = "test";
 let maxRefreshTimeSecs = 10;
 
 onMounted(async () => {
@@ -36,7 +36,7 @@ let getAccountInfo = async () => {
     await axios({
       method: "get",
       url: "http://localhost:3000/api/account",
-      params: { userid },
+      params: { userId },
     })
   ).data;
   accountInfo.value = {

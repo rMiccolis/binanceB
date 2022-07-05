@@ -15,8 +15,8 @@ import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import grid from "../components/grid.component.vue";
 let stakingInfo = ref(null);
-let userId = "Bob617";
-// let userId = "test";
+let userid = "Bob617";
+// let userid = "test";
 let maxRefreshTimeSecs = 10;
 
 let detailData = ref([]);
@@ -37,7 +37,7 @@ let getStakingInfo = async () => {
     await axios({
       method: "get",
       url: "http://localhost:3000/api/earn/staking",
-      params: { userId },
+      params: { userid },
     })
   ).data;
   let tempData = [];

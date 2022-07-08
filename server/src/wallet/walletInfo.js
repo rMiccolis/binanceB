@@ -1,4 +1,4 @@
-const { fromSecsToDate } = require('../utils/dateConverter')
+const { fromSecsToDate } = require('../utils/date');
 let getTradesFromDate = async (binance, dateFrom=new Date(2021,0,1)) => {
     try {
         let allHistoryTime = (Date.now() - dateFrom)

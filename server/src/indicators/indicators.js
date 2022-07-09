@@ -59,6 +59,12 @@ let applyDMI = function (data, period=14) {
       let pdm = candle.high - prevCandle.high;
       let ndm = candle.low - prevCandle.low;
 
+      pdm = pdm > ndm && pdm > 0 ? pdm : 0;
+      ndm = ndm > pdm && ndm > 0 ? ndm : 0;
+
+      candle.positiveDirection = pdm
+      candle.negativeDirection = ndm
+
       prevCandle = candle;
       firstPeriodATR += tr;
       firstPeriodPDM += pdm;
@@ -71,8 +77,19 @@ let applyDMI = function (data, period=14) {
 
 
     data[period - 1].atr = firstPeriodATR;
-    data[period - 1].pdm = firstPeriodPDM;
-    data[period - 1].ndm = firstPeriodNDM;
+    data[period - 1].positiveDirection = firstPeriodPDM;
+    data[period - 1].negativeDirection = firstPeriodNDM;
+
+
+  
+
+    data[period - 1].positiveDMI = (data[period - 1].positiveDirection / data[period - 1].atr) * 100
+    data[period - 1].negativeDMI = (data[period - 1].negativeDirection / data[period - 1].atr) * 100
+      
+    data[period - 1].directionIndex = ((Math.abs(data[period - 1].positiveDMI - data[period - 1].negativeDMI) / Math.abs(data[period - 1].positiveDMI + data[period - 1].negativeDMI)) * 100)
+    data[period - 1].averageDirectionIndex = ((Math.abs(data[period - 1].positiveDMI - data[period - 1].negativeDMI) / Math.abs(data[period - 1].positiveDMI + data[period - 1].negativeDMI)) * 100) / period
+
+
     prevCandle = data[period - 1];
     i = period;
     while (i < data.length) {
@@ -84,12 +101,14 @@ let applyDMI = function (data, period=14) {
       let ndm = (candle.low - prevCandle.low) / period;
 
       candle.atr = (prevCandle.atr * (period - 1) + tr) / period;
+      candle.positiveDirection = (prevCandle.positiveDirection * (period - 1) + pdm) / period
+      candle.negativeDirection = (prevCandle.negativeDirection * (period - 1) + ndm) / period
 
-
-      candle.posDirectionIdx = (pdm / candle.atr) * 100
-      candle.negDirectionIdx = (ndm / candle.atr) * 100
-      candle.directionalMovementIdx = (Math.abs(candle.posDirectionIdx - candle.negDirectionIdx) / Math.abs(candle.posDirectionIdx + candle.negDirectionIdx)) * 100
-
+      candle.positiveDMI = (candle.positiveDirection / candle.atr) * 100
+      candle.negativeDMI = (candle.negativeDirection / candle.atr) * 100
+      
+      candle.directionIndex = (Math.abs(candle.positiveDMI - candle.negativeDMI) / Math.abs(candle.positiveDMI + candle.negativeDMI)) * 100
+      candle.averageDirectionIndex = (prevCandle.averageDirectionIndex * (period - 1) + candle.directionIndex) / period
 
       prevCandle = candle;
       i++;

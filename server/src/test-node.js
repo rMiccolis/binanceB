@@ -4,6 +4,7 @@ const walletInfo = require("./wallet/walletInfo");
 const trades = require("./wallet/trades");
 const coinInfo = require("./coinInfo/info");
 const date = require("./utils/date");
+const indicators = require("./indicators/indicators");
 
 let test = async (url) => {
     let apiKey = 'bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn';
@@ -11,8 +12,9 @@ let test = async (url) => {
     let buyQty = 100;
     const binance = new Spot(apiKey, apiSecret, { baseURL: url });
     // let data = await bot(binance, buyQty);
-    let klines = await coinInfo.getKlines(binance, "BTCUSDT", '1d')
-
+    let klines = await coinInfo.getKlines(binance, "BTCUSDT", '1h')
+    // indicators.applyATR(klines);
+    indicators.applyDMI(klines);
     console.log(klines);
 };
 

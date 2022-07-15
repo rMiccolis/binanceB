@@ -1,5 +1,4 @@
 const { Spot } = require("@binance/connector");
-const { aggregate, insertOne, updateOne } = require("../src/utils/mongodb");
 const walletInfo = require("./wallet/walletInfo");
 const trades = require("./wallet/trades");
 

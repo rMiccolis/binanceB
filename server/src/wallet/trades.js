@@ -36,7 +36,6 @@ let getOpenOrders = async (binance, couple="BNBUSDT") => {
         let openOrders = await binance.openOrders({ symbol: couple });
         return openOrders.data;
     } catch (error) {
-        console.log(error.response.data);
         return "Error - Unable to retrieve open orders!";
     }
 }
@@ -122,7 +121,7 @@ let testOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => {
  * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
  * @return {Object} Binance response data
  */
-let cancelOpenOrders = async (binance, couple) => {
+let cancelAllOpenOrders = async (binance, couple) => {
     try {
         let cancelOrders = await binance.cancelOpenOrders(couple)
         return cancelOrders.data;
@@ -130,6 +129,27 @@ let cancelOpenOrders = async (binance, couple) => {
         return "Error - Unable to cancel " + couple + " orders!";
     }
 }
+
+/**
+ * Cancel an order for a Couple (TRADE)
+ *
+ * DELETE /api/v3/order
+ *
+ * {@link https://binance-docs.github.io/apidocs/spot/en/#cancel-order-trade}
+ *
+ * @param {Object} binance The binance spot client Object
+ * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
+ * @return {Object} Binance response data
+ */
+let cancelOpenOrder = async (binance, couple, orderId) => {
+    try {
+        let cancelOrder = await binance.cancelOpenOrders(couple, {orderId})
+        return cancelOrder.data;
+    } catch (error) {
+        return `Error - Unable to cancel order ${orderId} for ${couple}!`;
+    }
+}
+
 /**
    * Symbol Price Ticker<br>
    *
@@ -177,7 +197,8 @@ module.exports = {
     getAllOrders,
     placeOrder,
     testOrder,
-    cancelOpenOrders,
+    cancelAllOpenOrders,
+    cancelOpenOrder,
     tickerPrice,
     exchangeInfo
 }

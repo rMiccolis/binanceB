@@ -1,21 +1,38 @@
 const { Spot } = require("@binance/connector");
-const { aggregate, insertOne, updateOne } = require("../src/utils/mongodb");
 const walletInfo = require("./wallet/walletInfo");
 const trades = require("./wallet/trades");
 const coinInfo = require("./coinInfo/info");
 const date = require("./utils/date");
-const indicators = require("./indicators/indicators");
+// const indicators = require("./indicators/indicators");
 
-let test = async (url) => {
-    let apiKey = 'bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn';
-    let apiSecret = '86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY';
-    let buyQty = 100;
-    const binance = new Spot(apiKey, apiSecret, { baseURL: url });
-    // let data = await bot(binance, buyQty);
-    let klines = await coinInfo.getKlines(binance, "BTCUSDT", '1h')
-    // indicators.applyATR(klines);
-    indicators.applyDMI(klines);
-    console.log(klines);
+let test = async (user='test', url="https://testnet.binance.vision/", tradeQuantity=30, couple="BTCUSDT") => {
+  let apiKey = "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn";
+  let apiSecret = "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY";
+  let buyQty = 100;
+  const binance = new Spot(apiKey, apiSecret, { baseURL: url });
+
+  let plan = {
+    user,
+    couple,
+    tradeQuantity,
+    recallsNumber: 27,
+    sellPositive: 0.013,
+    recallsBuy: [0.025, 0.005, 0.0075, 0.01, 0.012, 0.014, 0.016, 0.018, 0.02, 0.022, 0.024, 0.026, 0.028, 0.03, 0.035, 0.04, 0.05, 0.065, 0.075, 0.09, 0.11, 0.13, 0.15, 0.18, 0.21, 0.24, 0.27],
+    recallsQuantity: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.4, 1.4, 2, 2],
+  };
+
+  let res = insertOne("plans", plan)
+  // console.log(res);
+
+  // let {recallsNumber, sellPositive, recallsBuy, recallsQuantity} = plan;
+
+  // let coupleTrades = await trades.getOpenOrders(binance, couple);
+  // console.log(coupleTrades);
+
+  //place first order
+  // process.exit()
+  console.log(process._getActiveHandles().length);
+  // console.log(, process._getActiveRequests());
 };
 
 // Place a new order
@@ -26,4 +43,4 @@ let test = async (url) => {
 // }).then(response => client.logger.log(response.data))
 //   .catch(error => client.logger.error(error))
 
-test('https://testnet.binance.vision/')
+test('test', "https://testnet.binance.vision/");

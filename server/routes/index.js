@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const test = require('../src/test')
-const db = require('../src/utils/mongodb')
 
 /* GET home page. */
 router.get('/', async (req, res) => {
@@ -19,18 +18,18 @@ router.get('/testticker', async (req, res) => {
 });
 
 router.get('/getusers', async (req, res) => {
-  let data = await db.aggregate('users')
+  let data = await global.db.aggregate('users')
   res.json(data);
 });
 
 router.get('/insertOne', async (req, res) => {
-  let data = await db.insertOne('users', {id: 'ProvaAdmin', psw: 'ciao'})
+  let data = await global.db.insertOne('users', {id: 'ProvaAdmin', psw: 'ciao'})
   res.json(data);
 });
 
 router.get('/mongo', async (req, res) => {
 TEST_SECRET_KEY='1k6vBgvBZkTBN7Q0dz369uvemrEDdmzxC8UpkGKDUi7wg16gvOntZGWwshKuHcaM'
-  let data = await db.updateOne('users', {id: 'ProvaAdmin'}, {id: 'test', psw: 'test'})
+  let data = await global.db.updateOne('users', {id: 'ProvaAdmin'}, {id: 'test', psw: 'test'})
   res.json(data);
 });
 

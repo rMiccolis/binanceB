@@ -36,7 +36,6 @@ let getOpenOrders = async (binance, couple="BNBUSDT") => {
         let openOrders = await binance.openOrders({ symbol: couple });
         return openOrders.data;
     } catch (error) {
-        console.log(error);
         return "Error - Unable to retrieve open orders!";
     }
 }
@@ -72,7 +71,7 @@ let placeOrder = async (binance, couple='BNBUSDT', sellBuy='SELL', limit='LIMIT'
             });
         return order.data;
     } catch (error) {
-        // console.log(error.response.data);
+        console.log(error.response.data);
         return "Error during " + couple + " placeOrder:\n" + error.response.data.msg;
     }
 }
@@ -122,7 +121,7 @@ let testOrder = async (binance, couple, sellBuy, limit='LIMIT', price, qty) => {
  * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
  * @return {Object} Binance response data
  */
-let cancelOpenOrders = async (binance, couple) => {
+let cancelAllOpenOrders = async (binance, couple) => {
     try {
         let cancelOrders = await binance.cancelOpenOrders(couple)
         return cancelOrders.data;
@@ -130,6 +129,27 @@ let cancelOpenOrders = async (binance, couple) => {
         return "Error - Unable to cancel " + couple + " orders!";
     }
 }
+
+/**
+ * Cancel an order for a Couple (TRADE)
+ *
+ * DELETE /api/v3/order
+ *
+ * {@link https://binance-docs.github.io/apidocs/spot/en/#cancel-order-trade}
+ *
+ * @param {Object} binance The binance spot client Object
+ * @param {string} [couple="BNBUSDT"] The couple to buy/sell: 'BNBUSDT' => buy/sell BNB with USDT
+ * @return {Object} Binance response data
+ */
+let cancelOpenOrder = async (binance, couple, orderId) => {
+    try {
+        let cancelOrder = await binance.cancelOpenOrders(couple, {orderId})
+        return cancelOrder.data;
+    } catch (error) {
+        return `Error - Unable to cancel order ${orderId} for ${couple}!`;
+    }
+}
+
 /**
    * Symbol Price Ticker<br>
    *
@@ -144,7 +164,7 @@ let tickerPrice = async (binance, couple='') => {
         let tickerPrice = await binance.tickerPrice(couple);
         return parseFloat(tickerPrice.data.price);
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return "Error - Unable to get ticker price for: " + couple + " !";
     }
 }
@@ -167,7 +187,7 @@ let exchangeInfo = async (binance, symbol='BNBUSDT') => {
         let exchangeInfo = await binance.exchangeInfo({symbol: symbol});
         return exchangeInfo.data;
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return "Error - Unable to get ticker price for: " + symbol + " !";
     }
 }
@@ -177,7 +197,8 @@ module.exports = {
     getAllOrders,
     placeOrder,
     testOrder,
-    cancelOpenOrders,
+    cancelAllOpenOrders,
+    cancelOpenOrder,
     tickerPrice,
     exchangeInfo
 }

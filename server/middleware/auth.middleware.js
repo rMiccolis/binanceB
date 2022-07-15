@@ -1,11 +1,14 @@
+const db = require('../mongodb/database');
+
 let accountCheck = async (req, res, next) => {
     let userId = req.query.userId;
+    let users = db.dynamicModel('users');
     req.locals = {}
     if (!userId) {
         return res.json({ err: "no APY_KEY found!" });
     }
-    let dbUser = await global.db.aggregate("users", [{ $match: { id: userId } }]);
-    console.log(dbUser);
+
+    let dbUser = await users.aggregate([{ $match: { id: userId } }]);
     if (dbUser.length < 1) {
         console.log("no APY_KEY found!");
         return res.json({ err: "no APY_KEY found!" });

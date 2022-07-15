@@ -3,9 +3,11 @@ const walletInfo = require("./wallet/walletInfo");
 const trades = require("./wallet/trades");
 const coinInfo = require("./coinInfo/info");
 const date = require("./utils/date");
+const db = require('../mongodb/database');
 // const indicators = require("./indicators/indicators");
 
 let test = async (user='test', url="https://testnet.binance.vision/", tradeQuantity=30, couple="BTCUSDT") => {
+  let plans = db.dynamicModel('plans')
   let apiKey = "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn";
   let apiSecret = "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY";
   let buyQty = 100;
@@ -21,7 +23,8 @@ let test = async (user='test', url="https://testnet.binance.vision/", tradeQuant
     recallsQuantity: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.4, 1.4, 2, 2],
   };
 
-  let res = insertOne("plans", plan)
+  plan = new plans(plan);
+  let res = await plan.save()
   // console.log(res);
 
   // let {recallsNumber, sellPositive, recallsBuy, recallsQuantity} = plan;
@@ -32,6 +35,7 @@ let test = async (user='test', url="https://testnet.binance.vision/", tradeQuant
   //place first order
   // process.exit()
   console.log(process._getActiveHandles().length);
+  return res;
   // console.log(, process._getActiveRequests());
 };
 
@@ -43,4 +47,4 @@ let test = async (user='test', url="https://testnet.binance.vision/", tradeQuant
 // }).then(response => client.logger.log(response.data))
 //   .catch(error => client.logger.error(error))
 
-test('test', "https://testnet.binance.vision/");
+module.exports = test

@@ -31,7 +31,7 @@ function dynamicSchema(connection, collectionName, schema) {
   return connection.model(collectionName, collectionSchema);
 }
 
-function dynamicModel(connection, collectionName, schema = null) {
+function dynamicModel( collectionName, connection = global.db, schema = null) {
   let model = null;
   try {
     model = dynamicSchema(connection, collectionName, schema);

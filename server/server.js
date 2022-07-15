@@ -38,15 +38,15 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
 
 app.use("/", generalRouter);
 
-
 app.use(auth.accountCheck);
 
 //routes
-app.use("/general", indexRouter);
+app.use("/test", indexRouter);
+
 app.use("/api/account", accountApiRouter);
 app.use("/api/earn", earnApiRouter);
 
-process.stdin.resume(); //so the program will not close instantly
+// process.stdin.resume(); //so the program will not close instantly
 
 //do something when app is closing
 process.on("exit", exitHandler);

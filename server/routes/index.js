@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
 router.get('/test', async (req, res) => {
   let user = req.locals.user;
   let data = await testbot(user.id);
-  console.log(data);
   res.json(data);
 });
 

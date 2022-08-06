@@ -9,8 +9,7 @@ router.get("/", async (req, res, next) => {
     let user = req.locals.user;
     let apiKey = user.APY_KEY;
     let apiSecret = user.SECRET_KEY;
-    // const spotClient = new Spot(apiKey, apiSecret, { baseURL: req.locals.url });
-    const spotClient = new Spot(apiKey, apiSecret);
+    const spotClient = new Spot(apiKey, apiSecret, { baseURL: req.locals.url });
     let data = await walletInfo.getAccountData(spotClient);
     // console.log(data);
     data.balances = data.balances.filter((el) => parseFloat(el.free) > 0);

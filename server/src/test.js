@@ -1,6 +1,5 @@
 const { Spot } = require("@binance/connector");
 const walletInfo = require("./wallet/walletInfo");
-const trades = require("./wallet/trades");
 
 let test = async (user, url) => {
   let apiKey = user.APY_KEY;

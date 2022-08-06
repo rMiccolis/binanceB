@@ -15,7 +15,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import grid from "../components/grid.component.vue";
 let accountInfo = ref(null);
-let userId = "Bob617";
+let userId = "test";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
 

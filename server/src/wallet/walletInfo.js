@@ -1,4 +1,28 @@
 const { fromSecsToDate } = require('../utils/date');
+
+/**
+ * Exchange Information<br>
+ *
+ * GET /api/v3/exchangeInfo<br>
+ *
+ * Current exchange trading rules and symbol information
+ * {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
+ *
+ * @param {object} [options]
+ * @param {string} [options.symbol] - symbol
+ * @param {Array} [options.symbols] - an array of symbols
+ *
+ */
+ let exchangeInfo = async (binance, symbol='BNBUSDT') => {
+    try {
+        let exchangeInfo = await binance.exchangeInfo({symbol: symbol});
+        return exchangeInfo.data;
+    } catch (error) {
+        console.log(error.response.data);
+        return "Error - Unable to get info for: " + symbol + " !";
+    }
+  }
+
 let getTradesFromDate = async (binance, dateFrom=new Date(2021,0,1)) => {
     try {
         let allHistoryTime = (Date.now() - dateFrom)
@@ -58,5 +82,6 @@ module.exports = {
     getTradesFromDate,
     getTotalSpentHistory,
     getAccountData,
-    getSymbolQty
+    getSymbolQty,
+    exchangeInfo
 }

@@ -40,7 +40,9 @@ let test = async (user = "test", url = "https://testnet.binance.vision/", tradeQ
   }
   // let {recallsNumber, sellPositive, recallsBuy, recallsQuantity} = plan;
 
-  return {opened: coupleTrades, closed: canceledOrdersInfo};
+  //update wallet status
+  wallet = await walletInfo.getAccountData(binance);
+  return {opened: coupleTrades, closed: canceledOrdersInfo, wallet};
 };
 
 // Save data to db

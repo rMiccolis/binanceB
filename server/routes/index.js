@@ -4,7 +4,7 @@ const test = require('../src/test')
 const db = require('../mongodb/database');
 const testbot = require('../src/test-node');
 
-/* GET home page. */
+/* PREFIX: /test */
 router.get('/', async (req, res) => {
   res.send("<div>Benvenuto sul bot di binance vai su:<br>- <a href='http://localhost:3000/test'>test generale</a> per un semplice test<br>- <a href='http://localhost:3000/testticker'>test ticker</a></div>");
 });

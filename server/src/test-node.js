@@ -28,19 +28,19 @@ let test = async (user = "test", url = "https://testnet.binance.vision/", tradeQ
     if (balance.asset == "USDT") freeUsdt = balance.free;
   }
 
-  
+  let coupleTrades = null;
+  let canceledOrdersInfo = null;
   if (usdtInvest <= freeUsdt) {
     // Place a new order
     let order = await trades.placeOrder(binance, couple, 'BUY', 'LIMIT', targetPrice, buyAmount)
     console.log("order", order);
-    let coupleTrades = await trades.getOpenOrders(binance, couple);
-    console.log("coupleTrades", coupleTrades);
+    coupleTrades = await trades.getOpenOrders(binance, couple);
 
-    await trades.cancelAllOpenOrders(binance)
+    canceledOrdersInfo = await trades.cancelAllOpenOrders(binance, couple)
   }
   // let {recallsNumber, sellPositive, recallsBuy, recallsQuantity} = plan;
 
-  return await walletInfo.getAccountData(binance);
+  return {opened: coupleTrades, closed: canceledOrdersInfo};
 };
 
 // Save data to db

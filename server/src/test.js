@@ -1,73 +1,46 @@
 const { Spot } = require("@binance/connector");
 const walletInfo = require("./wallet/walletInfo");
+const db = require("../mongodb/database");
 
-let test = async (user, url) => {
-  let apiKey = user.APY_KEY;
-  let apiSecret = user.SECRET_KEY;
-  let buyQty = 100;
-  const binance = new Spot(apiKey, apiSecret, { baseURL: url });
-  // let data = await bot(binance, buyQty);
-  let data = await binance.klines('BTCUSDT', '1w', { limit: 1000, startTime: '0' })
-  console.log(data.data.length);
-  return {
-    data: data.data,
-  };
-};
 
-let bot = async (binance, buyQty) => {
-  let openOrders = await trades.getOpenOrders(binance, "BNBUSDT");
-
-  // openOrders.forEach(async (element) => {
-  //   console.log(element);
-  //   // await trades.cancelOpenOrders(binance, "BNBUSDT");
-  // });
-  let exchangeInfo = await trades.exchangeInfo(binance, "BNBUSDT");
-
-  let marketPrice = await trades.tickerPrice(binance, "BNBUSDT");
-  let buyorder = marketPrice * (1 - 0.02);
-  let sellorder = marketPrice * (1 + 0.02);
-  let baseAmount = await walletInfo.getSymbolQty(binance, "USDT");
-  let buyvolume = buyQty / marketPrice;
+let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuantity = 30, couple = "BNBUSDT") => {
   
-  let decimals = 0;
-  for (const filter of exchangeInfo.symbols[0].filters) {
-    if (filter.filterType == "PRICE_FILTER") {
-      // if (buyorder > marketPrice * filter.multiplierUp) buyorder = marketPrice * filter.multiplierUp;
-      // if (buyorder < marketPrice * filter.multiplierDown) buyorder = marketPrice * filter.multiplierDown;
-      // if (sellorder > marketPrice * filter.multiplierUp) sellorder = marketPrice * filter.multiplierUp;
-      // if (sellorder < marketPrice * filter.multiplierDown) sellorder = marketPrice * filter.multiplierDown;
+  let { APY_KEY, APY_SECRET } = user
+  console.log(user);
+  // let apiKey = "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn";
+  // let apiSecret = "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY";
+  let targetPrice = 300;
 
-      let tickString = filter.tickSize.toString().split(".");
-      if (tickString.length > 1) {
-        for (const iterator of tickString[1]) {
-          if (iterator != "1") {
-            decimals++;
-          } else {
-            break;
-          }
-        }
-      }
-    }
-    if (decimals > 0) {
-      decimals++
-    }
-    break
+  const binance = new Spot(APY_KEY, APY_SECRET, { baseURL: url });
+  let coinInfo = await walletInfo.exchangeInfo(binance, 'BNBUSDT')
+  let filtersInfo = coinInfo.symbols[0].filters;
+  let decimalPlaces  = (filtersInfo.find( element => element.filterType == 'PRICE_FILTER')).tickSize.split('.')[1].split(1)[0].length + 1;
+  let buyAmount = (usdtInvest / targetPrice).toFixed(decimalPlaces);
+  console.log(buyAmount);
+
+  let plans = db.dynamicModel("plans");
+  let plan = plans.aggregate([{ $match: { userId: userId } }]);
+
+  let wallet = await walletInfo.getAccountData(binance);
+  let freeUsdt = 0;
+  for (const balance of wallet.balances) {
+    if (balance.asset == "USDT") freeUsdt = balance.free;
   }
-  buyorder = parseFloat(buyorder.toFixed(decimals));
-  sellorder = parseFloat(sellorder.toFixed(decimals));
-  buyvolume = parseFloat(buyvolume.toFixed(decimals));
-  console.log("price:", marketPrice, "buy:", buyorder, "buyQty", buyvolume, "sell:", sellorder);
-  return {marketPrice, buyorder, sellorder, baseAmount, buyvolume, buyorder, sellorder, exchangeInfo}
 
-  let response = await trades.placeOrder(binance, "BNBUSDT", "BUY", "LIMIT", 290, buyvolume);
-  await trades.placeOrder(binance, "BNBUSDT", "SELL", "LIMIT", sellorder, buyvolume);
-  // openOrders = await trades.getOpenOrders(binance, "BNBUSDT");
-  return response;
-  // return {
-  //     log1: "new tick form LUNAUSDT...",
-  //     log2: "created limit SELL order for LUNAUSDT@" + sellorder.toString(),
-  //     log3: "created limit BUY order for LUNAUSDT@" + buyorder.toString()
-  // }
+  let coupleTrades = null;
+  let canceledOrdersInfo = null;
+  if (usdtInvest <= freeUsdt) {
+    // Place a new order
+    let order = await trades.placeOrder(binance, couple, 'BUY', 'LIMIT', targetPrice, buyAmount)
+    coupleTrades = await trades.getOpenOrders(binance, couple);
+
+    canceledOrdersInfo = await trades.cancelAllOpenOrders(binance, couple)
+  }
+  // let {recallsNumber, sellPositive, decreasePricePerc, recallsQuantity} = plan;
+
+  //update wallet status
+  wallet = await walletInfo.getAccountData(binance);
+  return {opened: coupleTrades, closed: canceledOrdersInfo, wallet};
 };
 
 module.exports = {

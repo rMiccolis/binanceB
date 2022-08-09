@@ -8,7 +8,7 @@ let accountCheck = async (req, res, next) => {
         return res.json({ err: "no APY_KEY found!" });
     }
 
-    let dbUser = await users.aggregate([{ $match: { id: userId } }]);
+    let dbUser = await users.aggregate([{ $match: { userId: userId } }]);
     if (dbUser.length < 1) {
         console.log("no APY_KEY found!");
         return res.json({ err: "no APY_KEY found!" });

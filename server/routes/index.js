@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const test = require('../src/test')
 const db = require('../mongodb/database');
-const testbot = require('../src/test-node');
+const testNode = require('../src/test-node');
+const testStrategy = require('../src/test');
 
 /* PREFIX: /test */
 router.get('/', async (req, res) => {
@@ -11,7 +11,13 @@ router.get('/', async (req, res) => {
 
 router.get('/test', async (req, res) => {
   let user = req.locals.user;
-  let data = await testbot(user.id);
+  let data = await testNode(user.id);
+  res.json(data);
+});
+
+router.get('/testStrategy', async (req, res) => {
+  let user = req.locals.user;
+  let data = await testStrategy.test(user);
   res.json(data);
 });
 

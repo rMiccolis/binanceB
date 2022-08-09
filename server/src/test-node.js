@@ -8,7 +8,7 @@ let test = async (user = "test", url = "https://testnet.binance.vision/", tradeQ
   let plans = db.dynamicModel("plans");
   let apiKey = "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn";
   let apiSecret = "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY";
-  let usdtInvest = 100; //USDT
+  let usdtInvest = 30; //USDT
   let targetPrice = 300;
 
   const binance = new Spot(apiKey, apiSecret, { baseURL: url });
@@ -33,12 +33,11 @@ let test = async (user = "test", url = "https://testnet.binance.vision/", tradeQ
   if (usdtInvest <= freeUsdt) {
     // Place a new order
     let order = await trades.placeOrder(binance, couple, 'BUY', 'LIMIT', targetPrice, buyAmount)
-    console.log("order", order);
     coupleTrades = await trades.getOpenOrders(binance, couple);
 
     canceledOrdersInfo = await trades.cancelAllOpenOrders(binance, couple)
   }
-  // let {recallsNumber, sellPositive, recallsBuy, recallsQuantity} = plan;
+  // let {recallsNumber, sellPositive, decreasePricePerc, recallsQuantity} = plan;
 
   //update wallet status
   wallet = await walletInfo.getAccountData(binance);

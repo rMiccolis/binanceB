@@ -4,7 +4,7 @@ const db = require("../mongodb/database");
 const statistics = require("./realTimeData/statistics");
 const trades = require("./trades/trades");
 
-let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuantity = 30, couple = "BNBUSDT") => {
+let startBotTest = async (user = {}, url = "https://testnet.binance.vision/", tradeQuantity = 30, couple = "BNBUSDT") => {
   
   let { APY_KEY, APY_SECRET } = user
   // let apiKey = "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn";
@@ -12,8 +12,12 @@ let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuant
   // let targetPrice = 300;
 
   const binance = new Spot(APY_KEY, APY_SECRET, { baseURL: url });
-  await trades.cancelAllOpenOrders(binance, couple)
-
+  let orders = db.dynamicModel("orders");
+  // delete all open orders
+  await trades.cancelAllOpenOrders(binance, couple);
+  let r = await orders.deleteMany({userId: user.userId, symbol: couple})
+  console.log(r, user.userId, couple);
+  
   // retrieve info about couple
   let coinInfo = await walletInfo.exchangeInfo(binance, 'BNBUSDT')
   // we need filters array to take the PRICE_FILTER element which tells how many decimal places the amount can have
@@ -23,6 +27,7 @@ let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuant
   
 
   let plans = db.dynamicModel("plans");
+
   let plan = await plans.aggregate([{ $match: { userId: user.userId } }]);
   plan = plan.length > 0 ? plan[0] :{}
   let wallet = await walletInfo.getAccountData(binance);
@@ -32,35 +37,37 @@ let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuant
   }
 
   let coupleTrades = null;
-  let canceledOrdersInfo = null;
   let currentPrice = await statistics.tickerPrice(binance, couple)
   // place all negative buy orders:
-  for (const [index, perc] of plan.decreasePricePerc.entries()) {
-    let targetPrice = (parseFloat(currentPrice - (currentPrice * perc))).toFixed(2);
+  for (const [index, perc] of plan.buyNegativePerc.entries()) {
+    let buyPrice = (parseFloat(currentPrice - (currentPrice * perc))).toFixed(2);
     usdtAmount = tradeQuantity * plan.recallsQuantity[index];
     // compute the actual buyAmount and fix decimal places
-    let buyAmount = (parseFloat(usdtAmount / targetPrice)).toFixed(decimalPlaces)
-    await trades.placeOrder(binance, couple, 'BUY', 'LIMIT', targetPrice, buyAmount)
+    let buyAmount = (parseFloat(usdtAmount / buyPrice)).toFixed(decimalPlaces)
+    let order = null
+    try {
+      order = await trades.placeOrder(binance, couple, 'BUY', 'LIMIT', buyPrice, buyAmount)
+    } catch (error) {
+      continue
+    }
+
+    buyPrice = parseFloat(buyPrice);
+    // calculate price sell for this order: when the buy order is fired, place a sell order:
+    let sellPrice = (parseFloat(buyPrice + (buyPrice * plan.sellPositivePerc))).toFixed(2);
+    console.log(`BUY: ${buyPrice}, SELL: ${sellPrice}`);
+    order.userId = user.userId;
+    order.sellPrice = sellPrice;
+    // // Save order to db
+    order = new orders(order);
+    await order.save()
   }
 
   wallet = await walletInfo.getAccountData(binance);
   coupleTrades = await trades.getOpenOrders(binance, couple);
   await trades.cancelAllOpenOrders(binance, couple)
-  return { coupleTrades, coinInfo }
-
-  // place positive sell orders
-
-
+  return { coupleTrades, wallet }
 };
 
 module.exports = {
-  test,
+  startBotTest,
 };
-
-// Place a new order
-// client.newOrder('BNBUSDT', 'BUY', 'LIMIT', {
-//   price: '350',
-//   quantity: 1,
-//   timeInForce: 'GTC'
-// }).then(response => client.logger.log(response.data))
-//   .catch(error => client.logger.error(error))

@@ -48,18 +48,18 @@ app.use("/api/earn", earnApiRouter);
 
 // process.stdin.resume(); //so the program will not close instantly
 
-//do something when app is closing
-process.on("exit", exitHandler);
+// //do something when app is closing
+// process.on("exit", exitHandler);
 
-//catches ctrl+c event
-process.on("SIGINT", exitHandler);
+// //catches ctrl+c event
+// process.on("SIGINT", exitHandler);
 
-// catches "kill pid" (for example: nodemon restart)
-process.on("SIGUSR1", exitHandler);
-process.on("SIGUSR2", exitHandler);
+// // catches "kill pid" (for example: nodemon restart)
+// process.on("SIGUSR1", exitHandler);
+// process.on("SIGUSR2", exitHandler);
 
-//catches uncaught exceptions
-process.on("uncaughtException", exitHandler);
+// //catches uncaught exceptions
+// process.on("uncaughtException", exitHandler);
 
 let port = 3000;
 app.listen(port, () => {

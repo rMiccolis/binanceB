@@ -12,6 +12,7 @@ let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuant
   // let targetPrice = 300;
 
   const binance = new Spot(APY_KEY, APY_SECRET, { baseURL: url });
+  await trades.cancelAllOpenOrders(binance, couple)
 
   // retrieve info about couple
   let coinInfo = await walletInfo.exchangeInfo(binance, 'BNBUSDT')
@@ -35,17 +36,17 @@ let test = async (user = {}, url = "https://testnet.binance.vision/", tradeQuant
   let currentPrice = await statistics.tickerPrice(binance, couple)
   // place all negative buy orders:
   for (const [index, perc] of plan.decreasePricePerc.entries()) {
-    let targetPrice = currentPrice - (currentPrice * perc);
+    let targetPrice = (parseFloat(currentPrice - (currentPrice * perc))).toFixed(2);
     usdtAmount = tradeQuantity * plan.recallsQuantity[index];
     // compute the actual buyAmount and fix decimal places
-    let buyAmount = parseFloat((usdtAmount / targetPrice).toFixed(decimalPlaces))
+    let buyAmount = (parseFloat(usdtAmount / targetPrice)).toFixed(decimalPlaces)
     await trades.placeOrder(binance, couple, 'BUY', 'LIMIT', targetPrice, buyAmount)
   }
 
   wallet = await walletInfo.getAccountData(binance);
   coupleTrades = await trades.getOpenOrders(binance, couple);
-  // await trades.cancelAllOpenOrders(binance, couple)
-  return { wallet, coupleTrades}
+  await trades.cancelAllOpenOrders(binance, couple)
+  return { coupleTrades, coinInfo }
 
   // place positive sell orders
 

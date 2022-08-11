@@ -71,8 +71,8 @@ let placeOrder = async (binance, couple='BNBUSDT', sellBuy='SELL', limit='LIMIT'
             });
         return order.data;
     } catch (error) {
-        console.log(error.response.data);
-        return "Error during " + couple + " placeOrder:\n" + error.response.data.msg;
+        // console.log("placeOrder =>", error.response.data);
+        return `Error during ${couple} placeOrder:\nTRYING TO BUY ${qty} at ${price} - ${error.response.data.msg}`;
     }
 }
 

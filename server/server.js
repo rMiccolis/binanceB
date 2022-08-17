@@ -28,6 +28,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+generalRouter.route("/").get(async function (req, res) {
+  try {
+    if (global.db.readyState === 1) res.json({ health: "OK", message: "App is running!" });
+  } catch (error) {
+    res.json({ health: "KO", message: "App running but something goes wrong!" })
+  }
+});
+
 generalRouter.route("/healthCheck").get(async function (req, res) {
   try {
     if (global.db.readyState === 1) res.json({ health: "OK", message: "DB is correctly running!" });

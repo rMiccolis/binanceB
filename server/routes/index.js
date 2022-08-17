@@ -1,18 +1,16 @@
 var express = require('express');
 var router = express.Router();
-const test = require('../src/test')
 const db = require('../mongodb/database');
-const testbot = require('../src/test-node');
+const testStrategy = require('../src/test');
 
-/* GET home page. */
+/* PREFIX: /test */
 router.get('/', async (req, res) => {
   res.send("<div>Benvenuto sul bot di binance vai su:<br>- <a href='http://localhost:3000/test'>test generale</a> per un semplice test<br>- <a href='http://localhost:3000/testticker'>test ticker</a></div>");
 });
 
-router.get('/test', async (req, res) => {
+router.get('/startBotTest', async (req, res) => {
   let user = req.locals.user;
-  let data = await testbot(user.id);
-  console.log(data);
+  let data = await testStrategy.startBotTest(user);
   res.json(data);
 });
 

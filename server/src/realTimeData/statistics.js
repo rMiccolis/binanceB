@@ -1,13 +1,3 @@
-const date = require("../utils/date");
-
-let coinInfo = async (binance, couple='BNBUSDT') => {
-    try {
-        let coinInfo = await binance.exchangeInfo({ symbol: couple })
-        return coinInfo.data;
-    } catch (error) {
-        return "Error - Unable to retrieve " + couple + " info!"
-    }
-}
 /**
  * Get the Candlestick data for a couple
  *
@@ -38,7 +28,7 @@ let coinInfo = async (binance, couple='BNBUSDT') => {
  *  ]
  * ]
  */
-let getKlines = async (binance, couple='BNBUSDT', interval='1d', options={}) => {
+ let getKlines = async (binance, couple='BNBUSDT', interval='1d', options={}) => {
     try {
         let klines = await binance.klines(couple, interval, options)
         //enrich array response
@@ -65,7 +55,46 @@ let getKlines = async (binance, couple='BNBUSDT', interval='1d', options={}) => 
     }
 }
 
+/**
+ * Current Average Price<br>
+ *
+ * GET /api/v3/avgPrice<br>
+ *
+ * Current average price for a symbol.<br>
+ * {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
+ * @param {*} binance
+ * @param {string} [couple='BNBUSDT']
+ */
+ let avgPrice = async (binance, couple = "BNBUSDT") => {
+    try {
+      let avgPrice = await binance.avgPrice({ symbol: couple });
+      return avgPrice.data;
+    } catch (error) {
+      return "Error - Unable to retrieve " + couple + " average price!";
+    }
+  };
+  
+  /**
+     * Symbol Price Ticker<br>
+     *
+     * GET /api/v3/ticker/price
+     *
+     * {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
+     *
+     * @param {string} [symbol]
+    */
+   let tickerPrice = async (binance, couple='') => {
+    try {
+        let tickerPrice = await binance.tickerPrice(couple);
+        return parseFloat(tickerPrice.data.price);
+    } catch (error) {
+        console.log(error.response.data);
+        return "Error - Unable to get ticker price for: " + couple + " !";
+    }
+  }
+
 module.exports = {
-    coinInfo,
-    getKlines
-}
+    getKlines,
+    avgPrice,
+    tickerPrice
+};

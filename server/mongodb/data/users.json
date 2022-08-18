@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "6250a319894338495b97a922"
+  },
+  "psw": "test",
+  "futures_APY_KEY": "99c1414133b348a6274df7b288f1088623b590fd3fe2714f894f482ef6e2c5be",
+  "futures_SECRET_KEY": "81469553365e683143f7146181529b6ea730c0fbe5c20d9f716549c7ce89d092",
+  "APY_KEY": "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn",
+  "userId": "test",
+  "APY_SECRET": "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY"
+},{
+  "_id": {
+    "$oid": "625af5d5573ad7a318ab153c"
+  },
+  "psw": "ciao",
+  "APY_KEY": "qgPsZHtWgT0hH594MkNwXYGc8A5YIp5pCe3t9QTJJmYLTulnjF4fVvTxO9x3Rldb",
+  "userId": "Bob617",
+  "APY_SECRET": "bvAmWegUgvAXishiIKVcmzfoH37BUtSe7jxiJjeEtCUUUaf1mDHNtwkaJ0ytvase"
+}]

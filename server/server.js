@@ -38,7 +38,12 @@ generalRouter.route("/").get(async function (req, res) {
 
 generalRouter.route("/healthCheck").get(async function (req, res) {
   try {
-    if (global.db.readyState === 1) res.json({ health: "OK", message: "DB is correctly running!" });
+    if (global.db.readyState === 1){
+      let healthCheck = db.dynamicModel('healthCheck');
+      let healt = await healthCheck.aggregate([{$match: {}}])
+      res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
+    } 
+      
   } catch (error) {
     res.json({ health: "KO", message: "DB is is not running!" })
   }

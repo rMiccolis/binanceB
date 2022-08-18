@@ -33,6 +33,15 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title
+            ><router-link :to="{ name: 'strategy', params: { userId: 'test' } }"
+              >Strategy</router-link
+            ></v-list-item-title
+          >
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title
             ><router-link
               :to="{ name: 'statistics', params: { userId: 'test' } }"
               >Statistics</router-link
@@ -67,15 +76,7 @@
           >
         </v-list-item-content>
       </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link :to="{ name: 'account', params: { userId: 'test' } }"
-              >Account</router-link
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
+      
       <template v-slot:append>
         <div class="pa-2">
           <v-btn block variant="outlined" color="red"> Logout </v-btn>
@@ -100,7 +101,7 @@
 
     <v-main>
       <v-container app fluid>
-        <router-view></router-view>
+        <router-view class="pl-5"></router-view>
       </v-container>
     </v-main>
     <v-footer app

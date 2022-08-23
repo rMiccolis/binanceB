@@ -1,7 +1,7 @@
 const db = require('../mongodb/database');
 
 let accountCheck = async (req, res, next) => {
-    let userId = req.query.userId;
+    let userId = req.query?.userId || req.params?.userId;
     let users = db.dynamicModel('users');
     req.locals = {}
     if (!userId) {

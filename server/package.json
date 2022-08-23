@@ -9,9 +9,11 @@
     "@binance/connector": "^1.10.0",
     "cookie-parser": "~1.4.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "debug": "~4.3.4",
     "dotenv": "^16.0.1",
     "express": "~4.18.1",
+    "helmet": "^5.1.1",
     "mongoose": "^6.4.4",
     "morgan": "~1.10.0"
   }

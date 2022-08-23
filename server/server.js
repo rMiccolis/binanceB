@@ -1,33 +1,37 @@
-let express = require("express");
-let path = require("path");
-let cookieParser = require("cookie-parser");
-let logger = require("morgan");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 var cors = require("cors");
 const dotenv = require("dotenv");
-const generalRouter = express.Router();
-
+const helmet = require("helmet");
 const auth = require("./middleware/auth.middleware");
-let indexRouter = require("./routes/index");
-let accountApiRouter = require("./api/account.api");
-let earnApiRouter = require("./api/earn.api");
-let db = require("./mongodb/database");
-let exitHandler = require("./handlers/exit.handler");
+const indexRouter = require("./routes/index");
+const accountApiRouter = require("./api/account.api");
+const earnApiRouter = require("./api/earn.api");
+const db = require("./mongodb/database");
+const exitHandler = require("./handlers/exit.handler");
+const authRouter = require("./routes/auth.router");
 
 dotenv.config();
-let app = express();
+const app = express();
 
 // Initialize global session variable
 global.usersDBConnections = {};
 global.db = {};
 
+// const corsOptions = { origin: true, credentials: true };
+
 //middlewares
 app.use(cors());
 app.use(logger("dev"));
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+const generalRouter = express.Router();
 generalRouter.route("/").get(async function (req, res) {
   try {
     if (global.db.readyState === 1) res.json({ health: "OK", message: "App is running!" });
@@ -49,13 +53,13 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
   }
 });
 
-app.use("/", generalRouter);
-
-app.use(auth.accountCheck);
 
 //routes
-app.use("/test", indexRouter);
+app.use("/", generalRouter);
+app.use("/auth", authRouter)
 
+app.use(auth.accountCheck);
+app.use("/test", indexRouter);
 app.use("/api/account", accountApiRouter);
 app.use("/api/earn", earnApiRouter);
 

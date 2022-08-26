@@ -13,7 +13,8 @@ let getBlockedStaking = async (binance) => {
         let blockedStaking = await binance.stakingProductPosition('STAKING')
         return blockedStaking.data;
     } catch (error) {
-        console.log(error);
+        console.logError(error);
+        console.logError(error.data || error.message)
         return "Error - Unable to retrieve blocked staking info!"
     }
 }

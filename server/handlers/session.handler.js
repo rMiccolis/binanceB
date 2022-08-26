@@ -3,23 +3,22 @@ const { Spot } = require("@binance/connector");
 const crypto = require("node:crypto");
 const jwt = require("jsonwebtoken");
 
-let deleteTokens = async (req, res, userId) => {
-    if (!userId) return;
-    let users = db.dynamicModel("users");
-    await users.updateOne({ userId: userId }, { $set: { refresh_token: "", last_update: Date.now() } });
+let revokeTokens = async (req, res, userId = null) => {
+    if (userId) {
+        let users = db.dynamicModel("users");
+        await users.updateOne({ userId: userId }, { $set: { refresh_token: "", last_update: Date.now() } });
+    }
     res.cookie("refresh_token", "", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", //https
         expires: new Date(0),
         sameSite: "Strict",
-        domain: process.env.MINERVA_BASE_DOMAIN,
     });
     res.cookie("access_token", "", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", //https
         expires: new Date(0),
         sameSite: "Strict",
-        domain: process.env.MINERVA_BASE_DOMAIN,
     });
 };
 
@@ -58,18 +57,17 @@ let setTokens = async (tokenData, req, res) => {
 
 async function setBinanceConnection(userId) {
     let users = db.dynamicModel("users");
-    let user = await users.aggregate([{ $match: { userId: userId } }]);
+    let user = (await users.aggregate([{ $match: { userId: userId } }]))[0];
     let baseUrl;
-    if (userId.includes("test")) {
-        url = process.env.TESTNET_BASE_URL;
+    if (userId != "Bob617") {
+        baseUrl = process.env.TESTNET_BASE_URL;
     } else {
-        url = process.env.BINANCE_BASE_URL;
+        baseUrl = process.env.BINANCE_BASE_URL;
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
     }
 
-    let apiKey = user.APY_KEY;
-    let apiSecret = user.SECRET_KEY;
-    // const spotClient = await new Spot(apiKey, apiSecret)
+    let apiKey = user.API_KEY;
+    let apiSecret = user.API_SECRET;
     const spotClient = new Spot(apiKey, apiSecret, { baseURL: baseUrl });
     global.binanceConnections[userId] = spotClient;
 }
@@ -106,14 +104,13 @@ let refresh = async (refresh_token, access_token, res) => {
             throw new Error("invalid refresh_token!");
         }
     } catch (error) {
-        await deleteTokens(req, res, userId);
+        await revokeTokens(req, res, userId);
         res.status(403).json({ code: "INVALID_TOKEN" });
     }
 };
 
 let signup = async (req, res) => {
-    let { userId, password } = req.body;
-    console.log(userId, password);
+    let { userId, password, publicApiKey, privateApiKey } = req.body;
     if (!userId || !password) return res.json({ err: true, message: "no data received" });
     let users = db.dynamicModel("users");
 
@@ -129,7 +126,7 @@ let signup = async (req, res) => {
     // Hashing user's salt and password with 1000 iterations,
     let hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 
-    let newUser = new users({ userId, password: hash, salt });
+    let newUser = new users({ userId, password: hash, salt, API_KEY: publicApiKey, API_SECRET: privateApiKey });
     await newUser.save();
 
     return res.json({ err: null, message: "Account created successfully" });
@@ -152,7 +149,7 @@ let signin = async (req, res) => {
     if (userFound.password === hash) {
         let access_token = await setTokens(tokenData, req, res);
         await setBinanceConnection(userId);
-        return res.json({ error: false, message: "Successfully logged in!", access_token_expiry: access_token.access_token_expiry });
+        return res.json({ error: false, message: "Successfully logged in!", userId: userId, access_token_expiry: access_token.access_token_expiry });
     }
     return res.json({ error: true, message: "Wrong password!" });
 };
@@ -163,4 +160,5 @@ module.exports = {
     signin,
     signup,
     setTokens,
+    revokeTokens
 };

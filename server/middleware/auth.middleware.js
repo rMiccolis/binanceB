@@ -3,23 +3,27 @@ const jwt = require("jsonwebtoken");
 const sessionHandler = require("../handlers/session.handler");
 
 let checkJWT = async (req, res, next) => {
-    const jwt_token = req.cookies?.access_token;
-    if (jwt_token) {
+    const access_token = req.cookies?.access_token;
+    if (access_token) {
         try {
-            //controlla se jwt_token valido e non scaduto
-            let decoded = await jwt.verify(jwt_token, process.env.ACCESS_TOKEN_SECRET);
+            //controlla se access_token valido e non scaduto
+            let decoded = await jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
             req.locals["userId"] = decoded.userId;
             let userId = req.locals.userId;
-            if (!userId in global.binanceConnections) {
+            if (!(userId in global.binanceConnections)) {
+                console.log(global.binanceConnections);
+                console.logDebug(`Setting Binance connection for user: ${userId}`);
                 await sessionHandler.setBinanceConnection(userId);
             }
             next();
         } catch (error) {
-            console.log(error);
+            console.logError(error);
+            await sessionHandler.revokeTokens(req, res)
             res.status(403).json({ code: "INVALID_TOKEN" });
         }
     } else {
-        //manca jwt_token o refresh_token
+        //manca access_token
+        await sessionHandler.revokeTokens(req, res)
         res.status(403).json({ code: "MISSING_TOKEN" });
     }
 };

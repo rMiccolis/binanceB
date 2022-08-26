@@ -5,12 +5,12 @@ const statistics = require("./realTimeData/statistics");
 const trades = require("./trades/trades");
 
 let startBotTest = async (user = {}, url = "https://testnet.binance.vision/", tradeQuantity = 30, couple = "BNBUSDT") => {
-  let { APY_KEY, APY_SECRET } = user;
+  let { API_KEY, API_SECRET } = user;
   // let apiKey = "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn";
   // let apiSecret = "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY";
   // let targetPrice = 300;
 
-  const binance = new Spot(APY_KEY, APY_SECRET, { baseURL: url });
+  const binance = new Spot(API_KEY, API_SECRET, { baseURL: url });
   let orders = db.dynamicModel("orders");
   // delete all open orders
   await trades.cancelAllOpenOrders(binance, couple);

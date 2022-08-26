@@ -11,6 +11,7 @@
       hint="For testing, type 'test'"
       color="blue"
       clearable
+      @update:model-value="a"
     ></v-text-field>
 
     <v-text-field
@@ -24,33 +25,30 @@
       :type="show ? 'text' : 'password'"
       @click:append-inner="show = !show"
       clearable
-      @update:model-value="a"
     ></v-text-field>
 
     <v-text-field
       :disabled="isTextDisabled"
-      v-model="apyKey"
+      v-model="publicApiKey"
       shaped
       prepend-inner-icon="mdi-key"
-      label="Public APY_KEY"
+      label="Public API_KEY"
       :error="error()"
       @click:append-inner="show = !show"
       clearable
-      @update:model-value="a"
     ></v-text-field>
 
     <v-text-field
       :disabled="isTextDisabled"
-      v-model="privateApyKey"
+      v-model="privateApiKey"
       shaped
       prepend-inner-icon="mdi-key"
       :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
-      label="Private APY_KEY"
+      label="Private API_KEY"
       :error="error()"
       :type="show ? 'text' : 'password'"
       @click:append-inner="show = !show"
       clearable
-      @update:model-value="a"
     ></v-text-field>
 
     <v-row class="pb-4" justify="center">
@@ -67,17 +65,28 @@
 <script setup>
 import { ref, watch } from "vue";
 import axios from "axios";
-
+let privateApiKey = ref("");
+let publicApiKey = ref("");
 let isTextDisabled = ref(false);
 let show = ref(false);
 let userId = ref("");
 let password = ref("");
-let a = ref("");
 let axiosResponse = ref("");
 let error = () => {
   if (password.value.length > 0) return false;
   return true;
 };
+
+
+let a = () => {
+  console.log("ciaoooooo")
+};
+// watch(
+//   () => a,
+//   (value, prevValue) => {
+//     console.log(value);
+//   }
+// );
 
 let signin = async () => {
   isTextDisabled.value = true;
@@ -85,7 +94,7 @@ let signin = async () => {
     "http://localhost:3000/auth/signin",
     {
       userId: userId.value,
-      password: password.value,
+      password: password.value
     },
     { withCredentials: true }
   );
@@ -101,6 +110,8 @@ let signup = async () => {
     {
       userId: userId.value,
       password: password.value,
+      publicApiKey: publicApiKey.value,
+      privateApiKey: privateApiKey.value
     },
     { withCredentials: true }
   );

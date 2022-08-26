@@ -12,14 +12,22 @@ const earnApiRouter = require("./api/earn.api");
 const db = require("./mongodb/database");
 const exitHandler = require("./handlers/exit.handler");
 const authRouter = require("./routes/auth.router");
-
-dotenv.config();
-const app = express();
+const logHandler = require("./handlers/log.handler");
 
 // Initialize global session variable
 global.usersDBConnections = {};
 global.db = {};
-global.binanceConnections = {}
+global.binanceConnections = {};
+
+dotenv.config();
+const app = express();
+
+//insert logging functions
+console.logDebug = logHandler.logDebug;
+console.logWarning = logHandler.logWarning;
+console.logError = logHandler.logError;
+console.logInfo = logHandler.logInfo;
+
 
 const corsOptions = { origin: true, credentials: true };
 
@@ -53,7 +61,6 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
     res.json({ health: "KO", message: "DB is is not running!" })
   }
 });
-
 
 app.use((req, res, next) => {
   req.locals = {}

@@ -33,10 +33,8 @@ let getAccountInfo = async () => {
   }
 
   let dataFetched = (
-    await axios({
-      method: "get",
-      url: "http://localhost:3000/api/account",
-      params: { userId },
+    await axios.get("http://localhost:3000/api/account", {
+      withCredentials: true,
     })
   ).data;
   accountInfo.value = {
@@ -62,7 +60,6 @@ let getAccountInfo = async () => {
   //     permissions: ["SPOT"],
   //   };
   // }, 500);
-  
 };
 </script>
 

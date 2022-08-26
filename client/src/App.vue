@@ -79,7 +79,7 @@
       
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block variant="outlined" color="red"> Logout </v-btn>
+          <v-btn @click="logout()" block variant="outlined" color="red"> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -120,6 +120,10 @@ let darkTheme = ref("dark");
 let themeColor = ref("blue");
 let themeIcon = ref("bi bi-brightness-high");
 let root = ref(document.querySelector(":root"));
+
+let logout = () => {
+  alert("sara è scema");
+}
 
 watch(
   () => darkTheme.value,

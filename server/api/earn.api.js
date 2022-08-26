@@ -7,8 +7,6 @@ const earn = require("../src/wallet/earn");
 /* GET account data. */
 router.get("/staking", async (req, res, next) => {
     const spotClient = global.binanceConnections[req.locals.userId]
-
-    console.log(spotClient, req.locals.userId, global.binanceConnections);
     let data = await earn.getBlockedStaking(spotClient);
     res.json(data);
 });

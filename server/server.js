@@ -19,11 +19,12 @@ const app = express();
 // Initialize global session variable
 global.usersDBConnections = {};
 global.db = {};
+global.binanceConnections = {}
 
-// const corsOptions = { origin: true, credentials: true };
+const corsOptions = { origin: true, credentials: true };
 
 //middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(helmet());
 app.use(express.json());
@@ -54,11 +55,16 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
 });
 
 
+app.use((req, res, next) => {
+  req.locals = {}
+  next()
+});
+
 //routes
 app.use("/", generalRouter);
 app.use("/auth", authRouter)
 
-app.use(auth.accountCheck);
+app.use(auth.checkJWT);
 app.use("/test", indexRouter);
 app.use("/api/account", accountApiRouter);
 app.use("/api/earn", earnApiRouter);

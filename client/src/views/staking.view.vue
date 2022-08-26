@@ -34,11 +34,7 @@ let getStakingInfo = async () => {
     }
   }
   let stakingData = (
-    await axios({
-      method: "get",
-      url: "http://localhost:3000/api/earn/staking",
-      params: { userId },
-    })
+    await axios.get("http://localhost:3000/api/earn/staking", {withCredentials: true})
   ).data;
   let tempData = [];
   for (const el of stakingData) {

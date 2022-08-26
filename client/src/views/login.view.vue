@@ -18,8 +18,34 @@
       v-model="password"
       shaped
       prepend-inner-icon="mdi-key"
-      :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
       label="Password"
+      :error="error()"
+      :type="show ? 'text' : 'password'"
+      @click:append-inner="show = !show"
+      clearable
+      @update:model-value="a"
+    ></v-text-field>
+
+    <v-text-field
+      :disabled="isTextDisabled"
+      v-model="apyKey"
+      shaped
+      prepend-inner-icon="mdi-key"
+      label="Public APY_KEY"
+      :error="error()"
+      @click:append-inner="show = !show"
+      clearable
+      @update:model-value="a"
+    ></v-text-field>
+
+    <v-text-field
+      :disabled="isTextDisabled"
+      v-model="privateApyKey"
+      shaped
+      prepend-inner-icon="mdi-key"
+      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
+      label="Private APY_KEY"
       :error="error()"
       :type="show ? 'text' : 'password'"
       @click:append-inner="show = !show"
@@ -33,7 +59,7 @@
     </v-row>
 
     <v-row class="pb-4" justify="center">
-      <p v-if="axiosResponse">{{axiosResponse}}</p>
+      <p v-if="axiosResponse">{{ axiosResponse }}</p>
     </v-row>
   </div>
 </template>
@@ -55,10 +81,14 @@ let error = () => {
 
 let signin = async () => {
   isTextDisabled.value = true;
-  let response = await axios.post("http://localhost:3000/auth/signin", {
-    userId: userId.value,
-    password: password.value,
-  });
+  let response = await axios.post(
+    "http://localhost:3000/auth/signin",
+    {
+      userId: userId.value,
+      password: password.value,
+    },
+    { withCredentials: true }
+  );
 
   isTextDisabled.value = false;
   axiosResponse.value = response.data;
@@ -66,15 +96,22 @@ let signin = async () => {
 
 let signup = async () => {
   isTextDisabled.value = true;
-  let response = await axios.post("http://localhost:3000/auth/signup", {
-    userId: userId.value,
-    password: password.value,
-  });
+  let response = await axios.post(
+    "http://localhost:3000/auth/signup",
+    {
+      userId: userId.value,
+      password: password.value,
+    },
+    { withCredentials: true }
+  );
 
   isTextDisabled.value = false;
   axiosResponse.value = response.data;
 };
 </script>
 
-<style scoped>
+<style>
+.b-pointer {
+  cursor: pointer;
+}
 </style>

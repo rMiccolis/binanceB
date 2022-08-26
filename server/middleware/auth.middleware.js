@@ -1,28 +1,29 @@
-const db = require('../mongodb/database');
+const db = require("../mongodb/database");
+const jwt = require("jsonwebtoken");
+const sessionHandler = require("../handlers/session.handler");
 
-let accountCheck = async (req, res, next) => {
-    let userId = req.query?.userId || req.params?.userId;
-    let users = db.dynamicModel('users');
-    req.locals = {}
-    if (!userId) {
-        return res.json({ err: "no USER received!" });
-    }
-
-    let dbUser = await users.aggregate([{ $match: { userId: userId } }]);
-    if (dbUser.length < 1) {
-        console.log("User not found!");
-        return res.json({ err: "User not found!" });
-    }
-    if (userId != 'test') {
-        req.locals.url = process.env.BINANCE_BASE_URL
-        console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
+let checkJWT = async (req, res, next) => {
+    const jwt_token = req.cookies?.access_token;
+    if (jwt_token) {
+        try {
+            //controlla se jwt_token valido e non scaduto
+            let decoded = await jwt.verify(jwt_token, process.env.ACCESS_TOKEN_SECRET);
+            req.locals["userId"] = decoded.userId;
+            let userId = req.locals.userId;
+            if (!userId in global.binanceConnections) {
+                await sessionHandler.setBinanceConnection(userId);
+            }
+            next();
+        } catch (error) {
+            console.log(error);
+            res.status(403).json({ code: "INVALID_TOKEN" });
+        }
     } else {
-        req.locals.url = process.env.TESTNET_BASE_URL
+        //manca jwt_token o refresh_token
+        res.status(403).json({ code: "MISSING_TOKEN" });
     }
-    req.locals.user = dbUser[0]
-    next()
-}
+};
 
 module.exports = {
-    accountCheck
-}
+    checkJWT,
+};

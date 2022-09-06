@@ -23,20 +23,25 @@ let revokeTokens = async (req, res, userId = null) => {
 };
 
 let setTokens = async (tokenData, req, res) => {
+    let currentTime = Date.now();
+    const access_token_expiry = (process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000);
+    const refresh_token_expiry =(process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000);
     //create json web token
+    tokenData.iat = currentTime;
+    // tokenData.exp = access_token_expiry
     const access_token = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, {
         algorithm: "HS256",
-        expiresIn: process.env.REFRESH_TOKEN_LIFETIME + "m", //m = minutes
+        expiresIn: access_token_expiry
     });
 
+    // tokenData.exp = refresh_token_expiry
     const refresh_token = jwt.sign(tokenData, process.env.REFRESH_TOKEN_SECRET, {
         algorithm: "HS256",
-        expiresIn: process.env.REFRESH_TOKEN_LIFETIME + "m", //m = minutes
+        expiresIn: refresh_token_expiry
     });
 
     let users = db.dynamicModel("users");
     await users.updateOne({ userId: tokenData.userId }, { $set: { refresh_token: refresh_token, last_update: Date.now() } });
-    const access_token_expiry = Date.now() + process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000;
     res.cookie("access_token", access_token, {
         maxAge: process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000,
         httpOnly: true,
@@ -154,11 +159,31 @@ let signin = async (req, res) => {
     return res.json({ error: true, message: "Wrong password!" });
 };
 
+let isLoggedIn = async (req, res) => {
+    const access_token = req.cookies?.access_token;
+    if (access_token) {
+        try {
+            //controlla se access_token valido e non scaduto
+            let decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
+            res.json({isLoggedIn: true, message: "User is logged in!", sessionInfo: decoded });
+        } catch (error) {
+            console.logError(error);
+            await revokeTokens(req, res);
+            res.json({isLoggedIn: false, message: "User not logged in!" });
+        }
+    } else {
+        //manca access_token
+        await revokeTokens(req, res);
+        res.json({isLoggedIn: false, message: "User not logged in!" });
+    }
+};
+
 module.exports = {
     setBinanceConnection,
     refresh,
     signin,
     signup,
     setTokens,
-    revokeTokens
+    revokeTokens,
+    isLoggedIn,
 };

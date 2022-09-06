@@ -11,6 +11,8 @@ router.post("/signin", sessionHandler.signin)
 
 router.post("/signup", sessionHandler.signup)
 
-router.post("/refresh",  sessionHandler.refresh)
+router.get("/refresh",  sessionHandler.refresh)
+
+router.get("/isLoggedIn",  sessionHandler.isLoggedIn)
 
 module.exports = router;

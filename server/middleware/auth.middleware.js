@@ -7,7 +7,7 @@ let checkJWT = async (req, res, next) => {
     if (access_token) {
         try {
             //controlla se access_token valido e non scaduto
-            let decoded = await jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
+            let decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
             req.locals["userId"] = decoded.userId;
             let userId = req.locals.userId;
             if (!(userId in global.binanceConnections)) {

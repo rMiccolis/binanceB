@@ -24,8 +24,8 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title
-            ><router-link :to="{ name: 'login', params: { userId: 'test' } }"
-              >Login</router-link
+            ><a @click.stop="toggleModal({ name: 'login' })"
+              >Login</a
             ></v-list-item-title
           >
         </v-list-item-content>
@@ -76,28 +76,47 @@
           >
         </v-list-item-content>
       </v-list-item>
-      
+
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn @click="logout()" block variant="outlined" color="red"> Logout </v-btn>
+          <v-btn @click="logout()" block variant="outlined" color="red">
+            Logout
+          </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
     <!-- </v-sheet> -->
     <v-toolbar elevation="2">
-      <v-btn color="blue" @click.stop="openDrawer()">
-        <!-- <i class="bi bi-list"></i>  -->
-        <v-icon size="40" color="blue darken-2"> mdi-menu </v-icon>
-      </v-btn>
-      <v-row justify="end">
-        <v-btn
-          @click="changeTheme()"
-          class="ma-2"
-          :icon="themeIcon"
-          :color="themeColor"
-        ></v-btn>
+      <v-row align="center" justify="space-between">
+        <v-col class="text-left">
+          <v-btn color="blue" @click.stop="openDrawer()">
+            <!-- <i class="bi bi-list"></i>  -->
+            <v-icon size="40" color="blue darken-2"> mdi-menu </v-icon>
+          </v-btn>
+        </v-col>
+
+        <v-col class="text-right">
+          <v-btn
+            @click="changeTheme()"
+            class="ma-2"
+            :icon="themeIcon"
+            :color="themeColor"
+          ></v-btn>
+        </v-col>
       </v-row>
     </v-toolbar>
+
+    <modal-component
+      v-if="modals.login"
+      :name="'login'"
+      :open="modals.login"
+      @toggle="toggleModal"
+    >
+      <template v-slot:header>Login:</template>
+      <template v-slot:body>
+        <login-component @isLogged="setLoggedIn()"></login-component>
+      </template>
+    </modal-component>
 
     <v-main>
       <v-container app fluid>
@@ -114,16 +133,60 @@
 <script setup>
 import { watch, ref, onMounted } from "vue";
 import axios from "axios";
-let drawer = ref(false);
+import ModalComponent from "./components/modal.component.vue";
+import LoginComponent from "./components/login.component.vue";
+const drawer = ref(false);
 
-let darkTheme = ref("dark");
-let themeColor = ref("blue");
-let themeIcon = ref("bi bi-brightness-high");
-let root = ref(document.querySelector(":root"));
-
-let logout = () => {
+const darkTheme = ref("dark");
+const themeColor = ref("blue");
+const themeIcon = ref("bi bi-brightness-high");
+const root = ref(document.querySelector(":root"));
+const isUserloggedIn = ref(false);
+const session = ref({});
+const modals = ref({
+  login: ref(false),
+});
+const logout = () => {
   alert("sara è scema");
-}
+};
+
+const setLoggedIn = (isLogged, sessionInfo = null) => {
+  isUserloggedIn.value = isLogged;
+  if (isLogged === true) {
+    session.value = sessionInfo;
+    console.log(session.value);
+  }
+};
+
+const toggleModal = function (modalInfo) {
+  if (modalInfo.name && modalInfo.value) {
+    modals.value[modalInfo.name] = modalInfo.value;
+  } else {
+    modals.value[modalInfo.name] = !modals.value[modalInfo.name];
+  }
+};
+
+const isLoggedIn = async function () {
+  let response = await axios.get("http://localhost:3000/auth/isLoggedIn", {
+    withCredentials: true,
+  });
+
+  if (response.data.isLoggedIn === true) {
+    setLoggedIn(true, response.data.sessionInfo);
+  } else {
+    setLoggedIn(false);
+  }
+};
+
+onMounted(async () => {
+  await isLoggedIn();
+  if (isUserloggedIn.value === true) {
+    let expiryDate = session.value.exp - session.value.iat;
+    setTimeout(() => {
+      console.log("you have finished your session time!")
+    }, expiryDate);
+  }
+});
 
 watch(
   () => darkTheme.value,
@@ -138,7 +201,7 @@ watch(
   }
 );
 
-let changeTheme = () => {
+const changeTheme = () => {
   if (darkTheme.value == "dark") {
     darkTheme.value = "light";
     themeColor.value = "blue";
@@ -150,12 +213,16 @@ let changeTheme = () => {
   }
 };
 
-let openDrawer = () => {
+const openDrawer = () => {
   drawer.value = !drawer.value;
 };
 </script>
 
 <style>
+.vertical-align {
+  vertical-align: baseline;
+}
+
 a {
   color: var(--a-color);
   font-weight: bold;

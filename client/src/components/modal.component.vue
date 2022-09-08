@@ -1,6 +1,10 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="props.open" @click:outside="toggleModal">
+    <v-dialog
+      v-model="modalState"
+      :persistent="persistent"
+      @click:outside="toggleModal"
+    >
       <v-card :min-width="'75vw'" :max-width="'100vw'" :width="'85vw'">
         <v-card-title>
           <v-row class="justify-center">
@@ -23,7 +27,7 @@
 
 <script setup>
 import { onMounted, watch, ref } from "vue";
-
+// import _ from "lodash";
 const props = defineProps({
   open: { type: Boolean, default: false, required: true },
   name: { type: String, default: undefined, required: true },
@@ -33,8 +37,9 @@ const props = defineProps({
   height: { type: String, default: undefined, required: false },
   maxHeight: { type: String, default: undefined, required: false },
   minHeight: { type: String, default: undefined, required: false },
+  persistent: { type: Boolean, default: false, required: false },
 });
-
+const modalState = ref(props.open);
 const emit = defineEmits(["toggle"]);
 
 const toggleModal = () => {
@@ -45,10 +50,10 @@ const toggleModal = () => {
   emit("toggle", emitObj);
 };
 
-// watch(
-//   () => props.open,
-//   (value, prevValue) => {
-//     console.log("from inside", value);
-//   }
-// );
+watch(
+  () => props.open,
+  (value) => {
+    modalState.value = value;
+  }
+);
 </script>

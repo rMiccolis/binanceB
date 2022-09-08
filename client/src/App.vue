@@ -107,14 +107,15 @@
     </v-toolbar>
 
     <modal-component
-      v-if="modals.login"
+      v-if="loginModal"
       :name="'login'"
-      :open="modals.login"
+      :open="loginModal"
+      :persistent="true"
       @toggle="toggleModal"
     >
       <template v-slot:header>Login:</template>
       <template v-slot:body>
-        <login-component @isLogged="setLoggedIn()"></login-component>
+        <login-component @loggedIn="mainStore.setLoggedIn()"></login-component>
       </template>
     </modal-component>
 
@@ -131,38 +132,29 @@
 </template>
 
 <script setup>
-import { watch, ref, onMounted } from "vue";
+import { watch, ref, onMounted, reactive } from "vue";
+import { useMainStore } from "./store/useMainStore";
 import axios from "axios";
 import ModalComponent from "./components/modal.component.vue";
 import LoginComponent from "./components/login.component.vue";
-const drawer = ref(false);
 
+const drawer = ref(false);
+const mainStore = useMainStore();
 const darkTheme = ref("dark");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
-const isUserloggedIn = ref(false);
-const session = ref({});
-const modals = ref({
-  login: ref(false),
-});
+const loginModal = ref(false);
 const logout = () => {
   alert("sara è scema");
 };
 
-const setLoggedIn = (isLogged, sessionInfo = null) => {
-  isUserloggedIn.value = isLogged;
-  if (isLogged === true) {
-    session.value = sessionInfo;
-    console.log(session.value);
-  }
-};
-
 const toggleModal = function (modalInfo) {
+  if (modalInfo.value == false && mainStore.getIsUserLoggedIn() == false) return;
   if (modalInfo.name && modalInfo.value) {
-    modals.value[modalInfo.name] = modalInfo.value;
+    loginModal.value = modalInfo.value;
   } else {
-    modals.value[modalInfo.name] = !modals.value[modalInfo.name];
+    loginModal.value = !loginModal.value;
   }
 };
 
@@ -172,21 +164,34 @@ const isLoggedIn = async function () {
   });
 
   if (response.data.isLoggedIn === true) {
-    setLoggedIn(true, response.data.sessionInfo);
+    mainStore.setLoggedIn(true, response.data.sessionInfo);
   } else {
-    setLoggedIn(false);
+    mainStore.setLoggedIn(false);
   }
 };
 
 onMounted(async () => {
   await isLoggedIn();
-  if (isUserloggedIn.value === true) {
-    let expiryDate = session.value.exp - session.value.iat;
+  if (mainStore.getIsUserLoggedIn() === true) {
+    loginModal.value = false;
+    let expiryDate = mainStore.session.exp - mainStore.session.iat;
     setTimeout(() => {
-      console.log("you have finished your session time!")
+      console.log("you have finished your session time!");
     }, expiryDate);
+    return;
   }
+  loginModal.value = true;
 });
+
+watch(
+  () => mainStore.getIsUserLoggedIn(),
+  (value) => {
+    console.log("changed to =>", value);
+    if (value == true) {
+      loginModal.value = false;
+    }
+  }
+);
 
 watch(
   () => darkTheme.value,

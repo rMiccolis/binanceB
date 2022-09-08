@@ -10,8 +10,8 @@
       hint="For testing, type 'test'"
       color="blue"
       clearable
-      @update:model-value="a"
-    ></v-text-field>
+      ></v-text-field>
+      <!-- @update:model-value="a" -->
 
     <v-text-field
       :disabled="isTextDisabled"
@@ -86,16 +86,6 @@ let error = () => {
   if (password.value.length > 0) return false;
   return true;
 };
-
-let a = () => {
-  console.log("ciaoooooo");
-};
-// watch(
-//   () => a,
-//   (value, prevValue) => {
-//     console.log(value);
-//   }
-// );
 
 let signin = async () => {
   isTextDisabled.value = true;

@@ -98,10 +98,11 @@ let signin = async () => {
     { withCredentials: true }
   );
 
-  if (response.error == false) {
-    emit("loggedIn", true, response.data.sessionInfo);
+  if (response.data.error == false) {
+    emit("loggedIn", {loggedIn: true, sessionInfo: response.data.sessionInfo});
+  } else {
+    emit("loggedIn", {loggedIn: false, sessionInfo: null});
   }
-  emit("loggedIn", false);
 
   isTextDisabled.value = false;
   axiosResponse.value = response.data;

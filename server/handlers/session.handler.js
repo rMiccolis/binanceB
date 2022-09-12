@@ -22,42 +22,46 @@ let revokeTokens = async (req, res, userId = null) => {
     });
 };
 
-let setTokens = async (tokenData, req, res) => {
+let setTokens = async (tokenData, req, res, onlyAccess=false) => {
     let currentTime = Date.now();
-    const access_token_expiry = (process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000);
+
+    // set tokens expire time
     const refresh_token_expiry =(process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000);
-    //create json web token
+    const access_token_expiry = (process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000);
+
+    // create json web token
     tokenData.iat = currentTime;
-    // tokenData.exp = access_token_expiry
     const access_token = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, {
         algorithm: "HS256",
         expiresIn: access_token_expiry
     });
+    if (onlyAccess === false) {
+        const refresh_token = jwt.sign(tokenData, process.env.REFRESH_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: refresh_token_expiry
+        });
+        // update user refresh token to db
+        let users = db.dynamicModel("users");
+        await users.updateOne({ userId: tokenData.userId }, { $set: { refresh_token: refresh_token, last_update: Date.now() } });
+        res.cookie("refresh_token", refresh_token, {
+            maxAge: process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", //https
+            sameSite: "Strict",
+            // domain: ,
+        });
+    }
 
-    // tokenData.exp = refresh_token_expiry
-    const refresh_token = jwt.sign(tokenData, process.env.REFRESH_TOKEN_SECRET, {
-        algorithm: "HS256",
-        expiresIn: refresh_token_expiry
-    });
-
-    let users = db.dynamicModel("users");
-    await users.updateOne({ userId: tokenData.userId }, { $set: { refresh_token: refresh_token, last_update: Date.now() } });
     res.cookie("access_token", access_token, {
         maxAge: process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", //https
         sameSite: "Strict",
-        // domain: process.env.MINERVA_BASE_DOMAIN,
+        // domain: ,
     });
 
-    res.cookie("refresh_token", refresh_token, {
-        maxAge: process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", //https
-        sameSite: "Strict",
-        // domain: process.env.MINERVA_BASE_DOMAIN,
-    });
-    return { access_token_expiry: access_token_expiry };
+    tokenData.exp = currentTime + access_token_expiry;
+    return { access_token_expiry: access_token_expiry, sessionInfo: tokenData };
 };
 
 async function setBinanceConnection(userId) {
@@ -77,7 +81,15 @@ async function setBinanceConnection(userId) {
     global.binanceConnections[userId] = spotClient;
 }
 
-let refresh = async (refresh_token, access_token, res) => {
+let refresh = async (req, res) => {
+    const access_token = req.cookies?.access_token;
+    const refresh_token = req.cookies?.refresh_token;
+
+    if (!access_token || !refresh_token) {
+        await revokeTokens(req, res);
+        return res.status(403).json({ error: true, message: "INVALID_TOKEN!" });
+    }
+
     let users = db.dynamicModel("users");
     try {
         //controlla se access_token valido e non scaduto
@@ -90,27 +102,17 @@ let refresh = async (refresh_token, access_token, res) => {
         if (oldRefresh == user.refresh_token) {
             // create new access_token
             let tokenData = { userId: userId };
-            const access_token_expiry = Date.now() + process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000;
-            access_token = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, {
-                algorithm: "HS256",
-                expiresIn: process.env.ACCESS_TOKEN_LIFETIME + "m", //m = minutes
-            });
-            res.cookie("access_token", access_token, {
-                maxAge: process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production", //https
-                sameSite: "Strict",
-            });
+            const access_token = setTokens(tokenData, req, res, true);
             res.json({
-                userId,
-                access_token_expiry,
+                error: false, userId: userId, access_token_expiry: access_token.access_token_expiry, sessionInfo: access_token.sessionInfo
             });
         } else {
             throw new Error("invalid refresh_token!");
         }
     } catch (error) {
-        await revokeTokens(req, res, userId);
-        res.status(403).json({ code: "INVALID_TOKEN" });
+        console.log(error);
+        await revokeTokens(req, res);
+        res.status(403).json({ error: true, message: "INVALID_TOKEN!" });
     }
 };
 
@@ -154,7 +156,7 @@ let signin = async (req, res) => {
     if (userFound.password === hash) {
         let access_token = await setTokens(tokenData, req, res);
         await setBinanceConnection(userId);
-        return res.json({ error: false, message: "Successfully logged in!", userId: userId, access_token_expiry: access_token.access_token_expiry });
+        return res.json({ error: false, message: "Successfully logged in!", userId: userId, access_token_expiry: access_token.access_token_expiry, sessionInfo: access_token.sessionInfo });
     }
     return res.json({ error: true, message: "Wrong password!" });
 };

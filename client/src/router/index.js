@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import login from "../views/login.view.vue";
 import home from "../views/home.view.vue";
 import notFound from "../views/static/notFound.view.vue";
 import { useMainStore } from "../store/useMainStore";
@@ -11,11 +10,6 @@ const router = createRouter({
             path: "/home",
             name: "home",
             component: home,
-        },
-        {
-            path: "/404",
-            name: "notFound",
-            component: notFound,
         },
         {
             path: "/wallet",
@@ -45,19 +39,19 @@ const router = createRouter({
             name: "settings",
             component: () => import("../views/settings.view.vue"),
         },
+        {
+            path: "/:pathMatch(.*)*",
+            name: "notFound",
+            component: notFound,
+        },
     ],
 });
 
-router.beforeEach(async (to, from) => {
-    if (
-        // make sure the user is authenticated
-        !useMainStore.iUserLoggedIn &&
-        // ❗️ Avoid an infinite redirect
-        to.name !== "home"
-    ) {
-        // redirect the user to the login page
-        return { name: "home" };
-    }
-});
+// router.beforeEach(async (to, from, next) => {
+//     const mainStore = useMainStore();
+//     console.log(mainStore.iUserLoggedIn);
+//     if (!mainStore.iUserLoggedIn && to.name != "home" && to.name != "notFound") next({ name: "home" });
+//     else next();
+// });
 
 export default router;

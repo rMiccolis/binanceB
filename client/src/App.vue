@@ -85,8 +85,7 @@
         </div>
       </template>
     </v-navigation-drawer>
-    <!-- </v-sheet> -->
-    <v-toolbar elevation="2">
+    <v-toolbar elevation="5">
       <v-row align="center" justify="space-between">
         <v-col class="text-left">
           <v-btn color="blue" @click.stop="openDrawer()">
@@ -106,24 +105,12 @@
       </v-row>
     </v-toolbar>
 
-    <modal-component
-      v-if="loginModal"
-      :name="'login'"
-      :open="loginModal"
-      :persistent="true"
-      @toggle="toggleModal"
-    >
-      <template v-slot:header>Login:</template>
-      <template v-slot:body>
-        <login-component @loggedIn="mainStore.setLoggedIn()"></login-component>
-      </template>
-    </modal-component>
-
-    <v-main>
+    <v-main class="b-app-min-height">
       <v-container app fluid>
         <router-view class="pl-5"></router-view>
       </v-container>
     </v-main>
+
     <v-footer app
       >User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
@@ -132,66 +119,51 @@
 </template>
 
 <script setup>
-import { watch, ref, onMounted, reactive } from "vue";
+import { watch, ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useMainStore } from "./store/useMainStore";
 import axios from "axios";
 import ModalComponent from "./components/modal.component.vue";
 import LoginComponent from "./components/login.component.vue";
 
+const router = useRouter();
+const baseURL = import.meta.env.VITE_baseURL;
 const drawer = ref(false);
 const mainStore = useMainStore();
 const darkTheme = ref("dark");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
-const loginModal = ref(false);
 const logout = () => {
   alert("sara è scema");
 };
 
-const toggleModal = function (modalInfo) {
-  if (modalInfo.value == false && mainStore.getIsUserLoggedIn() == false) return;
-  if (modalInfo.name && modalInfo.value) {
-    loginModal.value = modalInfo.value;
-  } else {
-    loginModal.value = !loginModal.value;
-  }
-};
-
 const isLoggedIn = async function () {
-  let response = await axios.get("http://localhost:3000/auth/isLoggedIn", {
+  let response = await axios.get(`${baseURL}auth/isLoggedIn`, {
     withCredentials: true,
   });
 
   if (response.data.isLoggedIn === true) {
-    mainStore.setLoggedIn(true, response.data.sessionInfo);
+    mainStore.setLoggedIn({
+      loggedIn: true,
+      sessioInfo: response.data.sessionInfo,
+    });
   } else {
-    mainStore.setLoggedIn(false);
+    mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
+    // if (
+    //   router.currentRoute.value.name != "notFound" &&
+    //   router.currentRoute.value.name != "home"
+    // ) {
+    //   router.push({
+    //     name: "home",
+    //   });
+    // }
   }
 };
 
 onMounted(async () => {
   await isLoggedIn();
-  if (mainStore.getIsUserLoggedIn() === true) {
-    loginModal.value = false;
-    let expiryDate = mainStore.session.exp - mainStore.session.iat;
-    setTimeout(() => {
-      console.log("you have finished your session time!");
-    }, expiryDate);
-    return;
-  }
-  loginModal.value = true;
 });
-
-watch(
-  () => mainStore.getIsUserLoggedIn(),
-  (value) => {
-    console.log("changed to =>", value);
-    if (value == true) {
-      loginModal.value = false;
-    }
-  }
-);
 
 watch(
   () => darkTheme.value,
@@ -224,6 +196,10 @@ const openDrawer = () => {
 </script>
 
 <style>
+.b-app-min-height {
+  min-height: 80vh !important;
+}
+
 .vertical-align {
   vertical-align: baseline;
 }

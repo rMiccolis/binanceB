@@ -19,12 +19,12 @@ let checkJWT = async (req, res, next) => {
         } catch (error) {
             console.logError(error);
             await sessionHandler.revokeTokens(req, res)
-            res.status(403).json({ code: "INVALID_TOKEN" });
+            res.status(403).json({ error: true, code: "INVALID_TOKEN" });
         }
     } else {
         //manca access_token
         await sessionHandler.revokeTokens(req, res)
-        res.status(403).json({ code: "MISSING_TOKEN" });
+        res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }
 };
 

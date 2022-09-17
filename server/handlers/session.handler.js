@@ -3,7 +3,7 @@ const { Spot } = require("@binance/connector");
 const crypto = require("node:crypto");
 const jwt = require("jsonwebtoken");
 
-let revokeTokens = async (req, res, userId = null) => {
+const revokeTokens = async (req, res, userId = null) => {
     if (userId) {
         let users = db.dynamicModel("users");
         await users.updateOne({ userId: userId }, { $set: { refresh_token: "", last_update: Date.now() } });
@@ -22,23 +22,23 @@ let revokeTokens = async (req, res, userId = null) => {
     });
 };
 
-let setTokens = async (tokenData, req, res, onlyAccess=false) => {
+const setTokens = async (tokenData, req, res, onlyAccess = false) => {
     let currentTime = Date.now();
 
     // set tokens expire time
-    const refresh_token_expiry =(process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000);
-    const access_token_expiry = (process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000);
+    const refresh_token_expiry = process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000;
+    const access_token_expiry = process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000;
 
     // create json web token
     tokenData.iat = currentTime;
     const access_token = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, {
         algorithm: "HS256",
-        expiresIn: access_token_expiry
+        expiresIn: access_token_expiry,
     });
     if (onlyAccess === false) {
         const refresh_token = jwt.sign(tokenData, process.env.REFRESH_TOKEN_SECRET, {
             algorithm: "HS256",
-            expiresIn: refresh_token_expiry
+            expiresIn: refresh_token_expiry,
         });
         // update user refresh token to db
         let users = db.dynamicModel("users");
@@ -64,7 +64,7 @@ let setTokens = async (tokenData, req, res, onlyAccess=false) => {
     return { access_token_expiry: access_token_expiry, sessionInfo: tokenData };
 };
 
-async function setBinanceConnection(userId) {
+const setBinanceConnection = async function (userId) {
     let users = db.dynamicModel("users");
     let user = (await users.aggregate([{ $match: { userId: userId } }]))[0];
     let baseUrl;
@@ -79,9 +79,9 @@ async function setBinanceConnection(userId) {
     let apiSecret = user.API_SECRET;
     const spotClient = new Spot(apiKey, apiSecret, { baseURL: baseUrl });
     global.binanceConnections[userId] = spotClient;
-}
+};
 
-let refresh = async (req, res) => {
+const refresh = async (req, res) => {
     const access_token = req.cookies?.access_token;
     const refresh_token = req.cookies?.refresh_token;
 
@@ -104,7 +104,10 @@ let refresh = async (req, res) => {
             let tokenData = { userId: userId };
             const access_token = setTokens(tokenData, req, res, true);
             res.json({
-                error: false, userId: userId, access_token_expiry: access_token.access_token_expiry, sessionInfo: access_token.sessionInfo
+                error: false,
+                userId: userId,
+                access_token_expiry: access_token.access_token_expiry,
+                sessionInfo: access_token.sessionInfo,
             });
         } else {
             throw new Error("invalid refresh_token!");
@@ -116,7 +119,7 @@ let refresh = async (req, res) => {
     }
 };
 
-let signup = async (req, res) => {
+const signup = async (req, res) => {
     let { userId, password, publicApiKey, privateApiKey } = req.body;
     if (!userId || !password) return res.json({ err: true, message: "no data received" });
     let users = db.dynamicModel("users");
@@ -139,7 +142,7 @@ let signup = async (req, res) => {
     return res.json({ err: null, message: "Account created successfully" });
 };
 
-let signin = async (req, res) => {
+const signin = async (req, res) => {
     let { userId, password } = req.body;
     let users = db.dynamicModel("users");
 
@@ -161,22 +164,44 @@ let signin = async (req, res) => {
     return res.json({ error: true, message: "Wrong password!" });
 };
 
-let isLoggedIn = async (req, res) => {
+const isLoggedIn = async (req, res) => {
     const access_token = req.cookies?.access_token;
     if (access_token) {
         try {
             //controlla se access_token valido e non scaduto
             let decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
-            res.json({isLoggedIn: true, message: "User is logged in!", sessionInfo: decoded });
+            res.json({ isLoggedIn: true, message: "User is logged in!", sessionInfo: decoded });
         } catch (error) {
             console.logError(error);
             await revokeTokens(req, res);
-            res.json({isLoggedIn: false, message: "User not logged in!" });
+            res.json({ isLoggedIn: false, message: "User not logged in!" });
         }
     } else {
         //manca access_token
         await revokeTokens(req, res);
-        res.json({isLoggedIn: false, message: "User not logged in!" });
+        res.json({ isLoggedIn: false, message: "User not logged in!" });
+    }
+};
+
+const logout = async (req, res) => {
+    const access_token = req.cookies?.access_token;
+    if (access_token) {
+        try {
+            //controlla se access_token valido e non scaduto
+            let decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
+            console.log(decoded);
+            await revokeTokens(req, res, decoded.userId);
+            res.json({ error: false, message: "User successfully logged out!" });
+        } catch (error) {
+            console.logError(error);
+            await revokeTokens(req, res);
+            res.status(403).json({ error: true, code: "INVALID_TOKEN" });
+        }
+    } else {
+        //manca access_token
+        console.logError(error);
+        await revokeTokens(req, res);
+        res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }
 };
 
@@ -188,4 +213,5 @@ module.exports = {
     setTokens,
     revokeTokens,
     isLoggedIn,
+    logout,
 };

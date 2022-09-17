@@ -21,7 +21,7 @@
           >
         </v-list-item-content>
       </v-list-item>
-      <v-list-item>
+      <v-list-item v-if="!mainStore.isUserloggedIn">
         <v-list-item-content>
           <v-list-item-title
             ><a @click.stop="toggleModal({ name: 'login' })"
@@ -88,7 +88,7 @@
     <v-toolbar elevation="5">
       <v-row align="center" justify="space-between">
         <v-col class="text-left">
-          <v-btn color="blue" @click.stop="openDrawer()">
+          <v-btn color="blue" @click.stop="toggleDrawer()">
             <!-- <i class="bi bi-list"></i>  -->
             <v-icon size="40" color="blue darken-2"> mdi-menu </v-icon>
           </v-btn>
@@ -111,10 +111,13 @@
       </v-container>
     </v-main>
 
-    <v-footer app
-      >User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
+    <!-- <v-footer app>
+      User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
-    </v-footer>
+    </v-footer> -->
+    <v-bottom-navigation app bg-color="rgb(18,18,18)" height="100%">
+      <footer-menu-component :menuItems="menu"></footer-menu-component>
+    </v-bottom-navigation>
   </v-app>
 </template>
 
@@ -125,6 +128,7 @@ import { useMainStore } from "./store/useMainStore";
 import axios from "axios";
 import ModalComponent from "./components/modal.component.vue";
 import LoginComponent from "./components/login.component.vue";
+import FooterMenuComponent from "./components/footerMenu.component.vue";
 
 const router = useRouter();
 const baseURL = import.meta.env.VITE_baseURL;
@@ -134,8 +138,45 @@ const darkTheme = ref("dark");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
-const logout = () => {
-  alert("sara è scema");
+const menu = ref([
+  {
+    name: "Account",
+    action: (menuItem) => {
+      alert(menuItem.name);
+    },
+    icon: "mdi-account",
+  },
+  {
+    name: "Bot",
+    action: (menuItem) => {
+      alert(menuItem.name);
+    },
+    icon: "mdi-hexagon-slice-6",
+  },
+  // {
+  //   name: 'Refresh',
+  //   action: (menuItem) => {
+  //     alert(menuItem.name);
+  //   },
+  //   icon: "mdi-autorenew"
+  // },
+  {
+    name: "Settings",
+    action: (menuItem) => {
+      alert(menuItem.name);
+    },
+    icon: "mdi-cog-outline",
+  },
+]);
+
+const logout = async () => {
+  let response = await axios.get(`${baseURL}auth/logout`, {
+    withCredentials: true,
+  });
+  toggleDrawer()
+  setTimeout(() => {
+    mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
+  }, 500);
 };
 
 const isLoggedIn = async function () {
@@ -190,7 +231,7 @@ const changeTheme = () => {
   }
 };
 
-const openDrawer = () => {
+const toggleDrawer = () => {
   drawer.value = !drawer.value;
 };
 </script>

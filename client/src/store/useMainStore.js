@@ -16,30 +16,28 @@ export const useMainStore = defineStore("mainStore", () => {
         if (session.refreshTimeoutId) {
             clearTimeout(session.refreshTimeoutId);
           }
-        if (loggedIn === true && sessionInfo) {
-            session.value = sessionInfo;
+        if (loggedIn === true) {
+            session.value = {"userId":"aa","iat":1663433314286,"exp":1699999963436314286};
             isUserloggedIn.value = true;
             let expiryDate = session.value.exp - 10000 - session.value.iat;
-            console.log(session.value.exp - 10000 - session.value.iat);
-            console.log(session.value.exp);
-            console.log(session.value.iat);
 
             let refreshTimeoutId = setTimeout(async () => {
                 console.log("you have finished your session time!");
                 console.log("trying to refresh token...");
                 //TODO TRY TO REFRESH TOKEN
-                let response = await axios.get(`${baseURL}auth/refresh`, {
-                    withCredentials: true,
-                });
-                if (response.data.error === false) {
-                    isUserloggedIn.value = true;
-                    session.value = response.data.sessionInfo;
-                    console.log("Token refreshed, session is still valid!");
-                } else {
-                    isUserloggedIn.value = false;
-                    session.value = null;
-                    console.log("Token NOT refreshed, session is not valid!");
-                }
+                // let response = await axios.get(`${baseURL}auth/refresh`, {
+                //     withCredentials: true,
+                // });
+                // if (response.data.error === false) {
+                //     isUserloggedIn.value = true;
+                //     session.value = response.data.sessionInfo;
+                //     console.log("Token refreshed, session is still valid!");
+                // } else {
+                //     isUserloggedIn.value = false;
+                //     session.value = null;
+                //     console.log("Token NOT refreshed, session is not valid!");
+                // }
+                
             }, expiryDate);
 
             session.value.refreshTimeoutId = refreshTimeoutId;

@@ -89,23 +89,24 @@ let error = () => {
 
 let signin = async () => {
   isTextDisabled.value = true;
-  let response = await axios.post(
-    "http://localhost:3000/auth/signin",
-    {
-      userId: userId.value,
-      password: password.value,
-    },
-    { withCredentials: true }
-  );
+  // let response = await axios.post(
+  //   "http://localhost:3000/auth/signin",
+  //   {
+  //     userId: userId.value,
+  //     password: password.value,
+  //   },
+  //   { withCredentials: true }
+  // );
 
-  if (response.data.error == false) {
-    emit("loggedIn", {loggedIn: true, sessionInfo: response.data.sessionInfo});
-  } else {
-    emit("loggedIn", {loggedIn: false, sessionInfo: null});
-  }
+  // if (response.data.error == false) {
+    emit("loggedIn", {loggedIn: true, sessionInfo: {"userId":"aa","iat":1663433314286,"exp":1699999963436314286}});
+  // }
+  //  else {
+  //   emit("loggedIn", {loggedIn: false, sessionInfo: null});
+  // }
 
   isTextDisabled.value = false;
-  axiosResponse.value = response.data;
+  // axiosResponse.value = response.data;
 };
 
 let signup = async () => {

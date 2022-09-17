@@ -15,4 +15,6 @@ router.get("/refresh",  sessionHandler.refresh)
 
 router.get("/isLoggedIn",  sessionHandler.isLoggedIn)
 
+router.get("/logout",  sessionHandler.logout)
+
 module.exports = router;

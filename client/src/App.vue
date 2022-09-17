@@ -115,7 +115,7 @@
       User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
     </v-footer> -->
-    <v-bottom-navigation app bg-color="rgb(18,18,18)" height="100%">
+    <v-bottom-navigation app :bg-color="whiteBlackColor" height="100%">
       <footer-menu-component :menuItems="menu"></footer-menu-component>
     </v-bottom-navigation>
   </v-app>
@@ -135,6 +135,7 @@ const baseURL = import.meta.env.VITE_baseURL;
 const drawer = ref(false);
 const mainStore = useMainStore();
 const darkTheme = ref("dark");
+const whiteBlackColor = ref('rgb(18,18,18)')
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
@@ -142,28 +143,28 @@ const menu = ref([
   {
     name: "Account",
     action: (menuItem) => {
-      alert(menuItem.name);
+      
     },
     icon: "mdi-account",
   },
   {
     name: "Bot",
     action: (menuItem) => {
-      alert(menuItem.name);
+      
     },
     icon: "mdi-hexagon-slice-6",
   },
   // {
   //   name: 'Refresh',
   //   action: (menuItem) => {
-  //     alert(menuItem.name);
+  //     
   //   },
   //   icon: "mdi-autorenew"
   // },
   {
     name: "Settings",
     action: (menuItem) => {
-      alert(menuItem.name);
+      
     },
     icon: "mdi-cog-outline",
   },
@@ -211,9 +212,11 @@ watch(
   (value) => {
     if (value == "dark") {
       console.log("is dark");
+      whiteBlackColor.value =  'rgb(18,18,18)'
       root.value.style.setProperty("--a-color", "white");
     } else {
       console.log("is light");
+      whiteBlackColor.value =  'rgb(255,255,255)'
       root.value.style.setProperty("--a-color", "black");
     }
   }

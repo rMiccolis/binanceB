@@ -12,71 +12,76 @@
       </v-list-item>
 
       <v-divider class="mb-1"></v-divider>
-      <v-list-item>
+      <div v-if="mainStore.isUserloggedIn">
+        <v-list-item >
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link :to="{ name: 'home', params: { userId: 'test' } }"
+                >Home</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link
+                :to="{ name: 'strategy', params: { userId: 'test' } }"
+                >Strategy</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link
+                :to="{ name: 'statistics', params: { userId: 'test' } }"
+                >Statistics</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link :to="{ name: 'wallet', params: { userId: 'test' } }"
+                >Wallet</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link
+                :to="{ name: 'staking', params: { userId: 'test' } }"
+                >Staking</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link
+                :to="{ name: 'settings', params: { userId: 'test' } }"
+                >Settings</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </div>
+      <v-list-item v-else>
         <v-list-item-content>
           <v-list-item-title
             ><router-link :to="{ name: 'home', params: { userId: 'test' } }"
-              >Home</router-link
+              >Login</router-link
             ></v-list-item-title
           >
         </v-list-item-content>
       </v-list-item>
-      <v-list-item v-if="!mainStore.isUserloggedIn">
-        <v-list-item-content>
-          <v-list-item-title
-            ><a @click.stop="toggleModal({ name: 'login' })"
-              >Login</a
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link :to="{ name: 'strategy', params: { userId: 'test' } }"
-              >Strategy</router-link
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link
-              :to="{ name: 'statistics', params: { userId: 'test' } }"
-              >Statistics</router-link
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link :to="{ name: 'wallet', params: { userId: 'test' } }"
-              >Wallet</router-link
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link :to="{ name: 'staking', params: { userId: 'test' } }"
-              >Staking</router-link
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            ><router-link :to="{ name: 'settings', params: { userId: 'test' } }"
-              >Settings</router-link
-            ></v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
-
       <template v-slot:append>
         <div class="pa-2">
           <v-btn @click="logout()" block variant="outlined" color="red">
@@ -135,37 +140,31 @@ const baseURL = import.meta.env.VITE_baseURL;
 const drawer = ref(false);
 const mainStore = useMainStore();
 const darkTheme = ref("dark");
-const whiteBlackColor = ref('rgb(18,18,18)')
+const whiteBlackColor = ref("rgb(18,18,18)");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
 const menu = ref([
   {
     name: "Account",
-    action: (menuItem) => {
-      
-    },
+    action: (menuItem) => {},
     icon: "mdi-account",
   },
   {
     name: "Bot",
-    action: (menuItem) => {
-      
-    },
+    action: (menuItem) => {},
     icon: "mdi-hexagon-slice-6",
   },
   // {
   //   name: 'Refresh',
   //   action: (menuItem) => {
-  //     
+  //
   //   },
   //   icon: "mdi-autorenew"
   // },
   {
     name: "Settings",
-    action: (menuItem) => {
-      
-    },
+    action: (menuItem) => {},
     icon: "mdi-cog-outline",
   },
 ]);
@@ -174,7 +173,7 @@ const logout = async () => {
   let response = await axios.get(`${baseURL}auth/logout`, {
     withCredentials: true,
   });
-  toggleDrawer()
+  toggleDrawer();
   setTimeout(() => {
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
   }, 500);
@@ -212,11 +211,11 @@ watch(
   (value) => {
     if (value == "dark") {
       console.log("is dark");
-      whiteBlackColor.value =  'rgb(18,18,18)'
+      whiteBlackColor.value = "rgb(18,18,18)";
       root.value.style.setProperty("--a-color", "white");
     } else {
       console.log("is light");
-      whiteBlackColor.value =  'rgb(255,255,255)'
+      whiteBlackColor.value = "rgb(255,255,255)";
       root.value.style.setProperty("--a-color", "black");
     }
   }

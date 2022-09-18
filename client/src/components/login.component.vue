@@ -7,7 +7,7 @@
       :error="error()"
       prepend-inner-icon="mdi-account"
       label="Account Name"
-      hint="For testing, type 'test'"
+      hint="For testing, User ID is 'aa'"
       color="blue"
       clearable
       ></v-text-field>
@@ -20,6 +20,7 @@
       prepend-inner-icon="mdi-key"
       :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
       label="Password"
+      hint="For testing, Password is 'aa'"
       :error="error()"
       :type="show ? 'text' : 'password'"
       @click:append-inner="show = !show"

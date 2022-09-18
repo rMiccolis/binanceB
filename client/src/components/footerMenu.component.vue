@@ -8,7 +8,7 @@
       :key="index"
     >
       <!-- <v-col class="p-10"> -->
-      <v-btn class="pt-1" width="100%" height="8vh" size="x-small" @click="menu.action(menu)">
+      <v-btn class="pt-2" width="100%" height="6.5vh" size="x-small" @click="menu.action(menu)">
         <v-icon x-large class="b-icon-size pb-3">{{menu.icon}}</v-icon>
         <span class="b-text-newline">{{ menu.name }}</span>
       </v-btn>

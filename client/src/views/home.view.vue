@@ -28,10 +28,13 @@
 <script setup>
 import { watch, ref, onMounted } from "vue";
 import { useMainStore } from "../store/useMainStore";
+import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import ModalComponent from "../components/modal.component.vue";
 import LoginComponent from "../components/login.component.vue";
 
+const router = useRouter();
+const route = useRoute();
 const baseURL = import.meta.env.VITE_baseURL;
 const mainStore = useMainStore();
 const loginModal = ref(false);
@@ -41,7 +44,7 @@ const useSetLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
 };
 
 const toggleModal = function (modalInfo) {
-  if (modalInfo.value == false && mainStore.isUserloggedIn == false) return;
+  // if (modalInfo.value == false && mainStore.isUserloggedIn == false) return;
   if (modalInfo.name && modalInfo.value) {
     loginModal.value = modalInfo.value;
   } else {
@@ -49,10 +52,12 @@ const toggleModal = function (modalInfo) {
   }
 };
 
-onMounted(async () => {
+onMounted(() => {
   if (mainStore.isUserloggedIn === true) {
+    console.log("qui");
     loginModal.value = false;
   } else {
+    console.log("quo");
     loginModal.value = true;
   }
 });

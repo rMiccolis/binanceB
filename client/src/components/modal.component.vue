@@ -3,12 +3,16 @@
     <v-dialog
       v-model="modalState"
       :persistent="persistent"
-      @click:outside="toggleModal"
     >
       <v-card :min-width="'75vw'" :max-width="'100vw'" :width="'85vw'">
-        <v-card-title class="mt-3" v-if="$slots.header">
+        <v-toolbar flat dark color="blue">
+          <v-btn icon dark @click="toggleModal">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card-title v-if="$slots.header">
           <v-row class="justify-center">
-            <slot name="header"></slot>
+            <slot name="header">ss</slot>
           </v-row>
         </v-card-title>
         <v-card-text v-if="$slots.body">

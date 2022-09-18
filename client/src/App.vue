@@ -13,7 +13,7 @@
 
       <v-divider class="mb-1"></v-divider>
       <div v-if="mainStore.isUserloggedIn">
-        <v-list-item >
+        <v-list-item>
           <v-list-item-content>
             <v-list-item-title
               ><router-link :to="{ name: 'home', params: { userId: 'test' } }"
@@ -76,10 +76,13 @@
       <v-list-item v-else>
         <v-list-item-content>
           <v-list-item-title
-            ><router-link :to="{ name: 'home', params: { userId: 'test' } }"
+            ><router-link
+              v-if="route.name != 'home'"
+              :to="{ name: 'home', params: { userId: 'test' } }"
               >Login</router-link
-            ></v-list-item-title
-          >
+            >
+            <a v-else @click="router.go()" >Login</a>
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <template v-slot:append>
@@ -136,6 +139,7 @@ import LoginComponent from "./components/login.component.vue";
 import FooterMenuComponent from "./components/footerMenu.component.vue";
 
 const router = useRouter();
+const route = useRoute();
 const baseURL = import.meta.env.VITE_baseURL;
 const drawer = ref(false);
 const mainStore = useMainStore();

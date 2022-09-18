@@ -171,9 +171,9 @@ const menu = ref([
 ]);
 
 const logout = async () => {
-  let response = await axios.get(`${baseURL}auth/logout`, {
-    withCredentials: true,
-  });
+  // let response = await axios.get(`${baseURL}auth/logout`, {
+  //   withCredentials: true,
+  // });
   toggleDrawer()
   setTimeout(() => {
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });

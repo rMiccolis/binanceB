@@ -6,17 +6,17 @@
       @click:outside="toggleModal"
     >
       <v-card :min-width="'75vw'" :max-width="'100vw'" :width="'85vw'">
-        <v-card-title>
+        <v-card-title class="mt-3" v-if="$slots.header">
           <v-row class="justify-center">
             <slot name="header"></slot>
           </v-row>
         </v-card-title>
-        <v-card-text>
+        <v-card-text v-if="$slots.body">
           <v-container>
             <slot name="body"></slot>
           </v-container>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="$slots.footer">
           <v-spacer></v-spacer>
           <slot name="footer"></slot>
         </v-card-actions>

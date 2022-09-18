@@ -10,7 +10,9 @@
           :persistent="true"
           @toggle="toggleModal"
         >
-          <template v-slot:header>Login:</template>
+          <!-- <template v-slot:header>
+            <h3>{{loginHeader}}:</h3>
+          </template> -->
           <template v-slot:body>
             <login-component @loggedIn="useSetLoggedIn"></login-component>
           </template>
@@ -31,7 +33,6 @@ import ModalComponent from "../components/modal.component.vue";
 import LoginComponent from "../components/login.component.vue";
 
 const baseURL = import.meta.env.VITE_baseURL;
-
 const mainStore = useMainStore();
 const loginModal = ref(false);
 

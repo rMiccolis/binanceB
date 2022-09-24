@@ -1,13 +1,17 @@
 <template>
   <v-app :theme="darkTheme">
     <v-navigation-drawer v-model="drawer" app temporary>
-      <v-list-item>
+      <v-list-item @click="toUserPage()">
         <v-list-item-avatar>
           <i class="bi bi-person" style="font-size: 10"></i>
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title class="ml-5">TestAccount</v-list-item-title>
+          <v-list-item-title class="ml-5"
+            ><span class="text-capitalize">{{
+              userId
+            }}</span></v-list-item-title
+          >
         </v-list-item-content>
       </v-list-item>
 
@@ -27,22 +31,13 @@
           <v-list-item-content>
             <v-list-item-title
               ><router-link
-                :to="{ name: 'strategy', params: { userId: 'test' } }"
-                >Strategy</router-link
-              ></v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title
-              ><router-link
                 :to="{ name: 'statistics', params: { userId: 'test' } }"
                 >Statistics</router-link
               ></v-list-item-title
             >
           </v-list-item-content>
         </v-list-item>
+
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
@@ -52,6 +47,7 @@
             >
           </v-list-item-content>
         </v-list-item>
+
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
@@ -62,6 +58,7 @@
             >
           </v-list-item-content>
         </v-list-item>
+
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
@@ -81,10 +78,11 @@
               :to="{ name: 'home', params: { userId: 'test' } }"
               >Login</router-link
             >
-            <a v-else @click="router.go()" >Login</a>
+            <a v-else @click="router.go()">Login</a>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
       <template v-slot:append>
         <div class="pa-2">
           <v-btn @click="logout()" block variant="outlined" color="red">
@@ -93,7 +91,7 @@
         </div>
       </template>
     </v-navigation-drawer>
-    <v-toolbar elevation="5">
+    <v-toolbar elevation="2" :color="whiteBlackToolbar">
       <v-row align="center" justify="space-between">
         <v-col class="text-left">
           <v-btn color="blue" @click.stop="toggleDrawer()">
@@ -123,7 +121,7 @@
       User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
     </v-footer> -->
-    <v-bottom-navigation app :bg-color="whiteBlackColor" height="100%">
+    <v-bottom-navigation app :bg-color="whiteBlackFooter" height="100%">
       <footer-menu-component :menuItems="menu"></footer-menu-component>
     </v-bottom-navigation>
   </v-app>
@@ -144,10 +142,14 @@ const baseURL = import.meta.env.VITE_baseURL;
 const drawer = ref(false);
 const mainStore = useMainStore();
 const darkTheme = ref("dark");
-const whiteBlackColor = ref("rgb(18,18,18)");
+// const whiteBlackColor = ref("rgb(18,18,18)");
+const whiteBlackColor = ref("rgba(20, 23, 23, 0.678)");
+const whiteBlackToolbar = ref("rgba(20, 23, 23, 0.678)");
+const whiteBlackFooter = ref("rgba(20, 23, 23, 0.678)");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
+const userId = ref(null);
 const menu = ref([
   {
     name: "Account",
@@ -167,17 +169,35 @@ const menu = ref([
   //   icon: "mdi-autorenew"
   // },
   {
-    name: "Settings",
-    action: (menuItem) => {},
-    icon: "mdi-cog-outline",
+    name: "Strategies",
+    action: (menuItem) => {
+      router.push({ name: "strategy" });
+    },
+    icon: "mdi-cog",
   },
 ]);
+
+const toUserPage = () => {
+  if (userId.value != null) {
+    console.log("goto account");
+    router.push({ name: "account" });
+  } else {
+    console.log("goto home");
+    if (route.name != "home") {
+      router.push({ name: "home" });
+    } else {
+      router.go();
+    }
+  }
+};
 
 const logout = async () => {
   let response = await axios.get(`${baseURL}auth/logout`, {
     withCredentials: true,
   });
   toggleDrawer();
+
+  userId.value = null;
   setTimeout(() => {
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
   }, 500);
@@ -189,20 +209,14 @@ const isLoggedIn = async function () {
   });
 
   if (response.data.isLoggedIn === true) {
+    userId.value = response.data.sessionInfo.userId;
     mainStore.setLoggedIn({
       loggedIn: true,
       sessioInfo: response.data.sessionInfo,
     });
   } else {
+    userId.value = null;
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
-    // if (
-    //   router.currentRoute.value.name != "notFound" &&
-    //   router.currentRoute.value.name != "home"
-    // ) {
-    //   router.push({
-    //     name: "home",
-    //   });
-    // }
   }
 };
 
@@ -215,11 +229,16 @@ watch(
   (value) => {
     if (value == "dark") {
       console.log("is dark");
-      whiteBlackColor.value = "rgb(18,18,18)";
+      whiteBlackColor.value = "rgba(20, 23, 23, 0.678)";
+      whiteBlackToolbar.value = "rgba(20, 23, 23, 0.678)";
+      whiteBlackFooter.value = "rgba(20, 23, 23, 0.678)";
       root.value.style.setProperty("--a-color", "white");
     } else {
       console.log("is light");
-      whiteBlackColor.value = "rgb(255,255,255)";
+      // whiteBlackColor.value = "rgb(255,255,255)";
+      whiteBlackColor.value = "rgba(220,220,220, 0.6)";
+      whiteBlackToolbar.value = "rgba(190,190,190, 0.2)";
+      whiteBlackFooter.value = "white";
       root.value.style.setProperty("--a-color", "black");
     }
   }
@@ -243,6 +262,10 @@ const toggleDrawer = () => {
 </script>
 
 <style>
+.a {
+  color: rgba(20, 19, 19, 0.678);
+}
+
 .b-app-min-height {
   min-height: 80vh !important;
 }

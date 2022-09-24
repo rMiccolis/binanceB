@@ -8,13 +8,15 @@
           :name="'login'"
           :open="loginModal"
           :persistent="true"
+          :scrollable="true"
           @toggle="toggleModal"
         >
-          <!-- <template v-slot:header>
-            <h3>{{loginHeader}}:</h3>
-          </template> -->
+          <template v-slot:header>
+            <!-- <h3>{{loginHeader}}</h3> -->
+            {{loginHeader}}
+          </template>
           <template v-slot:body>
-            <login-component @loggedIn="useSetLoggedIn"></login-component>
+            <login-component @changeHeader="changeHeader" @loggedIn="useSetLoggedIn"></login-component>
           </template>
         </modal-component>
       </v-col>
@@ -38,6 +40,11 @@ const route = useRoute();
 const baseURL = import.meta.env.VITE_baseURL;
 const mainStore = useMainStore();
 const loginModal = ref(false);
+const loginHeader = ref('Sign in');
+
+const changeHeader = (title) => {
+  loginHeader.value = title;
+};
 
 const useSetLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
   mainStore.setLoggedIn({ loggedIn, sessionInfo });

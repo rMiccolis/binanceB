@@ -1,14 +1,14 @@
 <template>
   <div>
-    <v-tabs centered stacked slider-color="blue" class="mb-5" color="blue">
+    <v-tabs fixed-tabs centered stacked slider-color="blue" class="mb-5 pt-0 mt-0" color="blue">
       <v-tab value="signin" @click="selectTab('signin')">
         <v-icon size="small">mdi-key</v-icon>
-        Sign in!
+        <small>Sign in!</small>
       </v-tab>
 
       <v-tab value="signup" @click="selectTab('signup')">
-        <v-icon size="small">mdi-door</v-icon>
-        Sign up!
+        <v-icon size="small">mdi-exit-to-app</v-icon>
+        <small>Sign up!</small>
       </v-tab>
     </v-tabs>
 
@@ -75,7 +75,7 @@
       clearable
     ></v-text-field>
 
-    <v-row class="mt-5 mb-5" justify="center">
+    <v-row class="mb-5" justify="center">
       <v-col class="text-center">
         <v-btn
           block
@@ -95,7 +95,7 @@
 import { ref, watch } from "vue";
 import axios from "axios";
 
-const emit = defineEmits(["loggedIn", "action"]);
+const emit = defineEmits(["loggedIn", "changeHeader"]);
 
 let privateApiKey = ref("");
 let publicApiKey = ref("");
@@ -131,8 +131,8 @@ let error = (type) => {
 
 const selectTab = (tabClicked) => {
   selectedTab.value = tabClicked;
-  action.value = selectedTab == "signin" ? "Sign In" : "Sign Up";
-  
+  action.value = selectedTab.value == "signin" ? "Sign In" : "Sign Up";
+  emit("changeHeader", action.value + "!");
   userId.value = "";
   password.value = "";
   confirmPassword.value = "";

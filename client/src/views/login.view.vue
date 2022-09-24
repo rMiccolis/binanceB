@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-row class="pb-4" justify="center"><h1>Home Page:</h1></v-row>
+    <!-- <v-row class="pb-4" justify="center"><h1>Login Page</h1></v-row> -->
     <v-row>
       <v-col>
         <modal-component
-          v-if="loginModal"
+          v-if="loginModal === true"
           :name="'login'"
           :open="loginModal"
           :persistent="true"
@@ -20,9 +20,6 @@
           </template>
         </modal-component>
       </v-col>
-    </v-row>
-    <v-row>
-      <p>ciao</p>
     </v-row>
   </div>
 </template>
@@ -47,11 +44,13 @@ const changeHeader = (title) => {
 };
 
 const useSetLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
+  console.log("toggle modal");
   mainStore.setLoggedIn({ loggedIn, sessionInfo });
 };
 
 const toggleModal = function (modalInfo) {
   // if (modalInfo.value == false && mainStore.isUserloggedIn == false) return;
+  console.log("toggle modal");
   if (modalInfo.name && modalInfo.value) {
     loginModal.value = modalInfo.value;
   } else {

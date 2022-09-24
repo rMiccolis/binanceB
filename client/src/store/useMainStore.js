@@ -9,7 +9,7 @@ import { useRouter, useRoute } from "vue-router";
 export const useMainStore = defineStore("mainStore", () => {
     const baseURL = import.meta.env.VITE_baseURL;
     const router = useRouter();
-    const isUserloggedIn = ref(false);
+    const isUserloggedIn = ref(true);
     const session = ref(null);
 
     const setLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
@@ -46,9 +46,9 @@ export const useMainStore = defineStore("mainStore", () => {
         } else {
             isUserloggedIn.value = false;
             session.value = null;
-            if (router.currentRoute.value.name != "notFound" && router.currentRoute.value.name != "home") {
+            if (router.currentRoute.value.name != "notFound" && router.currentRoute.value.name != "login") {
                 router.push({
-                    name: "home",
+                    name: "login",
                 });
             }
         }

@@ -20,8 +20,8 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
-              ><router-link :to="{ name: 'home', params: { userId: 'test' } }"
-                >Home</router-link
+              ><router-link :to="{ name: 'login', params: { userId: 'test' } }"
+                >login</router-link
               ></v-list-item-title
             >
           </v-list-item-content>
@@ -74,8 +74,8 @@
         <v-list-item-content>
           <v-list-item-title
             ><router-link
-              v-if="route.name != 'home'"
-              :to="{ name: 'home', params: { userId: 'test' } }"
+              v-if="route.name != 'login'"
+              :to="{ name: 'login', params: { userId: 'test' } }"
               >Login</router-link
             >
             <a v-else @click="router.go()">Login</a>
@@ -158,7 +158,7 @@ const menu = ref([
   },
   {
     name: "Bot",
-    action: (menuItem) => {},
+    action: (menuItem) => router.push({ name: "bot" }),
     icon: "mdi-hexagon-slice-6",
   },
   // {
@@ -170,9 +170,7 @@ const menu = ref([
   // },
   {
     name: "Strategies",
-    action: (menuItem) => {
-      router.push({ name: "strategy" });
-    },
+    action: (menuItem) => router.push({ name: "strategy" }),
     icon: "mdi-cog",
   },
 ]);
@@ -182,9 +180,9 @@ const toUserPage = () => {
     console.log("goto account");
     router.push({ name: "account" });
   } else {
-    console.log("goto home");
-    if (route.name != "home") {
-      router.push({ name: "home" });
+    console.log("goto login");
+    if (route.name != "login") {
+      router.push({ name: "login" });
     } else {
       router.go();
     }

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import home from "../views/home.view.vue";
+import login from "../views/login.view.vue";
 import notFound from "../views/static/notFound.view.vue";
 import { useMainStore } from "../store/useMainStore";
 
@@ -7,9 +7,14 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: "/home",
-            name: "home",
-            component: home,
+            path: "/login",
+            name: "login",
+            component: login,
+        },
+        {
+            path: "/bot",
+            name: "bot",
+            component: import("../views/bot.view.vue"),
         },
         {
             path: "/wallet",
@@ -37,7 +42,7 @@ const router = createRouter({
         {
             path: "/settings",
             name: "settings",
-            component: () => import("../views/settings.view.vue"),
+            component: () => import("../views/accountSettings.view.vue"),
         },
         {
             path: "/:pathMatch(.*)*",
@@ -46,12 +51,5 @@ const router = createRouter({
         },
     ],
 });
-
-// router.beforeEach(async (to, from, next) => {
-//     const mainStore = useMainStore();
-//     console.log(mainStore.iUserLoggedIn);
-//     if (!mainStore.iUserLoggedIn && to.name != "home" && to.name != "notFound") next({ name: "home" });
-//     else next();
-// });
 
 export default router;

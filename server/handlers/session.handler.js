@@ -199,7 +199,7 @@ const logout = async (req, res) => {
         }
     } else {
         //manca access_token
-        console.logError(error);
+        console.logError("No access token received, logging out");
         await revokeTokens(req, res);
         res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }

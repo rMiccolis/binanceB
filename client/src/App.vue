@@ -9,7 +9,7 @@
         <v-list-item-content>
           <v-list-item-title class="ml-5"
             ><span class="text-capitalize">{{
-              userId
+              mainStore.userId
             }}</span></v-list-item-title
           >
         </v-list-item-content>
@@ -20,7 +20,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
-              ><router-link :to="{ name: 'login', params: { userId: 'test' } }"
+              ><router-link :to="{ name: 'login'}"
                 >login</router-link
               ></v-list-item-title
             >
@@ -31,7 +31,7 @@
           <v-list-item-content>
             <v-list-item-title
               ><router-link
-                :to="{ name: 'statistics', params: { userId: 'test' } }"
+                :to="{ name: 'statistics'}"
                 >Statistics</router-link
               ></v-list-item-title
             >
@@ -41,7 +41,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
-              ><router-link :to="{ name: 'wallet', params: { userId: 'test' } }"
+              ><router-link :to="{ name: 'wallet'}"
                 >Wallet</router-link
               ></v-list-item-title
             >
@@ -52,7 +52,7 @@
           <v-list-item-content>
             <v-list-item-title
               ><router-link
-                :to="{ name: 'staking', params: { userId: 'test' } }"
+                :to="{ name: 'staking'}"
                 >Staking</router-link
               ></v-list-item-title
             >
@@ -63,7 +63,7 @@
           <v-list-item-content>
             <v-list-item-title
               ><router-link
-                :to="{ name: 'settings', params: { userId: 'test' } }"
+                :to="{ name: 'settings'}"
                 >Settings</router-link
               ></v-list-item-title
             >
@@ -75,7 +75,7 @@
           <v-list-item-title
             ><router-link
               v-if="route.name != 'login'"
-              :to="{ name: 'login', params: { userId: 'test' } }"
+              :to="{ name: 'login'}"
               >Login</router-link
             >
             <a v-else @click="router.go()">Login</a>
@@ -111,9 +111,9 @@
       </v-row>
     </v-toolbar>
 
-    <v-main class="b-app-min-height">
-      <v-container app fluid>
-        <router-view class="pl-5"></router-view>
+    <v-main app class="b-app-min-height">
+      <v-container app>
+        <router-view ></router-view>
       </v-container>
     </v-main>
 
@@ -176,7 +176,7 @@ const menu = ref([
 ]);
 
 const toUserPage = () => {
-  if (userId.value != null) {
+  if (mainStore.userId != null) {
     console.log("goto account");
     router.push({ name: "account" });
   } else {
@@ -195,7 +195,6 @@ const logout = async () => {
   });
   toggleDrawer();
 
-  userId.value = null;
   setTimeout(() => {
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
   }, 500);
@@ -207,19 +206,18 @@ const isLoggedIn = async function () {
   });
 
   if (response.data.isLoggedIn === true) {
-    userId.value = response.data.sessionInfo.userId;
     mainStore.setLoggedIn({
       loggedIn: true,
       sessioInfo: response.data.sessionInfo,
     });
   } else {
-    userId.value = null;
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
   }
 };
 
 onMounted(async () => {
-  await isLoggedIn();
+  // await isLoggedIn();
+  mainStore.isLoggedIn();
 });
 
 watch(
@@ -260,6 +258,7 @@ const toggleDrawer = () => {
 </script>
 
 <style>
+
 .a {
   color: rgba(20, 19, 19, 0.678);
 }

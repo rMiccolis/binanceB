@@ -30,5 +30,6 @@ npm run build
 
 ### Crypto Icons Source:
 
-```https://cryptoicons.org/
+```sh
+https://cryptoicons.org/
 ```

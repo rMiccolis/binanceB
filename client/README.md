@@ -27,3 +27,8 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Crypto Icons Source:
+
+```https://cryptoicons.org/
+```

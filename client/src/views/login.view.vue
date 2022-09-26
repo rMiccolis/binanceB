@@ -13,10 +13,13 @@
         >
           <template v-slot:header>
             <!-- <h3>{{loginHeader}}</h3> -->
-            {{loginHeader}}
+            {{ loginHeader }}
           </template>
           <template v-slot:body>
-            <login-component @changeHeader="changeHeader" @loggedIn="useSetLoggedIn"></login-component>
+            <login-component
+              @changeHeader="changeHeader"
+              @loggedIn="useSetLoggedIn"
+            ></login-component>
           </template>
         </modal-component>
       </v-col>
@@ -37,7 +40,7 @@ const route = useRoute();
 const baseURL = import.meta.env.VITE_baseURL;
 const mainStore = useMainStore();
 const loginModal = ref(false);
-const loginHeader = ref('Sign in');
+const loginHeader = ref("Sign in");
 
 const changeHeader = (title) => {
   loginHeader.value = title;
@@ -60,10 +63,10 @@ const toggleModal = function (modalInfo) {
 
 onMounted(() => {
   if (mainStore.isUserloggedIn === true) {
-    console.log("qui");
+    console.log("loginView: LOGGED");
     loginModal.value = false;
   } else {
-    console.log("quo");
+    console.log("loginView: not logged");
     loginModal.value = true;
   }
 });
@@ -71,11 +74,11 @@ onMounted(() => {
 watch(
   () => mainStore.isUserloggedIn,
   (value) => {
-    if (!value) {
-      loginModal.value = true;
-    } else {
-      loginModal.value = false;
-    }
+      if (!value) {
+        loginModal.value = true;
+      } else {
+        loginModal.value = false;
+      }
   }
 );
 </script>

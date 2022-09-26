@@ -54,13 +54,13 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach((to, from) => {
     const mainStore = useMainStore();
-    const logged = await mainStore.isLoggedIn()
-
-      if (logged === false && to.name !== 'login') {
-        return { name: 'login', params: {isLoggedIn: false} };
-      }
+    const logged = mainStore.isUserloggedIn;
+    if (!logged && to.name !== "login") {
+        console.log("sending this", logged);
+        return { name: "login", params: { isLoggedIn: false } };
+    }
 });
 
 export default router;

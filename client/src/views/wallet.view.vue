@@ -33,7 +33,7 @@ let getAccountInfo = async () => {
   }
 
   let dataFetched = (
-    await axios.get("http://localhost:3000/api/account", {
+    await axios.get("http://localhost:3000/api/wallet", {
       withCredentials: true,
     })
   ).data;

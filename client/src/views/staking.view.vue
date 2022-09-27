@@ -34,7 +34,7 @@ let getStakingInfo = async () => {
     }
   }
   let stakingData = (
-    await axios.get("http://localhost:3000/api/earn/staking", {withCredentials: true})
+    await axios.get("http://localhost:3000/api/account/staking", {withCredentials: true})
   ).data;
   let tempData = [];
   for (const el of stakingData) {

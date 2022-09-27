@@ -31,5 +31,5 @@ npm run build
 ### Crypto Icons Source:
 
 ```sh
-https://cryptoicons.org/
+https://github.com/mdfarhaan/cryptoflash-icons-api
 ```

@@ -20,16 +20,6 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
-              ><router-link :to="{ name: 'login'}"
-                >login</router-link
-              ></v-list-item-title
-            >
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title
               ><router-link
                 :to="{ name: 'statistics'}"
                 >Statistics</router-link
@@ -121,7 +111,7 @@
       User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
     </v-footer> -->
-    <v-bottom-navigation app :bg-color="whiteBlackFooter" height="100%">
+    <v-bottom-navigation app :bg-color="whiteBlackFooter" class="mt-1">
       <footer-menu-component :menuItems="menu"></footer-menu-component>
     </v-bottom-navigation>
   </v-app>
@@ -145,7 +135,7 @@ const darkTheme = ref("dark");
 // const whiteBlackColor = ref("rgb(18,18,18)");
 const whiteBlackColor = ref("rgba(20, 23, 23, 0.678)");
 const whiteBlackToolbar = ref("rgba(20, 23, 23, 0.678)");
-const whiteBlackFooter = ref("rgba(20, 23, 23, 0.678)");
+const whiteBlackFooter = ref("rgba(0, 23, 23,");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
@@ -227,7 +217,7 @@ watch(
       console.log("is dark");
       whiteBlackColor.value = "rgba(20, 23, 23, 0.678)";
       whiteBlackToolbar.value = "rgba(20, 23, 23, 0.678)";
-      whiteBlackFooter.value = "rgba(20, 23, 23, 0.678)";
+      whiteBlackFooter.value = "rgb(20, 23, 23)";
       root.value.style.setProperty("--a-color", "white");
     } else {
       console.log("is light");

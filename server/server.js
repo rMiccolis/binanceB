@@ -6,17 +6,17 @@ var cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const auth = require("./middleware/auth.middleware");
-const indexRouter = require("./routes/index");
-const accountApiRouter = require("./api/account.api");
-const earnApiRouter = require("./api/earn.api");
+const indexApi = require("./api/index");
+const walletApi = require("./api/wallet.api");
 const db = require("./mongodb/database");
 const exitHandler = require("./handlers/exit.handler");
-const authRouter = require("./routes/auth.router");
+const authApi = require("./api/auth.api");
 const logHandler = require("./handlers/log.handler");
+const utilsApi = require("./api/utils.api");
 
 // Initialize global session variable
 global.usersDBConnections = {};
-global.db = {};
+global.globalDBConnection = {};
 global.binanceConnections = {};
 
 dotenv.config();
@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const generalRouter = express.Router();
 generalRouter.route("/").get(async function (req, res) {
   try {
-    if (global.db.readyState === 1) res.json({ health: "OK", message: "App is running!" });
+    if (global.globalDBConnection.readyState === 1) res.json({ health: "OK", message: "App is running!" });
   } catch (error) {
     res.json({ health: "KO", message: "App running but something goes wrong!" })
   }
@@ -51,7 +51,7 @@ generalRouter.route("/").get(async function (req, res) {
 
 generalRouter.route("/healthCheck").get(async function (req, res) {
   try {
-    if (global.db.readyState === 1){
+    if (global.globalDBConnection.readyState === 1){
       let healthCheck = db.dynamicModel('healthCheck');
       let healt = await healthCheck.aggregate([{$match: {}}])
       res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
@@ -69,12 +69,12 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/", generalRouter);
-app.use("/auth", authRouter)
+app.use("/auth", authApi)
 
+app.use("/api/utils", utilsApi);
 app.use(auth.checkJWT);
-app.use("/test", indexRouter);
-app.use("/api/account", accountApiRouter);
-app.use("/api/earn", earnApiRouter);
+app.use("/test", indexApi);
+app.use("/api/wallet", walletApi);
 
 // process.stdin.resume(); //so the program will not close instantly
 
@@ -98,7 +98,7 @@ app.listen(port, () => {
 });
 
 db.connectToMongo(process.env.MONGODB_URI, "app").then((connection) => {
-  global.db = connection;
+  global.globalDBConnection = connection;
 });
 
 // app.addListener();

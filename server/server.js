@@ -6,7 +6,7 @@ var cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const auth = require("./middleware/auth.middleware");
-const indexApi = require("./api/index");
+const testApi = require("./api/test");
 const walletApi = require("./api/wallet.api");
 const db = require("./mongodb/database");
 const exitHandler = require("./handlers/exit.handler");
@@ -15,9 +15,8 @@ const logHandler = require("./handlers/log.handler");
 const utilsApi = require("./api/utils.api");
 
 // Initialize global session variable
-global.usersDBConnections = {};
 global.globalDBConnection = {};
-global.binanceConnections = {};
+global.users = {};
 
 dotenv.config();
 const app = express();
@@ -27,7 +26,6 @@ console.logDebug = logHandler.logDebug;
 console.logWarning = logHandler.logWarning;
 console.logError = logHandler.logError;
 console.logInfo = logHandler.logInfo;
-
 
 const corsOptions = { origin: true, credentials: true };
 
@@ -42,38 +40,37 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const generalRouter = express.Router();
 generalRouter.route("/").get(async function (req, res) {
-  try {
-    if (global.globalDBConnection.readyState === 1) res.json({ health: "OK", message: "App is running!" });
-  } catch (error) {
-    res.json({ health: "KO", message: "App running but something goes wrong!" })
-  }
+    try {
+        if (global.globalDBConnection.readyState === 1) res.json({ health: "OK", message: "App is running!" });
+    } catch (error) {
+        res.json({ health: "KO", message: "App running but something goes wrong!" });
+    }
 });
 
 generalRouter.route("/healthCheck").get(async function (req, res) {
-  try {
-    if (global.globalDBConnection.readyState === 1){
-      let healthCheck = db.dynamicModel('healthCheck');
-      let healt = await healthCheck.aggregate([{$match: {}}])
-      res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
-    } 
-      
-  } catch (error) {
-    res.json({ health: "KO", message: "DB is is not running!" })
-  }
+    try {
+        if (global.globalDBConnection.readyState === 1) {
+            let healthCheck = db.dynamicModel("healthCheck");
+            let healt = await healthCheck.aggregate([{ $match: {} }]);
+            res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
+        }
+    } catch (error) {
+        res.json({ health: "KO", message: "DB is is not running!" });
+    }
 });
 
 app.use((req, res, next) => {
-  req.locals = {}
-  next()
+    req.locals = {};
+    next();
 });
 
 //routes
 app.use("/", generalRouter);
-app.use("/auth", authApi)
 
+app.use("/auth", authApi);
 app.use("/api/utils", utilsApi);
+app.use("/test", testApi);
 app.use(auth.checkJWT);
-app.use("/test", indexApi);
 app.use("/api/wallet", walletApi);
 
 // process.stdin.resume(); //so the program will not close instantly
@@ -93,12 +90,16 @@ app.use("/api/wallet", walletApi);
 
 let port = 3000;
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-  console.log("try it out on", "http://localhost:3000");
+    console.log(`Listening on port ${port}`);
+    console.log("try it out on", "http://localhost:3000");
 });
 
-db.connectToMongo(process.env.MONGODB_URI, "app").then((connection) => {
-  global.globalDBConnection = connection;
+db.connectToMongo(process.env.MONGODB_URI, "app").then(async (connection) => {
+    global.globalDBConnection = connection;
+    if (process.env.NODE_ENV === "developing") {
+        //mongodb Initialize data
+        await db.populateDefaultData();
+    }
 });
 
 // app.addListener();

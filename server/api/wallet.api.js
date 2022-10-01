@@ -6,7 +6,7 @@ const earn = require("../src/wallet/earn");
 
 router.get("/", async (req, res, next) => {
     try {
-        const spotClient = global.binanceConnections[req.locals.userId];
+        const spotClient = global.users[req.locals.userId].binanceSpotConnection;
 
         let data = await walletInfo.getAccountData(spotClient);
         data.balances = data.balances.filter((el) => parseFloat(el.free) > 0);
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/staking", async (req, res, next) => {
-    const spotClient = global.binanceConnections[req.locals.userId];
+    const spotClient = global.users[req.locals.userId].binanceSpotConnection;
     let data = await earn.getBlockedStaking(spotClient);
     res.json(data);
 });

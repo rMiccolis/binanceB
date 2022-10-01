@@ -18,6 +18,7 @@ let stakingInfo = ref(null);
 let userId = "Bob617";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
+const baseURL = import.meta.env.VITE_baseURL;
 
 let detailData = ref([]);
 
@@ -34,7 +35,7 @@ let getStakingInfo = async () => {
     }
   }
   let stakingData = (
-    await axios.get("http://localhost:3000/api/account/staking", {withCredentials: true})
+    await axios.get(`${baseURL}api/wallet/staking`, {withCredentials: true})
   ).data;
   let tempData = [];
   for (const el of stakingData) {

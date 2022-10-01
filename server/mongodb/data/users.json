@@ -1,19 +1,14 @@
 [{
   "_id": {
-    "$oid": "6250a319894338495b97a922"
+    "$oid": "6309072f592fd660dd8beb81"
   },
-  "psw": "test",
-  "futures_API_KEY": "99c1414133b348a6274df7b288f1088623b590fd3fe2714f894f482ef6e2c5be",
-  "futures_SECRET_KEY": "81469553365e683143f7146181529b6ea730c0fbe5c20d9f716549c7ce89d092",
-  "API_KEY": "bbkiwmw84nEDlTva95ZRXTd4pU3McXQXVRFhWFzvsJZBNboLOSWML3L6hOqeF6vn",
-  "userId": "test",
-  "API_SECRET": "86bjkGEwAte6AUueEM3leL3Dn5Gt1axHz6fzF0LqyOPFT02HM4DHvgOWKAJTKZHY"
-},{
-  "_id": {
-    "$oid": "625af5d5573ad7a318ab153c"
+  "userId": "aa",
+  "password": "927a867f0cfa38f4fd8dc4df99a5682e296482ce9ded357821cb4e9b613ef19a02e29483303ecc0ffbfeafe49b1127430f67f0371ed0bdb0c07c173609d79bb6",
+  "salt": "2dbd06851368f8610414a91645a49a1b",
+  "API_KEY": "7AzxBmlgXgrWlZd8TndP4yLlfrFc6s0vFefXebfGNprVSIuoQhI7iZpnjDdPCS64",
+  "API_SECRET": "CH5KciUXN4dxRhln8C43mVDBYeNaB3eRDUQIIAZu9qtwGBrHzhKdP4A9ntTBDhkr",
+  "last_update": {
+    "$numberLong": "1664455580354"
   },
-  "psw": "ciao",
-  "API_KEY": "qgPsZHtWgT0hH594MkNwXYGc8A5YIp5pCe3t9QTJJmYLTulnjF4fVvTxO9x3Rldb",
-  "userId": "Bob617",
-  "API_SECRET": "bvAmWegUgvAXishiIKVcmzfoH37BUtSe7jxiJjeEtCUUUaf1mDHNtwkaJ0ytvase"
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhYSIsImlhdCI6MTY2NDQ1NTU4MDM1MiwiZXhwIjoxNjY0NDU4NTgwMzUyfQ.RpEcHc0jEPYPV1PPDsyFie80Z4Fa8BQqCqpXxVqdZAk"
 }]

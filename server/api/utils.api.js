@@ -135,6 +135,7 @@ router.get("/fetchCryptoSvg", async (req, res, next) => {
         "QLC",
         "GRS",
         "CLOAK",
+        "cronos",
         "LOOM",
         "BCN",
         "TUSD",
@@ -413,9 +414,12 @@ router.get("/fetchCryptoSvg", async (req, res, next) => {
             let symbolName = symbol.toLowerCase();
             lastSymbol = symbolName;
             try {
-                //
-                // let result = await axios.get(`https://cryptoflash-icons-api.herokuapp.com/svg/icon/${symbolName}`);
-                let result = await axios.get(`https://logo.chainbit.xyz/${symbolName}`);
+                let result = null;
+                try {
+                    result = await axios.get(`https://cryptoflash-icons-api.herokuapp.com/svg/icon/${symbolName}`);
+                } catch (error) {
+                    result = await axios.get(`https://logo.chainbit.xyz/${symbolName}`);
+                }
                 
                 if (!fs.existsSync(`./symbolsSvg/${symbolName}.svg`)) {
                     let resp = fs.writeFileSync(`./symbolsSvg/${symbolName}.svg`, result.data);

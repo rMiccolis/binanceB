@@ -68,17 +68,21 @@ const setBinanceConnection = async function (userId) {
     let users = db.dynamicModel("users");
     let user = (await users.aggregate([{ $match: { userId: userId } }]))[0];
     let baseUrl;
+    let wsBaseUrl;
     if (userId != "Bob617") {
         baseUrl = process.env.TESTNET_BASE_URL;
+        wsBaseUrl = process.env.TESTNET_WS_BASE_URL;
     } else {
         baseUrl = process.env.BINANCE_BASE_URL;
+        wsBaseUrl = process.env.BINANCE_WS_BASE_URL;
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
     }
 
     let apiKey = user.API_KEY;
     let apiSecret = user.API_SECRET;
-    const spotClient = new Spot(apiKey, apiSecret, { baseURL: baseUrl });
-    global.binanceConnections[userId] = spotClient;
+    
+    const spotClient = new Spot(apiKey, apiSecret, { baseURL: baseUrl, wsURL: wsBaseUrl });
+    global.users[userId] = { binanceSpotConnection: spotClient};
 };
 
 const refresh = async (req, res) => {

@@ -18,6 +18,7 @@ let accountInfo = ref(null);
 let userId = "test";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
+const baseURL = import.meta.env.VITE_baseURL;
 
 onMounted(async () => {
   await getAccountInfo();
@@ -33,7 +34,7 @@ let getAccountInfo = async () => {
   }
 
   let dataFetched = (
-    await axios.get("http://localhost:3000/api/wallet", {
+    await axios.get(`${baseURL}api/wallet`, {
       withCredentials: true,
     })
   ).data;

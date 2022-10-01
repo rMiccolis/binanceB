@@ -42,6 +42,7 @@ const generalRouter = express.Router();
 generalRouter.route("/").get(async function (req, res) {
     try {
         if (global.globalDBConnection.readyState === 1) res.json({ health: "OK", message: "App is running!" });
+        else res.json({ health: "KO", message: "App running but something goes wrong!" });
     } catch (error) {
         res.json({ health: "KO", message: "App running but something goes wrong!" });
     }
@@ -94,12 +95,18 @@ app.listen(port, () => {
     console.log("try it out on", "http://localhost:3000");
 });
 
-db.connectToMongo(process.env.MONGODB_URI, "app").then(async (connection) => {
-    global.globalDBConnection = connection;
-    if (process.env.NODE_ENV === "developing") {
-        //mongodb Initialize data
-        await db.populateDefaultData();
-    }
-});
+db.connectToMongo(process.env.MONGODB_URI, "app")
+    .then(async (connection) => {
+        global.globalDBConnection = connection;
+        if (process.env.NODE_ENV === "developing") {
+            //mongodb Initialize data
+            await db.populateDefaultData();
+        }
+    })
+    .catch((error) => {
+        console.logError(error);
+        console.logError("unable to connect to db!");
+        process.exit(1);
+    });
 
 // app.addListener();

@@ -98,7 +98,7 @@ app.listen(port, () => {
 db.connectToMongo(process.env.MONGODB_URI, "app")
     .then(async (connection) => {
         global.globalDBConnection = connection;
-        if (process.env.NODE_ENV === "developing") {
+        if (process.env.NODE_ENV === "develop") {
             //mongodb Initialize data
             await db.populateDefaultData();
         }

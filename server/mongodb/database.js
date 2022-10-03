@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 
 async function connectToMongo(connectionString, user) {
-    console.log("Trying to connect to mongoDB...");
+    console.log(`Trying to connect to mongoDB ${connectionString}...`);
     let connection = await mongoose.createConnection(connectionString).asPromise();
     connection.addListener("disconnected", function () {
         console.log("Unable to connect to mongoDB! Retrying in 5 seconds...");
@@ -23,6 +23,7 @@ async function populateDefaultData(params) {
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
         let fileContent = JSON.parse(fs.readFileSync(`./mongodb/data/${name}.json`, "utf8"));
+        console.log(`reading file: ${name}`);
         let collection = dynamicModel(name);
         let count = await collection.count();
         if (count === 0) {

@@ -180,6 +180,7 @@ const toUserPage = () => {
 };
 
 const logout = async () => {
+  console.log(baseURL);
   let response = await axios.get(`${baseURL}auth/logout`, {
     withCredentials: true,
   });

@@ -1,4 +1,4 @@
-create docker server build: docker build -t server -f server dockerfile .
+create docker server build: docker build -t server -f server.dockerfile .
 create docker client build: docker build -t client -f client.dockerfile .
 
 run docker server build: docker run --rm --name server -d -p 3000:3000 server

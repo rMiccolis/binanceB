@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { watch, ref, onMounted } from "vue";
+import { watch, ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useMainStore } from "./store/useMainStore";
 import axios from "axios";
@@ -246,6 +246,10 @@ const changeTheme = () => {
 const toggleDrawer = () => {
   drawer.value = !drawer.value;
 };
+
+onBeforeUnmount(() => {
+  router.push({ name: "login" });
+})
 </script>
 
 <style>

@@ -100,7 +100,7 @@ db.connectToMongo(process.env.MONGODB_URI, "app")
         global.globalDBConnection = connection;
         if (process.env.NODE_ENV === "develop") {
             //mongodb Initialize data
-            await db.populateDefaultData();
+            await db.loadDefaultData();
         }
     })
     .catch((error) => {

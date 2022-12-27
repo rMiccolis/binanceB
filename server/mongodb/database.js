@@ -18,7 +18,7 @@ async function connectToMongo(connectionString, user) {
     return connection;
 }
 
-async function populateDefaultData(params) {
+async function loadDefaultData(params) {
     let fileNames = fs.readdirSync("./mongodb/data");
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
@@ -66,5 +66,5 @@ function dynamicModel(collectionName, connection = global.globalDBConnection, sc
 module.exports = {
     connectToMongo,
     dynamicModel,
-    populateDefaultData,
+    loadDefaultData,
 };

@@ -96,6 +96,7 @@ import { ref, watch } from "vue";
 import axios from "axios";
 
 const emit = defineEmits(["loggedIn", "changeHeader"]);
+const baseURL = import.meta.env.VITE_baseURL;
 
 let privateApiKey = ref("");
 let publicApiKey = ref("");
@@ -143,7 +144,7 @@ const selectTab = (tabClicked) => {
 
 let signin = async () => {
   let response = await axios.post(
-    "http://localhost:3000/auth/signin",
+    `${baseURL}auth/signin`,
     {
       userId: userId.value.toLowerCase(),
       password: password.value,
@@ -163,7 +164,7 @@ let signin = async () => {
 
 let signup = async () => {
   let response = await axios.post(
-    "http://localhost:3000/auth/signup",
+    `${baseURL}auth/signup`,
     {
       userId: userId.value.toLowerCase(),
       password: password.value,

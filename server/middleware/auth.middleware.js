@@ -22,6 +22,7 @@ let checkJWT = async (req, res, next) => {
         }
     } else {
         //manca access_token
+        console.logError("checkJWT MISSING_TOKEN");
         await sessionHandler.revokeTokens(req, res)
         res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }

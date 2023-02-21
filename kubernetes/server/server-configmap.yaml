@@ -12,3 +12,4 @@ data:
   REFRESH_TOKEN_SECRET: jwttestrefresh
   ACCESS_TOKEN_LIFETIME: '50'
   REFRESH_TOKEN_LIFETIME: '50'
+  SERVER_URI: server-service

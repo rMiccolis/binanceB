@@ -89,13 +89,14 @@ app.use("/api/wallet", walletApi);
 // //catches uncaught exceptions
 // process.on("uncaughtException", exitHandler);
 
-let port = 3000;
+let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    console.log("try it out on", "http://localhost:3000");
+    console.log("try it out on", `http://localhost:${port}`);
+    console.log("list of ENV variables:\n", process.env);
 });
 
-db.connectToMongo(process.env.MONGODB_URI, "app")
+db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD, process.env.MONGODB_DB_NAME, "app")
     .then(async (connection) => {
         global.globalDBConnection = connection;
         if (process.env.NODE_ENV === "develop") {

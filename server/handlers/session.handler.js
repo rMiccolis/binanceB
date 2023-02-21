@@ -26,8 +26,8 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
     let currentTime = Date.now();
 
     // set tokens expire time
-    const refresh_token_expiry = process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000;
-    const access_token_expiry = process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000;
+    const refresh_token_expiry =  parseInt(process.env.REFRESH_TOKEN_LIFETIME) * 60 * 1000;
+    const access_token_expiry = parseInt(process.env.ACCESS_TOKEN_LIFETIME) * 60 * 1000;
 
     // create json web token
     tokenData.iat = currentTime;
@@ -44,7 +44,7 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
         let users = db.dynamicModel("users");
         await users.updateOne({ userId: tokenData.userId }, { $set: { refresh_token: refresh_token, last_update: Date.now() } });
         res.cookie("refresh_token", refresh_token, {
-            maxAge: process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000,
+            maxAge:  parseInt(process.env.REFRESH_TOKEN_LIFETIME) * 60 * 1000,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", //https
             sameSite: "Strict",
@@ -53,7 +53,7 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
     }
 
     res.cookie("access_token", access_token, {
-        maxAge: process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000,
+        maxAge:  parseInt(process.env.ACCESS_TOKEN_LIFETIME) * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", //https
         sameSite: "Strict",

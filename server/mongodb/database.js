@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
 
-async function connectToMongo(connectionString, user) {
+async function connectToMongo(connectionString, db_username = "", db_password = "", db_name = "", user) {
     console.log(`Trying to connect to mongoDB ${connectionString}...`);
-    let connection = await mongoose.createConnection(connectionString).asPromise();
+    let connection = await mongoose.createConnection(connectionString, { user: db_username, pass: db_password, db_name }).asPromise();
     connection.addListener("disconnected", function () {
         console.log("Unable to connect to mongoDB! Retrying in 5 seconds...");
         setTimeout(() => {

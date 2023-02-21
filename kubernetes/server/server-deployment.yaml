@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: binanceb_nodejs_server
+        resources:
+        limits:
+          memory: 2Gi
+          cpu: "2"
+        requests:
+          memory: 256Mi
+          cpu: "1"
+        ports:
+        - containerPort: 3000
+        env: 
+        - name: MONGODB_USERNAME
+          valueFrom:
+           secretKeyRef:
+             name: mongodb-secret
+             key: mongo-root-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+           secretKeyRef:
+             name: mongodb-secret
+             key: mongo-root-password
+        - name: MONGODB_DB_NAME
+          valueFrom:
+           configMapKeyRef:
+             name: mongodb-configmap
+             key: mongodb_db_name
+        - name: MONGODB_URI
+          valueFrom:
+           configMapKeyRef:
+             name: mongodb-configmap
+             key: mongodb_uri
+        - name: NODE_ENV
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: NODE_ENV
+        - name: TESTNET_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: TESTNET_BASE_URL
+        - name: TESTNET_WS_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: TESTNET_WS_BASE_URL
+        - name: BINANCE_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: BINANCE_BASE_URL
+        - name: BINANCE_WS_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: BINANCE_WS_BASE_URL
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: ACCESS_TOKEN_SECRET
+        - name: REFRESH_TOKEN_SECRET
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: REFRESH_TOKEN_SECRET
+        - name: ACCESS_TOKEN_LIFETIME
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: ACCESS_TOKEN_LIFETIME
+        - name: REFRESH_TOKEN_LIFETIME
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: REFRESH_TOKEN_LIFETIME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-service
+spec:
+  selector:
+    app: server
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

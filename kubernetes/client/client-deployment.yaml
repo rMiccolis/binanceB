@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
       - name: client
-        image: binanceb_vuejs_client
+        image: rmiccolis/binanceb_vuejs_client
         resources:
-        limits:
-          memory: 512Mi
-          cpu: "1"
-        requests:
-          memory: 256Mi
-          cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "1"
+          limits:
+            memory: 512Mi
+            cpu: "1"
         ports:
         - containerPort: 80
         env: 

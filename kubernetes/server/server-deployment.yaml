@@ -18,12 +18,12 @@ spec:
       - name: server
         image: binanceb_nodejs_server
         resources:
-        limits:
-          memory: 512Mi
-          cpu: "1"
-        requests:
-          memory: 256Mi
-          cpu: "1"
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "1"
         ports:
         - containerPort: 3000
         env: 

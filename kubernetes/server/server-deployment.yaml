@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: binanceb_nodejs_server
+        image: rmiccolis/binanceb_nodejs_server
         resources:
           limits:
             memory: 256Mi

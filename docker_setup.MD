@@ -1,7 +1,13 @@
 DOCKER APPLICATION SETUP:
+-------------kubernetes-------------
+position in the root directory
 
-create docker server build: docker build -t server -f server.dockerfile .
-create docker client build: docker build -t client -f client.dockerfile .
+create docker server build: sudo docker build -t rmiccolis/binanceb_nodejs_server -f ./server/server.dockerfile ./server/
+create docker client build: sudo docker build -t rmiccolis/binanceb_vuejs_client -f ./client/client.dockerfile ./client/
+
+push images: docker push rmiccolis/binanceb_nodejs_server:NOMETAG
+-------------kubernetes end-------------
+
 
 run docker server build: docker run --rm --name server -d -p 3000:3000 server
 run docker client build: docker run --rm --name client -d -p 8081:80 client

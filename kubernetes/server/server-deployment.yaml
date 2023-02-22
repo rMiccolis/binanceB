@@ -47,6 +47,11 @@ spec:
            configMapKeyRef:
              name: mongodb-configmap
              key: mongodb_uri
+        - name: SERVER_PORT
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: SERVER_PORT
         - name: NODE_ENV
           valueFrom:
            configMapKeyRef:

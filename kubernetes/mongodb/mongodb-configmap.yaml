@@ -4,4 +4,3 @@ metadata:
   name: mongodb-configmap
 data:
   mongodb_db_name: binanceB
-  mongodb_uri: mongodb-service

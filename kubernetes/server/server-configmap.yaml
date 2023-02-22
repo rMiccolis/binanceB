@@ -15,4 +15,4 @@ data:
   SERVER_PORT: '3000'
   MONGODB_URI: mongodb-service
   SERVER_URI: server-service
-  provaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $prova 
+  provaaaaaaa: ${prova}

@@ -13,6 +13,4 @@ data:
   ACCESS_TOKEN_LIFETIME: '50'
   REFRESH_TOKEN_LIFETIME: '50'
   SERVER_PORT: '3000'
-  MONGODB_URI: mongodb-service
   SERVER_URI: server-service
-  provaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: $prova 

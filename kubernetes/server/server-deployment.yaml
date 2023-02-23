@@ -43,15 +43,11 @@ spec:
              name: mongodb-configmap
              key: mongodb_db_name
         - name: MONGODB_URI
-          valueFrom:
-           configMapKeyRef:
-             name: mongodb-configmap
-             key: mongodb_uri
+          value: $(MONGODB_SERVICE_SERVICE_HOST)
+        - name: MONGODB_PORT
+          value: $(MONGODB_SERVICE_SERVICE_PORT)
         - name: SERVER_PORT
-          valueFrom:
-           configMapKeyRef:
-             name: server-configmap
-             key: SERVER_PORT
+          value: '3000'
         - name: NODE_ENV
           valueFrom:
            configMapKeyRef:

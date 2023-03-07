@@ -1,0 +1,1 @@
+helm install -n nginx -f ngingx_helm_values.yaml nginx-helm ingress-nginx/ingress-nginx

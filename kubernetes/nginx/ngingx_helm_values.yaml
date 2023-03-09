@@ -1,10 +1,14 @@
 controller:
   config:
-    client-body-buffer-size: 1024k
-    client-header-buffer-size: 1024k
+    use-forwarded-headers: "true"
+    use-gzip: "true"
+    generate-request-id: "true"
+    proxy-body-size: 0
+    client-body-buffer-size: 0
+    client-header-buffer-size: 0
     error-log-level: warn
-    http2-max-header-size: 1024k
-    large-client-header-buffers: 4 16k
+    http2-max-header-size: 0
+    large-client-header-buffers: 4 0
     log-format-escape-json: "true"
     log-format-upstream: '{"time": "", "remote_addr": "", "x_forwarded_for": "", "request_id": "","remote_user": "", "bytes_sent": , "request_time": , "status": , "vhost": "", "request_proto": "",   "path": "", "request_query": "", "request_length": , "duration": ,"method": "", "http_referrer": "","http_user_agent": "" }'
-  replicaCount: 2
+  # replicaCount: 2

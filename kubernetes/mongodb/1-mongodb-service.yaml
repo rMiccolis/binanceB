@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mongodb
-  namespace: binanceB
+  namespace: binance-b
 spec:
   selector:
     app: mongodb

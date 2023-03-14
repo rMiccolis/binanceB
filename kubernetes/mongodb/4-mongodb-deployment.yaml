@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
-  namespace: binanceB
+  namespace: binance-b
   labels:
     app: mongodb
 spec:

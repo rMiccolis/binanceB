@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: server-configmap
-  namespace: binanceB
+  namespace: binance-b
 data:
   NODE_ENV: develop
   TESTNET_BASE_URL: https://testnet.binance.vision/

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: server
-  namespace: binanceB
+  namespace: binance-b
   labels:
     app: server
 spec:

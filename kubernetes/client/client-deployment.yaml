@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: client
+  namespace: binanceB
   labels:
     app: client
 spec:
@@ -28,7 +29,4 @@ spec:
         - containerPort: 80
         env: 
         - name: VITE_baseURL
-          valueFrom:
-           configMapKeyRef:
-             name: server-configmap
-             key: SERVER_URI
+          value: $(SERVER_SERVICE_HOST):$(SERVER_SERVICE_PORT)

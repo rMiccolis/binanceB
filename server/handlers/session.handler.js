@@ -71,10 +71,10 @@ const setBinanceConnection = async function (userId) {
     let wsBaseUrl;
     if (userId != "Bob617") {
         baseUrl = process.env.TESTNET_BASE_URL;
-        wsBaseUrl = process.env.TESTNET_WS_BASE_URL;
+        wsBaseUrl = process.env.TESTNET_WEBSOCKET_BASE_URL;
     } else {
         baseUrl = process.env.BINANCE_BASE_URL;
-        wsBaseUrl = process.env.BINANCE_WS_BASE_URL;
+        wsBaseUrl = process.env.BINANCE_WEBSOCKET_BASE_URL;
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
     }
 

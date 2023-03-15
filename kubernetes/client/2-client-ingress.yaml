@@ -11,10 +11,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /client
         pathType: Prefix
         backend:
           service:
-            name: client-service
+            name: client
             port:
               number: 80

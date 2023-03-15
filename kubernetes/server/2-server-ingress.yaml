@@ -13,5 +13,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: server
-          servicePort: 3000
+          service:
+            name: client-service
+            port:
+              number: 80

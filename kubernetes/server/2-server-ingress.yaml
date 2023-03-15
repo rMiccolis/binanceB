@@ -9,12 +9,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: backend.binanceB.com
+  - host: backend.binance-b.com
     http:
       paths:
       - backend:
-          path: /
           service:
             name: client-service
             port:
               number: 80
+        path: /
+        pathType: ImplementationSpecific

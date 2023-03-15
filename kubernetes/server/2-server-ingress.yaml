@@ -13,8 +13,8 @@ spec:
     http:
       paths:
       - backend:
-        path: /
-        service:
-          name: client-service
-          port:
-            number: 80
+          path: /
+          service:
+            name: client-service
+            port:
+              number: 80

@@ -209,6 +209,7 @@ const isLoggedIn = async function () {
 onMounted(async () => {
   // await isLoggedIn();
   mainStore.isLoggedIn();
+  console.log(baseURL);
 });
 
 watch(

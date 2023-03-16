@@ -30,3 +30,5 @@ spec:
         env: 
         - name: SERVER_URI
           value: backend.binance-b.com/server/
+        - name: VUE_APP_SERVER_URI
+          value: backend.binance-b.com/server/

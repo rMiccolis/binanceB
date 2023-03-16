@@ -9,13 +9,12 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: backend.binance-b.com
-    http:
+  - http:
       paths:
-      - backend:
+      - path: /
+        pathType: Prefix
+        backend:
           service:
             name: server
             port:
               number: 3000
-        path: /
-        pathType: ImplementationSpecific

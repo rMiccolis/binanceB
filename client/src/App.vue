@@ -128,7 +128,7 @@ import FooterMenuComponent from "./components/footerMenu.component.vue";
 
 const router = useRouter();
 const route = useRoute();
-const baseURL = process.env.SERVER_URI;
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const drawer = ref(false);
 const mainStore = useMainStore();
 const darkTheme = ref("dark");

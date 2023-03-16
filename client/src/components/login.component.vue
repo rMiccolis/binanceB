@@ -96,7 +96,7 @@ import { ref, watch } from "vue";
 import axios from "axios";
 
 const emit = defineEmits(["loggedIn", "changeHeader"]);
-const baseURL = process.env.SERVER_URI;
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 let privateApiKey = ref("");
 let publicApiKey = ref("");

@@ -211,7 +211,7 @@ onMounted(async () => {
   mainStore.isLoggedIn();
   let test = import.meta.env
   console.log(baseURL, 'process.env.SERVER_URI');
-  console.log(test), 'import.meta.env';
+  console.log(test, 'import.meta.env');
   console.log(process.env, 'process.env');
 });
 

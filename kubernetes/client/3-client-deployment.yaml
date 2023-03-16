@@ -29,4 +29,4 @@ spec:
         - containerPort: 80
         env: 
         - name: VITE_baseURL
-          value: backend.binance-b.com
+          value: backend.binance-b.com/server/

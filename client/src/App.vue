@@ -212,6 +212,7 @@ onMounted(async () => {
   let test = import.meta.env
   console.log(baseURL);
   console.log(test);
+  console.log(process.env);
 });
 
 watch(

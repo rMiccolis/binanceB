@@ -3,6 +3,7 @@ FROM node:latest as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN printenv | grep -i vite_baseurl >> .env
 COPY . ./
 RUN npm run build
 

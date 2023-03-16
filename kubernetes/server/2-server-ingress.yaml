@@ -5,13 +5,13 @@ metadata:
   namespace: binance-b
   annotations:
     # kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /
+      - path: /server/(.*)
         pathType: Prefix
         backend:
           service:

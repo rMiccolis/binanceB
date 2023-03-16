@@ -18,7 +18,7 @@ let accountInfo = ref(null);
 let userId = "test";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
-const baseURL = import.meta.env.VITE_baseURL;
+const baseURL = process.env.SERVER_URI;
 
 onMounted(async () => {
   await getAccountInfo();

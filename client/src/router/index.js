@@ -3,7 +3,7 @@ import login from "../views/login.view.vue";
 import notFound from "../views/static/notFound.view.vue";
 import { useMainStore } from "../store/useMainStore";
 import axios from "axios";
-const baseURL = import.meta.env.VITE_baseURL;
+const baseURL = process.env.SERVER_URI;
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

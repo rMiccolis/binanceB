@@ -18,7 +18,7 @@ let stakingInfo = ref(null);
 let userId = "Bob617";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
-const baseURL = import.meta.env.VITE_baseURL;
+const baseURL = process.env.SERVER_URI;
 
 let detailData = ref([]);
 

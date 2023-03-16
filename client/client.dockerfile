@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . ./
+RUN echo "VUE_APP_SERVER_URI=$SERVER_URI" >> .env
 RUN npm run build
 
 # production stage

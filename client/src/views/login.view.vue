@@ -37,7 +37,7 @@ import LoginComponent from "../components/login.component.vue";
 
 const router = useRouter();
 const route = useRoute();
-const baseURL = import.meta.env.VITE_baseURL;
+const baseURL = process.env.SERVER_URI;
 const mainStore = useMainStore();
 const loginModal = ref(false);
 const loginHeader = ref("Sign in");

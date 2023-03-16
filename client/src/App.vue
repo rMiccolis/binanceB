@@ -210,9 +210,9 @@ onMounted(async () => {
   // await isLoggedIn();
   mainStore.isLoggedIn();
   let test = import.meta.env
-  console.log(baseURL);
-  console.log(test);
-  console.log(process.env);
+  console.log(baseURL, 'process.env.SERVER_URI');
+  console.log(test), 'import.meta.env';
+  console.log(process.env, 'process.env');
 });
 
 watch(

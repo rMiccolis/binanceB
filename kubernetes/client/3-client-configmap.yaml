@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-configmap
+  namespace: binance-b
+data:
+  proxy_uri: "backend.binance-b.com/server/"

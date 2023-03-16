@@ -29,6 +29,12 @@ spec:
         - containerPort: 80
         env: 
         - name: SERVER_URI
-          value: backend.binance-b.com/server/
+          valueFrom:
+           configMapKeyRef:
+             name: client-configmap
+             key: proxy_uri
         - name: VUE_APP_SERVER_URI
-          value: backend.binance-b.com/server/
+          valueFrom:
+           configMapKeyRef:
+             name: client-configmap
+             key: proxy_uri

@@ -6,6 +6,7 @@ RUN npm install
 COPY . ./
 RUN echo "VUE_APP_SERVER_URI=$VUE_APP_SERVER_URI" >> .env
 RUN echo "SERVER_URI=$SERVER_URI" >> .env
+RUN env_content=$(cat .env) && echo $env_content
 RUN npm run build
 
 # production stage

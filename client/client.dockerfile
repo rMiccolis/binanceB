@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . ./
+RUN l=$(ls) && echo $l
+RUN env_content=$(cat .env) && echo $env_content
 RUN npm run build
 
 # production stage

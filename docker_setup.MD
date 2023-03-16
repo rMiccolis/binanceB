@@ -5,6 +5,9 @@ position in the root directory
 create docker server build: sudo docker build -t rmiccolis/binanceb_nodejs_server -f ./server/server.dockerfile ./server/
 create docker client build: sudo docker build -t rmiccolis/binanceb_vuejs_client -f ./client/client.dockerfile ./client/
 
+create build and debug:
+sudo docker build --no-cache --progress=plain -t rmiccolis/binanceb_vuejs_client -f ./client/client.dockerfile ./client/
+
 push images: sudo docker push rmiccolis/binanceb_nodejs_server:NOMETAG
 push images: sudo docker push rmiccolis/binanceb_vuejs_client:NOMETAG
 -------------kubernetes end-------------

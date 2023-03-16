@@ -6,6 +6,7 @@ create docker server build: sudo docker build -t rmiccolis/binanceb_nodejs_serve
 create docker client build: sudo docker build -t rmiccolis/binanceb_vuejs_client -f ./client/client.dockerfile ./client/
 
 push images: docker push rmiccolis/binanceb_nodejs_server:NOMETAG
+push images: docker push rmiccolis/binanceb_vuejs_client:NOMETAG
 -------------kubernetes end-------------
 
 

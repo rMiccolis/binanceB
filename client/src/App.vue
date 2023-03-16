@@ -209,7 +209,9 @@ const isLoggedIn = async function () {
 onMounted(async () => {
   // await isLoggedIn();
   mainStore.isLoggedIn();
+  let test = import.meta.env
   console.log(baseURL);
+  console.log(test);
 });
 
 watch(

@@ -77,7 +77,7 @@ app.use("/", generalRouter);
 
 app.use("/auth", authApi);
 app.use("/api/utils", utilsApi);
-app.use("/test", testApi);
+// app.use("/test", testApi);
 app.use("/api/wallet", walletApi);
 
 // process.stdin.resume(); //so the program will not close instantly

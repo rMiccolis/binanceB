@@ -5,7 +5,6 @@ const logger = require("morgan");
 var cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
-const auth = require("./middleware/auth.middleware");
 const testApi = require("./api/test");
 const walletApi = require("./api/wallet.api");
 const db = require("./mongodb/database");
@@ -79,7 +78,6 @@ app.use("/", generalRouter);
 app.use("/auth", authApi);
 app.use("/api/utils", utilsApi);
 app.use("/test", testApi);
-app.use(auth.checkJWT);
 app.use("/api/wallet", walletApi);
 
 // process.stdin.resume(); //so the program will not close instantly

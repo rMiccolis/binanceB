@@ -4,10 +4,11 @@ install nginx with helm:
     - helm repo update
     <!-- - helm pull nginx/nginx --untar -->
     <!-- - helm install -f ngingx_helm_values.yaml nginx-helm ingress-nginx/ingress-nginx -->
-    -  helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx
+    -  helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f kubernetes/nginx/ngingx_helm_
+values.yaml
 
 uninstall nginx with helm:
-    - helm uninstall ingress-nginx
+    - helm uninstall ingress-nginx -n ingress-nginx
 
 resolve problem with validatingwebhookconfiguration:
       - I had the same problem and found a solution from another SO thread.

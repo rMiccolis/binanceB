@@ -4,9 +4,10 @@ controller:
   config:
     server-snippet: |
       location ~* "^/(.*)" {
-          if ($request_method =  "POST") {
-            return 403;
-          } 
+        add_header Access-Control-Allow-Origin *;
+        if ($request_method =  "POST") {
+          return 403;
+        } 
       }
     use-forwarded-headers: true
     use-gzip: true

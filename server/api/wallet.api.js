@@ -3,7 +3,9 @@ var router = express.Router();
 const { Spot } = require("@binance/connector");
 const walletInfo = require("../src/wallet/walletInfo");
 const earn = require("../src/wallet/earn");
+const auth = require("../middleware/auth.middleware");
 
+router.use(auth.checkJWT);
 router.get("/", async (req, res, next) => {
     try {
         const spotClient = global.users[req.locals.userId].binanceSpotConnection;

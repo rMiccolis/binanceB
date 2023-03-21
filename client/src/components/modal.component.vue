@@ -1,5 +1,6 @@
 <template>
   <v-row justify="center">
+<<<<<<< HEAD
     <v-dialog
       v-model="modalState"
       :persistent="persistent"
@@ -17,6 +18,34 @@
           </v-container>
         </v-card-text>
         <v-card-actions>
+=======
+    <v-dialog v-model="modalState" :persistent="persistent">
+      <v-toolbar dark color="blue" class="text-center">
+        <v-row no-gutters align="center" :justify="'end'">
+          <v-col cols="2">
+            <v-btn icon dark @click="toggleModal">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-col>
+          <!-- <v-spacer></v-spacer> -->
+          <v-col cols="9">
+            
+              <h3><slot name="header"></slot></h3>
+          </v-col>
+          <v-col></v-col>
+        </v-row>
+        <!-- <v-card-title v-if="$slots.header">
+        
+      </v-card-title> -->
+      </v-toolbar>
+      <v-card :min-width="'75vw'" :max-width="'100vw'" :width="'85vw'">
+        <v-card-text class="mt-0 pt-0" v-if="$slots.body">
+          <!-- <v-container> -->
+            <slot name="body"></slot>
+          <!-- </v-container> -->
+        </v-card-text>
+        <v-card-actions v-if="$slots.footer">
+>>>>>>> develop
           <v-spacer></v-spacer>
           <slot name="footer"></slot>
         </v-card-actions>

@@ -10,8 +10,7 @@ let checkJWT = async (req, res, next) => {
             let decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
             req.locals["userId"] = decoded.userId;
             let userId = req.locals.userId;
-            if (!(userId in global.binanceConnections)) {
-                console.log(global.binanceConnections);
+            if (!(userId in global.users)) {
                 console.logDebug(`Setting Binance connection for user: ${userId}`);
                 await sessionHandler.setBinanceConnection(userId);
             }
@@ -23,6 +22,7 @@ let checkJWT = async (req, res, next) => {
         }
     } else {
         //manca access_token
+        console.logError("checkJWT MISSING_TOKEN");
         await sessionHandler.revokeTokens(req, res)
         res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }

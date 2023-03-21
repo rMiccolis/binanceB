@@ -18,6 +18,7 @@ let stakingInfo = ref(null);
 let userId = "Bob617";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 let detailData = ref([]);
 
@@ -33,6 +34,7 @@ let getStakingInfo = async () => {
       return;
     }
   }
+<<<<<<< HEAD
   // let stakingData = (
   //   await axios.get("http://localhost:3000/api/earn/staking", {withCredentials: true})
   // ).data;
@@ -49,6 +51,24 @@ let getStakingInfo = async () => {
   //   timestamp: Date.now(),
   //   data: tempData
   // };
+=======
+  let stakingData = (
+    await axios.get(`${baseURL}api/wallet/staking`, {withCredentials: true})
+  ).data;
+  let tempData = [];
+  for (const el of stakingData) {
+    tempData.push({ asset: el.asset, amount: el.amount, apy: el.apy });
+    detailData.value.push({
+      end_Date: new Date(el.interestEndDate).toLocaleDateString(),
+      duration: el.duration,
+      earn_X_day: el.nextInterestPay,
+    });
+  }
+  stakingInfo.value = {
+    timestamp: Date.now(),
+    data: tempData
+  };
+>>>>>>> develop
 
   //PROVA ANDROID
   setTimeout(() => {

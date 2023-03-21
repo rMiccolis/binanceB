@@ -5,19 +5,18 @@ const logger = require("morgan");
 var cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
-const auth = require("./middleware/auth.middleware");
-const indexRouter = require("./routes/index");
-const accountApiRouter = require("./api/account.api");
-const earnApiRouter = require("./api/earn.api");
+const testApi = require("./api/test");
+const walletApi = require("./api/wallet.api");
 const db = require("./mongodb/database");
 const exitHandler = require("./handlers/exit.handler");
-const authRouter = require("./routes/auth.router");
+const authApi = require("./api/auth.api");
 const logHandler = require("./handlers/log.handler");
+const utilsApi = require("./api/utils.api");
+const generalRouter = require("./api/general.api");
 
 // Initialize global session variable
-global.usersDBConnections = {};
-global.db = {};
-global.binanceConnections = {};
+global.globalDBConnection = {};
+global.users = {};
 
 dotenv.config();
 const app = express();
@@ -27,7 +26,6 @@ console.logDebug = logHandler.logDebug;
 console.logWarning = logHandler.logWarning;
 console.logError = logHandler.logError;
 console.logInfo = logHandler.logInfo;
-
 
 const corsOptions = { origin: true, credentials: true };
 
@@ -40,41 +38,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-const generalRouter = express.Router();
-generalRouter.route("/").get(async function (req, res) {
-  try {
-    if (global.db.readyState === 1) res.json({ health: "OK", message: "App is running!" });
-  } catch (error) {
-    res.json({ health: "KO", message: "App running but something goes wrong!" })
-  }
-});
-
-generalRouter.route("/healthCheck").get(async function (req, res) {
-  try {
-    if (global.db.readyState === 1){
-      let healthCheck = db.dynamicModel('healthCheck');
-      let healt = await healthCheck.aggregate([{$match: {}}])
-      res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
-    } 
-      
-  } catch (error) {
-    res.json({ health: "KO", message: "DB is is not running!" })
-  }
-});
-
 app.use((req, res, next) => {
-  req.locals = {}
-  next()
+    req.locals = {};
+    next();
 });
 
 //routes
 app.use("/", generalRouter);
-app.use("/auth", authRouter)
 
-app.use(auth.checkJWT);
-app.use("/test", indexRouter);
-app.use("/api/account", accountApiRouter);
-app.use("/api/earn", earnApiRouter);
+app.use("/auth", authApi);
+app.use("/api/utils", utilsApi);
+app.use("/test", testApi);
+app.use("/api/wallet", walletApi);
 
 // process.stdin.resume(); //so the program will not close instantly
 
@@ -91,14 +66,25 @@ app.use("/api/earn", earnApiRouter);
 // //catches uncaught exceptions
 // process.on("uncaughtException", exitHandler);
 
-let port = 3000;
+let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-  console.log("try it out on", "http://localhost:3000");
+    console.log(`Listening on port ${port}`);
+    console.log("try it out on", `http://localhost:${port}`);
+    console.log("list of ENV variables:\n", process.env);
 });
 
-db.connectToMongo(process.env.MONGODB_URI, "app").then((connection) => {
-  global.db = connection;
-});
+db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD, process.env.MONGODB_DB_NAME, "app")
+    .then(async (connection) => {
+        global.globalDBConnection = connection;
+        if (process.env.NODE_ENV === "develop") {
+            //mongodb Initialize data
+            await db.loadDefaultData();
+        }
+    })
+    .catch((error) => {
+        console.logError(error);
+        console.logError("unable to connect to db!");
+        process.exit(1);
+    });
 
 // app.addListener();

@@ -13,12 +13,12 @@ const { fromSecsToDate } = require('../utils/date');
  * @param {Array} [options.symbols] - an array of symbols
  *
  */
- let exchangeInfo = async (binance, symbol='BNBUSDT') => {
+ let exchangeInfo = async (binance, symbol=null) => {
     try {
-        let exchangeInfo = await binance.exchangeInfo({symbol: symbol});
+        let exchangeInfo = symbol != null ? await binance.exchangeInfo({symbol: symbol}) : await binance.exchangeInfo();
         return exchangeInfo.data;
     } catch (error) {
-        console.log(error.response.data);
+        console.log(error.response?.data || error);
         return "Error - Unable to get info for: " + symbol + " !";
     }
   }

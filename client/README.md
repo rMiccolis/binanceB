@@ -27,3 +27,9 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Crypto Icons Source:
+
+```sh
+https://github.com/mdfarhaan/cryptoflash-icons-api
+```

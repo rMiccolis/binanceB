@@ -18,6 +18,7 @@ let accountInfo = ref(null);
 let userId = "test";
 // let userId = "test";
 let maxRefreshTimeSecs = 10;
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 onMounted(async () => {
   await getAccountInfo();
@@ -32,6 +33,7 @@ let getAccountInfo = async () => {
     }
   }
 
+<<<<<<< HEAD
   // let dataFetched = (
   //   await axios.get("http://localhost:3000/api/account", {
   //     withCredentials: true,
@@ -60,6 +62,36 @@ let getAccountInfo = async () => {
       permissions: ["SPOT"],
     };
   }, 500);
+=======
+  let dataFetched = (
+    await axios.get(`${baseURL}api/wallet`, {
+      withCredentials: true,
+    })
+  ).data;
+  accountInfo.value = {
+    timestamp: Date.now(),
+    data: dataFetched,
+  };
+
+  // PROVA ANDROID
+  // setTimeout(() => {
+  //   accountInfo.value = {
+  //     data: {
+  //       balances: [
+  //         { asset: "BNB", free: "1000.70000000", locked: "0.00000000" },
+  //         { asset: "BTC", free: "1.00000000", locked: "0.00000000" },
+  //         { asset: "BUSD", free: "10000.00000000", locked: "0.00000000" },
+  //         { asset: "ETH", free: "100.00000000", locked: "0.00000000" },
+  //         { asset: "LTC", free: "500.00000000", locked: "0.00000000" },
+  //         { asset: "TRX", free: "500000.00000000", locked: "0.00000000" },
+  //         { asset: "USDT", free: "9800.60500000", locked: "0.00000000" },
+  //         { asset: "XRP", free: "50000.00000000", locked: "0.00000000" },
+  //       ],
+  //     },
+  //     permissions: ["SPOT"],
+  //   };
+  // }, 500);
+>>>>>>> develop
 };
 </script>
 

@@ -26,8 +26,8 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
     let currentTime = Date.now();
 
     // set tokens expire time
-    const refresh_token_expiry = process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000;
-    const access_token_expiry = process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000;
+    const refresh_token_expiry =  parseInt(process.env.REFRESH_TOKEN_LIFETIME) * 60 * 1000;
+    const access_token_expiry = parseInt(process.env.ACCESS_TOKEN_LIFETIME) * 60 * 1000;
 
     // create json web token
     tokenData.iat = currentTime;
@@ -44,7 +44,7 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
         let users = db.dynamicModel("users");
         await users.updateOne({ userId: tokenData.userId }, { $set: { refresh_token: refresh_token, last_update: Date.now() } });
         res.cookie("refresh_token", refresh_token, {
-            maxAge: process.env.REFRESH_TOKEN_LIFETIME * 60 * 1000,
+            maxAge:  parseInt(process.env.REFRESH_TOKEN_LIFETIME) * 60 * 1000,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", //https
             sameSite: "Strict",
@@ -53,7 +53,7 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
     }
 
     res.cookie("access_token", access_token, {
-        maxAge: process.env.ACCESS_TOKEN_LIFETIME * 60 * 1000,
+        maxAge:  parseInt(process.env.ACCESS_TOKEN_LIFETIME) * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", //https
         sameSite: "Strict",
@@ -68,17 +68,21 @@ const setBinanceConnection = async function (userId) {
     let users = db.dynamicModel("users");
     let user = (await users.aggregate([{ $match: { userId: userId } }]))[0];
     let baseUrl;
+    let wsBaseUrl;
     if (userId != "Bob617") {
         baseUrl = process.env.TESTNET_BASE_URL;
+        wsBaseUrl = process.env.TESTNET_WEBSOCKET_BASE_URL;
     } else {
         baseUrl = process.env.BINANCE_BASE_URL;
+        wsBaseUrl = process.env.BINANCE_WEBSOCKET_BASE_URL;
         console.log("ATTENZIONE STAI USANDO L'ACCOUNT REALE");
     }
 
     let apiKey = user.API_KEY;
     let apiSecret = user.API_SECRET;
-    const spotClient = new Spot(apiKey, apiSecret, { baseURL: baseUrl });
-    global.binanceConnections[userId] = spotClient;
+    
+    const spotClient = new Spot(apiKey, apiSecret, { baseURL: baseUrl, wsURL: wsBaseUrl });
+    global.users[userId] = { binanceSpotConnection: spotClient};
 };
 
 const refresh = async (req, res) => {
@@ -199,7 +203,7 @@ const logout = async (req, res) => {
         }
     } else {
         //manca access_token
-        console.logError(error);
+        console.logError("No access token received, logging out");
         await revokeTokens(req, res);
         res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }

@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  namespace: binance-b
+  labels:
+    app: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: rmiccolis/binanceb_nodejs_server
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: 200m
+          requests:
+            memory: 256Mi
+            cpu: 200m
+        ports:
+        - containerPort: 3000
+        env: 
+        - name: MONGODB_USERNAME
+          valueFrom:
+           secretKeyRef:
+             name: mongodb-secret
+             key: mongo-root-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+           secretKeyRef:
+             name: mongodb-secret
+             key: mongo-root-password
+        - name: MONGODB_DB_NAME
+          valueFrom:
+           configMapKeyRef:
+             name: mongodb-configmap
+             key: mongodb_db_name
+        - name: MONGODB_URI
+          value: $(MONGODB_SERVICE_HOST)
+        - name: MONGODB_PORT
+          value: $(MONGODB_SERVICE_PORT)
+        - name: SERVER_PORT
+          value: '3000'
+        - name: NODE_ENV
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: NODE_ENV
+        - name: TESTNET_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: TESTNET_BASE_URL
+        - name: TESTNET_WEBSOCKET_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: TESTNET_WEBSOCKET_BASE_URL
+        - name: BINANCE_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: BINANCE_BASE_URL
+        - name: BINANCE_WEBSOCKET_BASE_URL
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: BINANCE_WEBSOCKET_BASE_URL
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: ACCESS_TOKEN_SECRET
+        - name: REFRESH_TOKEN_SECRET
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: REFRESH_TOKEN_SECRET
+        - name: ACCESS_TOKEN_LIFETIME
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: ACCESS_TOKEN_LIFETIME
+        - name: REFRESH_TOKEN_LIFETIME
+          valueFrom:
+           configMapKeyRef:
+             name: server-configmap
+             key: REFRESH_TOKEN_LIFETIME

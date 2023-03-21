@@ -8,8 +8,13 @@
       :key="index"
     >
       <!-- <v-col class="p-10"> -->
+<<<<<<< HEAD
       <v-btn class="pt-2" width="100%" height="6.5vh" size="x-small" @click="menu.action(menu)">
         <v-icon x-large class="b-icon-size pb-3">{{menu.icon}}</v-icon>
+=======
+      <v-btn class="mt-2 mb-2" width="100%" height="fit-content" size="x-small" @click="menu.action(menu)">
+        <v-icon x-large class="b-icon-size">{{menu.icon}}</v-icon>
+>>>>>>> develop
         <span class="b-text-newline">{{ menu.name }}</span>
       </v-btn>
     </div>
@@ -46,7 +51,12 @@ const props = defineProps({
   display: inline;
   width: 25%;
   color: rgb(0, 162, 255);
+<<<<<<< HEAD
   border-right: 1px solid rgba(0, 162, 255, 0.245);
   border-top: 1px solid rgba(0, 162, 255, 0.475);
+=======
+  /* border-right: 1px solid rgba(0, 162, 255, 0.245); */
+  /* border-top: 1px solid rgba(0, 162, 255, 0.475); */
+>>>>>>> develop
   }
 </style>

@@ -60,6 +60,14 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
     }
 });
 
+generalRouter.route("/test").post(async function (req, res) {
+    try {
+        res.json({test: "passed"})
+    } catch (error) {
+        res.json({test: "not passed"});
+    }
+});
+
 app.use((req, res, next) => {
     req.locals = {};
     next();

@@ -29,8 +29,10 @@ async function loadDefaultData(params) {
         let count = await collection.count();
         if (count === 0) {
             for (const obj of fileContent) {
-                let id = obj["_id"]["$oid"];
-                obj["_id"] = mongoose.Types.ObjectId(id);
+                if (obj['_id']?.["$oid"]) {
+                    let id = obj["_id"]["$oid"];
+                    obj["_id"] = mongoose.Types.ObjectId(id);
+                }
             }
             collection.insertMany(fileContent, function (error, docs) {
                 if (error) console.log(error);

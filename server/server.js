@@ -82,7 +82,7 @@ db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env
         }
     })
     .catch((error) => {
-        console.logError(error);
+        console.logError(error.message);
         console.logError("unable to connect to db!");
         process.exit(1);
     });

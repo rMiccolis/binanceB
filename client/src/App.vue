@@ -213,6 +213,14 @@ onMounted(async () => {
   console.log(baseURL, 'process env SERVER_URI');
   console.log(test, 'import meta env');
   console.log(process.env, 'process env');
+  let response = await axios.post(
+    `${baseURL}test/test`,
+    {
+      prova: "prova",
+      prova2: "prova2",
+    }
+  );
+  console.log(response.data);
 });
 
 watch(

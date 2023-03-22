@@ -19,15 +19,3 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
         res.json({ health: "KO", message: "DB is is not running!" });
     }
 });
-
-generalRouter.route("/test").post(async function (req, res) {
-    try {
-        res.json({
-            test: "passed!",
-            params: req.params,
-            query: require.query,
-            body: require.body})
-    } catch (error) {
-        res.json({ test: "not passed :("});
-    }
-});

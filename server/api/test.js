@@ -21,4 +21,16 @@ router.get('/testws', async (req, res) => {
   res.json(data);
 });
 
+router.route("/test").post(async function (req, res) {
+  try {
+      res.json({
+          test: "passed!",
+          params: req.params,
+          query: require.query,
+          body: require.body})
+  } catch (error) {
+      res.json({ test: "not passed :("});
+  }
+});
+
 module.exports = router;

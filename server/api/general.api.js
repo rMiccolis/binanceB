@@ -20,3 +20,5 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
         res.json({ health: "KO", message: "DB is is not running!" });
     }
 });
+
+module.exports = generalRouter;

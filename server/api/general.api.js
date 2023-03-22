@@ -17,7 +17,7 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
             res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
         }
     } catch (error) {
-        res.json({ health: "KO", message: "DB is is not running!", error: error });
+        res.json({ health: "KO", message: "DB is is not running!", error: error.message });
     }
 });
 

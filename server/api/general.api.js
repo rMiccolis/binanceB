@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("./mongodb/database");
+const db = require("../mongodb/database");
 const generalRouter = express.Router();
 
 generalRouter.route("/").get(async function (req, res) {

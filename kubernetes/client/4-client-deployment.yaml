@@ -18,6 +18,7 @@ spec:
       containers:
       - name: client
         image: rmiccolis/binanceb_vuejs_client
+        imagePullPolicy: "Always"
         resources:
           requests:
             memory: 256Mi

@@ -18,6 +18,7 @@ spec:
       containers:
       - name: server
         image: rmiccolis/binanceb_nodejs_server
+        imagePullPolicy: "Always"
         resources:
           limits:
             memory: 256Mi

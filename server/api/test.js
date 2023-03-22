@@ -26,8 +26,8 @@ router.route("/test").post(async function (req, res) {
       res.json({
           test: "passed!",
           params: req.params,
-          query: require.query,
-          body: require.body})
+          query: req.query,
+          body: req.body})
   } catch (error) {
       res.json({ test: "not passed :("});
   }

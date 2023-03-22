@@ -1,5 +1,7 @@
 const express = require("express");
+const db = require("./mongodb/database");
 const generalRouter = express.Router();
+
 generalRouter.route("/").get(async function (req, res) {
     try {
         if (global.globalDBConnection.readyState === 1) res.json({ health: "OK", message: "App is running!" });

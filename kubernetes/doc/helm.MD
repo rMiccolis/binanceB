@@ -1,10 +1,10 @@
 install nginx with helm:
-    - cd into kubernetes/nginx/ dir
-    - helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-    - helm repo update
+    - run: cd kubernetes/nginx/
+    - run: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    - run: helm repo update
     <!-- - helm pull nginx/nginx --untar -->
     <!-- - helm install -f ngingx_helm_values.yaml nginx-helm ingress-nginx/ingress-nginx -->
-    -  helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f kubernetes/nginx/ngingx_helm_values.yaml
+    - run: helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f ./ngingx_helm_values.yaml
 
 uninstall nginx with helm:
     - helm uninstall ingress-nginx -n ingress-nginx
@@ -15,5 +15,6 @@ resolve problem with validatingwebhookconfiguration:
 
         Once I deleted the ValidatingWebhookConfiguration, my helm installation went flawlessly.
 
-        list validatingwebhooks: kubectl get validatingwebhookconfiguration and then:
-        kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+        list validatingwebhooks: 
+        - run: kubectl get validatingwebhookconfiguration and then:
+        - run: kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission

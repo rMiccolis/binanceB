@@ -13,7 +13,7 @@ EOF
 #hostnamectl set-hostname #nomehost
 
 #disable swap
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
 sudo swapoff -a
 
 ###############################################################################
@@ -89,6 +89,10 @@ cd cri-dockerd/
 mkdir -p /usr/local/bin
 sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 
+# check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
+# edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
+# into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin='
+
 sudo tee /etc/systemd/system/cri-docker.service << EOF
 [Unit]
 Description=CRI Interface for Docker Application Container Engine
@@ -140,7 +144,7 @@ sudo systemctl enable --now cri-docker.socket
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 sudo apt-get install -y apt-transport-https ca-certificates curl
 
 # Download the Google Cloud public signing key:

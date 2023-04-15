@@ -1,6 +1,11 @@
 
 # Virtual machine operations
 
+#tested versions:
+- Ubuntu version: 20.04.6 LTS
+- kernel version: 5.4.0-146-generic
+- docker version: /23.0.3
+
 ## Choose a linux distro which makes use of systemd as init service
 
 After creating VM with a linux distro:
@@ -12,4 +17,4 @@ After creating VM with a linux distro:
 # OS Ooerations
 - grant sudo permissions to the system user account to which connect through ssh
 - install an ssh server
-- disable swap partition if enabled (run script disable_swap.sh)
+- disable swap partition if enabled

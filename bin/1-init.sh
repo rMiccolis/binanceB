@@ -29,6 +29,7 @@ br_netfilter
 EOF
 
 sudo modprobe overlay
+
 sudo modprobe br_netfilter
 
 # sysctl params required by setup, params persist across reboots
@@ -53,6 +54,7 @@ sudo sysctl --system
 # Install Docker Engine
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 sudo apt-get update
+
 sudo apt-get install \
     ca-certificates \
     curl \
@@ -60,6 +62,7 @@ sudo apt-get install \
 
 # Add Docker’s official GPG key:
 sudo mkdir -m 0755 -p /etc/apt/keyrings
+
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 # set up the repository:
@@ -74,8 +77,11 @@ sudo apt-get update
 
 # install the latest version
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
 sudo systemctl start docker
+
 sudo systemctl enable docker
+
 # Verify installation
 sudo docker run hello-world
 ###############################################################################
@@ -83,10 +89,14 @@ sudo docker run hello-world
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
+
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
+
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz
+
 cd cri-dockerd/
 mkdir -p /usr/local/bin
+
 sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 
 # check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
@@ -133,9 +143,10 @@ WantedBy=sockets.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable cri-docker.service
-sudo systemctl enable --now cri-docker.socket
 
+sudo systemctl enable cri-docker.service
+
+sudo systemctl enable --now cri-docker.socket
 
 ###############################################################################
 
@@ -144,7 +155,9 @@ sudo systemctl enable --now cri-docker.socket
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 sudo apt-get update
+
 sudo apt-get upgrade -y
+
 sudo apt-get install -y apt-transport-https ca-certificates curl
 
 # Download the Google Cloud public signing key:
@@ -155,9 +168,11 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://a
 
 # Update apt package index, install kubelet, kubeadm and kubectl, and pin their version:
 sudo apt-get update
+
 sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-get install -y kubelet=1.26.0-00 kubeadm=1.26.0-00 kubectl=1.26.0-00
-# sudo apt-mark hold kubelet kubeadm kubectl
+
+# sudo apt-get install -y kubelet=1.26.0-00 kubeadm=1.26.0-00 kubectl=1.26.0-00
+sudo apt-mark hold kubelet kubeadm kubectl
 ###############################################################################
 
 ###############################################################################
@@ -165,10 +180,12 @@ sudo apt-get install -y kubelet=1.26.0-00 kubeadm=1.26.0-00 kubectl=1.26.0-00
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock
 
 mkdir -p $HOME/.kube
+
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 #install calico CNI to kubernetes cluster:
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O
-kubectl apply -f calico.yaml
 
+kubectl apply -f calico.yaml

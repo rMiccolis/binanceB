@@ -5,6 +5,7 @@
 - Ubuntu version: 20.04.6 LTS
 - kernel version: 5.4.0-146-generic
 - docker version: /23.0.3
+- kubernetes version 1.26 / 1.27
 
 ## Choose a linux distro which makes use of systemd as init service
 

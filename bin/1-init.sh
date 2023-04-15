@@ -1,5 +1,24 @@
 #!/bin/bash
 
+#export colors for colored output strings
+BLACK="\033[0;30m"
+DARK_GREY="\033[1;30m"
+RED="\033[0;31m"
+LRED="\033[1;31m"
+GREEN="\033[0;32m"
+LGREEN="\033[1;32m"
+ORANGE="\033[0;33m"
+YELLOW="\033[1;33m"
+BLUE="\033[0;34m"
+LBLUE="\033[1;34m"
+PURPLE="\033[0;35m"
+LPURPLE="\033[1;35m"
+CYAN="\033[0;36m"
+LCYAN="\033[1;36m"
+LGRAY="\033[0;37m"
+WITE="\033[1;37m"
+echo -e "${BLUE}Setting up cluster: => IP: $(hostname -I)"
+
 #save host ip address
 # export ip_addr=$(hostname -I)
 # export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
@@ -13,11 +32,13 @@
 #hostnamectl set-hostname #nomehost
 
 #disable swap
+echo -e "${CYAN}disable swap"
 sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
 sudo swapoff -a
 
 ###############################################################################
 # Forwarding IPv4 and letting iptables see bridged traffic
+echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic"
 cat <<EOF | tee /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
@@ -52,6 +73,7 @@ sudo sysctl --system
 
 ###############################################################################
 # Install Docker Engine
+echo -e "${CYAN}Installinging Docker Engine"
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 sudo apt-get update
 
@@ -89,7 +111,7 @@ sudo docker run hello-world
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
-
+echo -e "${CYAN}Installinging the docker cri (Container Runtime Interface)"
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
 
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz
@@ -152,6 +174,7 @@ sudo systemctl enable --now cri-docker.socket
 
 ###############################################################################
 # Install Kubernetes
+echo -e "${CYAN}Installinging Kubernetes"
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 sudo apt-get update
@@ -177,6 +200,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ###############################################################################
 # Init kubeadm cluster
+echo -e "${CYAN}Init kubeadm cluster"
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock
 
 mkdir -p $HOME/.kube
@@ -186,6 +210,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 #install calico CNI to kubernetes cluster:
+echo -e "${CYAN}Installinging calico CNI to kubernetes cluster"
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O
 
 kubectl apply -f calico.yaml

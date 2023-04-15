@@ -16,8 +16,8 @@ LPURPLE="\033[1;35m"
 CYAN="\033[0;36m"
 LCYAN="\033[1;36m"
 LGRAY="\033[0;37m"
-WITE="\033[1;37m"
-echo -e "${BLUE}Setting up cluster: => IP: $(hostname -I)"
+WHITE="\033[1;37m"
+echo -e "${BLUE}Setting up cluster: => IP: $(hostname -I)${WHITE}"
 
 #save host ip address
 # export ip_addr=$(hostname -I)
@@ -38,7 +38,7 @@ sudo swapoff -a
 
 ###############################################################################
 # Forwarding IPv4 and letting iptables see bridged traffic
-echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic"
+echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic${WHITE}"
 cat <<EOF | tee /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
@@ -73,7 +73,7 @@ sudo sysctl --system
 
 ###############################################################################
 # Install Docker Engine
-echo -e "${CYAN}Installinging Docker Engine"
+echo -e "${CYAN}Installinging Docker Engine${WHITE}"
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 sudo apt-get update
 
@@ -111,7 +111,7 @@ sudo docker run hello-world
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
-echo -e "${CYAN}Installinging the docker cri (Container Runtime Interface)"
+echo -e "${CYAN}Installinging the docker cri (Container Runtime Interface)${WHITE}"
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
 
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz
@@ -174,7 +174,7 @@ sudo systemctl enable --now cri-docker.socket
 
 ###############################################################################
 # Install Kubernetes
-echo -e "${CYAN}Installinging Kubernetes"
+echo -e "${CYAN}Installinging Kubernetes${WHITE}"
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 sudo apt-get update
@@ -200,7 +200,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ###############################################################################
 # Init kubeadm cluster
-echo -e "${CYAN}Init kubeadm cluster"
+echo -e "${CYAN}Init kubeadm cluster${WHITE}"
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock
 
 mkdir -p $HOME/.kube
@@ -210,7 +210,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 #install calico CNI to kubernetes cluster:
-echo -e "${CYAN}Installinging calico CNI to kubernetes cluster"
+echo -e "${CYAN}Installinging calico CNI to kubernetes cluster${WHITE}"
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O
 
 kubectl apply -f calico.yaml

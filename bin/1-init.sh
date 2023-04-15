@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #save host ip address
-export ip_addr=$(hostname -I)
-export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
-hostnamectl set-hostname $host_name
+# export ip_addr=$(hostname -I)
+# export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
+# hostnamectl set-hostname $host_name
 
-cat << EOF | sudo tee -a /etc/hosts
-$ip_addr $host_name
-EOF
+# cat << EOF | sudo tee -a /etc/hosts
+# $ip_addr $host_name
+# EOF
 
 #AGGIUNGI IP CON NOME M1 (O QUELLO CHE TI PARE) NEL FILE hosts
 #hostnamectl set-hostname #nomehost

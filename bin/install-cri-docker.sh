@@ -1,23 +1,24 @@
 #!/bin/bash
 
+sudof
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
 echo -e "${CYAN}Installinging the docker cri (Container Runtime Interface)${WHITE}"
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
 
-sudof tar -xvf cri-dockerd-0.3.1.amd64.tgz
+sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz
 
 cd cri-dockerd/
 mkdir -p /usr/local/bin
 
-sudof install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
+sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 
 # check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
 # edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
 # into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin='
 
-sudof tee /etc/systemd/system/cri-docker.service << EOF
+sudo tee /etc/systemd/system/cri-docker.service << EOF
 [Unit]
 Description=CRI Interface for Docker Application Container Engine
 Documentation=https://docs.mirantis.com
@@ -43,7 +44,7 @@ KillMode=process
 WantedBy=multi-user.target
 EOF
 
-sudof tee /etc/systemd/system/cri-docker.socket << EOF
+sudo tee /etc/systemd/system/cri-docker.socket << EOF
 [Unit]
 Description=CRI Docker Socket for the API
 PartOf=cri-docker.service
@@ -56,10 +57,10 @@ SocketGroup=docker
 WantedBy=sockets.target
 EOF
 
-sudof systemctl daemon-reload
+sudo systemctl daemon-reload
 
-sudof systemctl enable cri-docker.service
+sudo systemctl enable cri-docker.service
 
-sudof systemctl enable --now cri-docker.socket
+sudo systemctl enable --now cri-docker.socket
 
 ###############################################################################

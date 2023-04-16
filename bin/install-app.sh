@@ -16,4 +16,4 @@ echo "Username: $username";
 echo "Username: $password";
 
 # login into docker
-sudof docker login --username $username --password $password
+sudo docker login --username $username --password $password

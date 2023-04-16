@@ -36,10 +36,10 @@ export WHITE="\033[1;37m"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
 # take sudof psw so it is asked just once and ensure that sudof is used just when really needed
-echo "[sudo] password for m1:\n"; read -s sudoPassword
-sudof  () 
+echo "[sudo] password for m1:"; read -s sudoPassword
+sudof() 
 {
-  echo $sudoPass | sudo -S "$@"
+  echo $sudoPass | sudo -S echo ""
 }
 export sudoPass=$sudoPassword
 export -f sudof

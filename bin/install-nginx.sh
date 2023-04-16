@@ -7,7 +7,7 @@ export ip_addr=$(hostname -I | awk '{print $1}')
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
-cat <<EOF | sudo tee nginx_helm_config.yaml
+cat <<EOF | sudof tee nginx_helm_config.yaml
 controller:
   service:
     externalIPs: [$ip_addr]

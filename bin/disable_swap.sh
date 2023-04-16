@@ -10,6 +10,8 @@ systemctl daemon-reload
 echo "disk name found: " $swap_disk_name
 fi
 
+
+
 # or run this command:
 # sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
 # sudo swapoff -a

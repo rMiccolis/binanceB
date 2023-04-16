@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#take sudoppsw so it is asked just once and ensure that sudopis used just when really needed
-echo "[sudo] password for m1:"; read -s sudoPW
-sudop () {
-  echo $sudoPW | sudo-S "$@"
+#take sudop psw so it is asked just once and ensure that sudop is used just when really needed
+echo "[sudo] password for m1:"; read -s sudop W
+sudop  () {
+  echo $sudop W | sudo-S "$@"
 }
 
 #export colors for colored output strings
@@ -30,14 +30,14 @@ echo -e "${BLUE}Setting up cluster: => IP: $(hostname -I)${WHITE}"
 # export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
 # hostnamectl set-hostname $host_name
 
-# cat << EOF | sudoptee -a /etc/hosts
+# cat << EOF | sudop tee -a /etc/hosts
 # $ip_addr $host_name
 # EOF
 
 #disable swap
 echo -e "${CYAN}disable swap"
-sudopsed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
-sudopswapoff -a
+sudop sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
+sudop swapoff -a
 
 ###############################################################################
 # Forwarding IPv4 and letting iptables see bridged traffic
@@ -52,9 +52,9 @@ overlay
 br_netfilter
 EOF
 
-sudopmodprobe overlay
+sudop modprobe overlay
 
-sudopmodprobe br_netfilter
+sudop modprobe br_netfilter
 
 # sysctl params required by setup, params persist across reboots
 cat <<EOF | tee /etc/sysctl.d/k8s.conf
@@ -64,7 +64,7 @@ net.ipv4.ip_forward                 = 1
 EOF
 
 # Apply sysctl params without reboot
-sudopsysctl --system
+sudop sysctl --system
 
 # Verify that the br_netfilter, overlay modules are loaded by running below instructions:
 # lsmod | grep br_netfilter
@@ -78,37 +78,37 @@ sudopsysctl --system
 # Install Docker Engine
 echo -e "${CYAN}Installinging Docker Engine${WHITE}"
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
-sudopapt-get update
+sudop apt-get update
 
-sudopapt-get install \
+sudop apt-get install \
     ca-certificates \
     curl \
     gnupg
 
 # Add Docker’s official GPG key:
-sudopmkdir -m 0755 -p /etc/apt/keyrings
+sudop mkdir -m 0755 -p /etc/apt/keyrings
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudopgpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudop gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 # set up the repository:
 echo \
   "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudoptee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudop tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# sudopchmod a+r /etc/apt/keyrings/docker.gpg
+# sudop chmod a+r /etc/apt/keyrings/docker.gpg
 
-sudopapt-get update
+sudop apt-get update
 
 # install the latest version
-sudopapt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudop apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-sudopsystemctl start docker
+sudop systemctl start docker
 
-sudopsystemctl enable docker
+sudop systemctl enable docker
 
 # Verify installation
-sudopdocker run hello-world
+sudop docker run hello-world
 ###############################################################################
 
 ###############################################################################
@@ -117,18 +117,18 @@ sudopdocker run hello-world
 echo -e "${CYAN}Installinging the docker cri (Container Runtime Interface)${WHITE}"
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
 
-sudoptar -xvf cri-dockerd-0.3.1.amd64.tgz
+sudop tar -xvf cri-dockerd-0.3.1.amd64.tgz
 
 cd cri-dockerd/
 mkdir -p /usr/local/bin
 
-sudopinstall -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
+sudop install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 
 # check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
 # edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
 # into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin='
 
-sudoptee /etc/systemd/system/cri-docker.service << EOF
+sudop tee /etc/systemd/system/cri-docker.service << EOF
 [Unit]
 Description=CRI Interface for Docker Application Container Engine
 Documentation=https://docs.mirantis.com
@@ -154,7 +154,7 @@ KillMode=process
 WantedBy=multi-user.target
 EOF
 
-sudoptee /etc/systemd/system/cri-docker.socket << EOF
+sudop tee /etc/systemd/system/cri-docker.socket << EOF
 [Unit]
 Description=CRI Docker Socket for the API
 PartOf=cri-docker.service
@@ -167,11 +167,11 @@ SocketGroup=docker
 WantedBy=sockets.target
 EOF
 
-sudopsystemctl daemon-reload
+sudop systemctl daemon-reload
 
-sudopsystemctl enable cri-docker.service
+sudop systemctl enable cri-docker.service
 
-sudopsystemctl enable --now cri-docker.socket
+sudop systemctl enable --now cri-docker.socket
 
 ###############################################################################
 
@@ -180,37 +180,37 @@ sudopsystemctl enable --now cri-docker.socket
 echo -e "${CYAN}Installinging Kubernetes${WHITE}"
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
-sudopapt-get update
+sudop apt-get update
 
-sudopapt-get upgrade -y
+sudop apt-get upgrade -y
 
-sudopapt-get install -y apt-transport-https ca-certificates curl
+sudop apt-get install -y apt-transport-https ca-certificates curl
 
 # Download the Google Cloud public signing key:
-sudopcurl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+sudop curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
 # Add the Kubernetes apt repository:
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudoptee /etc/apt/sources.list.d/kubernetes.list
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudop tee /etc/apt/sources.list.d/kubernetes.list
 
 # Update apt package index, install kubelet, kubeadm and kubectl, and pin their version:
-sudopapt-get update
+sudop apt-get update
 
-sudopapt-get install -y kubelet kubeadm kubectl
+sudop apt-get install -y kubelet kubeadm kubectl
 
-# sudopapt-get install -y kubelet=1.26.0-00 kubeadm=1.26.0-00 kubectl=1.26.0-00
-sudopapt-mark hold kubelet kubeadm kubectl
+# sudop apt-get install -y kubelet=1.26.0-00 kubeadm=1.26.0-00 kubectl=1.26.0-00
+sudop apt-mark hold kubelet kubeadm kubectl
 ###############################################################################
 
 ###############################################################################
 # Init kubeadm cluster
 echo -e "${CYAN}Init kubeadm cluster${WHITE}"
-sudopkubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock
+sudop kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock
 
 mkdir -p $HOME/.kube
 
-sudopcp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudop cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 
-sudopchown $(id -u):$(id -g) $HOME/.kube/config
+sudop chown $(id -u):$(id -g) $HOME/.kube/config
 
 #install calico CNI to kubernetes cluster:
 echo -e "${CYAN}Installinging calico CNI to kubernetes cluster${WHITE}"

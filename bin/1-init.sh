@@ -1,8 +1,5 @@
 #!/bin/bash
 
-git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
-chmod u+x binanceB/bin/1-init.sh
-
 #take sudoppsw so it is asked just once and ensure that sudopis used just when really needed
 echo "[sudo] password for m1:"; read -s sudoPW
 sudop () {

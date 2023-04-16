@@ -34,7 +34,7 @@ done
 # take sudof psw so it is asked just once and ensure that sudof is used just when really needed
 echo "[sudo] password for m1:"; read -s sudoPass W
 sudof  () {
-  echo $sudoPass W | sudo-S "$@"
+  echo $sudoPass W | sudo -S "$@"
 }
 export sudoPass=$sudoPass
 export -f sudof

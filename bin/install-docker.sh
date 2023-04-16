@@ -39,15 +39,6 @@ sudof docker run hello-world
 ###############################################################################
 
 #login into docker hub
-while getopts u:p: option
-do
-    case "${option}"
-        in
-        u)username=${OPTARG};;
-        p)password=${OPTARG};;
-    esac
-done
-
-echo "Username: $username";
+echo "${CYAN}Docker Hub login with username: $docker_username${WHITE}";
 # login into docker
-sudof docker login --username $username --password $password
+sudof docker login --username $docker_username --password $docker_password

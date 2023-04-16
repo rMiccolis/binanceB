@@ -17,7 +17,7 @@ sudof swapoff -a
 
 # Forwarding IPv4 and letting iptables see bridged traffic
 echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic${WHITE}"
-cat <<EOF | tee /etc/modules-load.d/k8s.conf
+cat <<EOF | sudof tee /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
 EOF

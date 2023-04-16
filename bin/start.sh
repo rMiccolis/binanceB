@@ -1,17 +1,20 @@
 #!/bin/bash
 
 ############### IMPORTANT ###############
-while getopts ":du:dp:" opt; do
+while getopts ":u:p:" opt; do
   case $opt in
-    a) docker_username="$OPTARG"
+    u) docker_username="$OPTARG"
     ;;
-    b) docker_password="$OPTARG"
+    p) docker_password="$OPTARG"
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
         exit
     ;;
   esac
 done
+
+export docker_username=$docker_username
+export docker_password=$docker_password
 
 #export colors for colored output strings
 export BLACK="\033[0;30m"
@@ -33,7 +36,7 @@ export WHITE="\033[1;37m"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
 # take sudof psw so it is asked just once and ensure that sudof is used just when really needed
-echo "[sudo] password for m1:"; read -s sudoPassword
+echo "[sudo] password for m1:\n"; read -s sudoPassword
 sudof  () 
 {
   echo $sudoPass | sudo -S "$@"

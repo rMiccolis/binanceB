@@ -44,25 +44,24 @@ echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binan
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 # clone github repository code 
 git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
-chmod u+x binanceB/bin/1-init.sh
-chmod u+x binanceB/bin/set-host-settings.sh
-chmod u+x binanceB/bin/install-docker.sh
-chmod u+x binanceB/bin/install-cri-docker.sh
-chmod u+x binanceB/bin/install-kubernetes.sh
-chmod u+x binanceB/bin/install-helm.sh
-chmod u+x binanceB/bin/install-nginx.sh
-chmod u+x binanceB/bin/install-app.sh
+chmod u+x ./binanceB/bin/set-host-settings.sh
+chmod u+x ./binanceB/bin/install-docker.sh
+chmod u+x ./binanceB/bin/install-cri-docker.sh
+chmod u+x ./binanceB/bin/install-kubernetes.sh
+chmod u+x ./binanceB/bin/install-helm.sh
+chmod u+x ./binanceB/bin/install-nginx.sh
+chmod u+x ./binanceB/bin/install-app.sh
 cd binanceB
 
 echo -e "${GREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
-./binance/bin/set-host-settings.sh
+./bin/set-host-settings.sh
 echo -e "${GREEN}Starting phase 2 ===> Installing Docker${WHITE}"
-./binance/bin/install-docker.sh -u $docker_username -p $docker_password
+./bin/install-docker.sh -u $docker_username -p $docker_password
 echo -e "${GREEN}Starting phase 2 ===> Installing Cri-Docker (Container Runtime Interface)${WHITE}"
-./binance/bin/install-cri-docker.sh
+./bin/install-cri-docker.sh
 echo -e "${GREEN}Starting phase 2 ===> Installing Kubernetes${WHITE}"
-./binance/bin/install-kubernetes.sh
+./bin/install-kubernetes.sh
 echo -e "${GREEN}Starting phase 2 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
-./binance/bin/install-helm.sh
+./bin/install-helm.sh
 echo -e "${GREEN}Starting phase 2 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
-./binance/bin/install-nginx.sh
+./bin/install-nginx.sh

@@ -1,7 +1,17 @@
 #!/bin/bash
 
 ############### IMPORTANT ###############
-  # provide docker username (-du) and password (-dp)
+while getopts ":du:dp:" opt; do
+  case $opt in
+    a) docker_username="$OPTARG"
+    ;;
+    b) docker_password="$OPTARG"
+    ;;
+    \?) echo "Invalid option -$OPTARG" >&2
+        exit
+    ;;
+  esac
+done
 
 #export colors for colored output strings
 export BLACK="\033[0;30m"
@@ -22,21 +32,13 @@ export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
-while getopts du:dp: option
-do
-    case "${option}"
-        in
-        u)docker_username=${OPTARG};;
-        p)docker_password=${OPTARG};;
-    esac
-done
-
 # take sudof psw so it is asked just once and ensure that sudof is used just when really needed
-echo "[sudo] password for m1:"; read -s sudoPass W
-sudof  () {
-  echo $sudoPass W | sudo -S "$@"
+echo "[sudo] password for m1:"; read -s sudoPassword
+sudof  () 
+{
+  echo $sudoPass | sudo -S "$@"
 }
-export sudoPass=$sudoPass
+export sudoPass=$sudoPassword
 export -f sudof
 
 # add github to the list of known_hosts addresses

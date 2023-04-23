@@ -13,10 +13,9 @@ for h in ${hosts[@]}; do
   ssh -A $h "ssh-keyscan github.com >> ~/.ssh/known_hosts"
   # clone github repository code 
   ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git"
-  ssh -A $h "cd binanceB"
-  ssh -A $h "./bin/set_host_settings.sh"
-  ssh -A $h "./bin/install_docker.sh"
-  ssh -A $h "./bin/install_cri_docker.sh"
-  ssh -A $h "./bin/install_kubernetes.sh"
+  ssh -A $h "./binanceB/bin/set_host_settings.sh"
+  ssh -A $h "./binanceB/bin/install_docker.sh"
+  ssh -A $h "./binanceB/bin/install_cri_docker.sh"
+  ssh -A $h "./binanceB/bin/install_kubernetes.sh"
   ssh -A $h "$join"
 done

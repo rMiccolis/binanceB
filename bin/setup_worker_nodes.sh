@@ -42,7 +42,7 @@ for h in ${host_list[@]}; do
   ssh -A $h "chmod u+x /home/$host_username/config_file.sh" &
   wait
 
-  ssh -A $h "./home/$host_username/config_file.sh" &
+  ssh -A $h "/home/$host_username/config_file.sh" &
   wait
 
   # add github to the list of known_hosts addresses
@@ -50,27 +50,27 @@ for h in ${host_list[@]}; do
   wait
   # clone github repository code 
   echo -e "${LCYAN}Cloning repository"
-  ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$USER/" &
+  ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/" &
   wait
 
   echo -e "${LCYAN}set_host_settings.sh"
-  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/set_host_settings.sh" &
-  ssh -A $h "/home/$USER/binanceB/bin/set_host_settings.sh" &
+  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
+  ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
 
   echo -e "${LCYAN}install_docker.sh"
-  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/install_docker.sh" &
-  ssh -A $h "/home/$USER/binanceB/bin/install_docker.sh --username $docker_username --password $docker_password" &
+  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
+  ssh -A $h "/home/$host_username/binanceB/bin/install_docker.sh --username $docker_username --password $docker_password" &
   wait
 
   echo -e "${LCYAN}install_cri_docker.sh"
-  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/install_cri_docker.sh" &
-  ssh -A $h "/home/$USER/binanceB/bin/install_cri_docker.sh" &
+  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_cri_docker.sh" &
+  ssh -A $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
 
   echo -e "${LCYAN}install_kubernetes.sh" &
-  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/install_kubernetes.sh" &
-  ssh -A $h "/home/$USER/binanceB/bin/install_kubernetes.sh" &
+  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_kubernetes.sh" &
+  ssh -A $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
 
   echo -e "${LCYAN}Joining cluster.sh" &

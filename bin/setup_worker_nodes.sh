@@ -78,6 +78,6 @@ for h in ${host_list[@]}; do
   wait
 
   echo -e "${LCYAN}Joining cluster.sh" &
-  ssh -A $h "$join"
+  ssh -A $h "sudo $join"
   wait
 done

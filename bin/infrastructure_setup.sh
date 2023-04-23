@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # list of hosts IP that will join the cluster
-export hosts=()
+hosts=()
 ############### IMPORTANT ###############
 while getopts ":u:p:h:" opt; do
   case $opt in
@@ -17,9 +17,11 @@ while getopts ":u:p:h:" opt; do
   esac
 done
 
-echo "Cluster host list:"
-for h in ${hosts[@]}; do
-        echo $h
+
+export host_list=$hosts
+echo "${GREEN}Cluster host list:${WHITE}"
+for h in ${host_list[@]}; do
+  echo $h
 done
 
 export docker_username=$docker_username

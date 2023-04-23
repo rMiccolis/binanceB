@@ -2,7 +2,7 @@
 
 join=$(kubeadm token create --print-join-command)
 touch ~/.ssh/known_hosts
-for h in ${hosts[@]}; do
+for h in ${host_list[@]}; do
   host_string=()
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}

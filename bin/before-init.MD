@@ -21,15 +21,20 @@ After creating VM with a linux distro:
 - install an ssh server
 
 ## EXAMPLE:
-FOR EACH REMOTE HOST EXECUTE THESE INSTRUCTIONS!
-## copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt
+### FOR EACH REMOTE HOST EXECUTE THESE INSTRUCTIONS!
+```
+# copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt
 scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
-## ssh into remote host and set passwordless sudo prompt for remote host username
+# ssh into remote host and set passwordless sudo prompt for remote host username
 cat << EOF | sudo tee -a /etc/sudoers
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
+```
 
+```
+# copy infrastructure_setup.sh into the master remote host and execute it
 scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/
 ssh -A m1@m1
 chmod u+x ./infrastructure_setup.sh
 ./infrastructure_setup.sh
+```

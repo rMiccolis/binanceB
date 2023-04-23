@@ -40,7 +40,7 @@ EOF
 ```
 ssh -A m1@m1
 chmod u+x ./infrastructure_setup.sh
-./infrastructure_setup -u docker_username -p docker_password -h remote_host_worker(username@worker_ip)
+./infrastructure_setup.sh -u docker_username -p docker_password -h remote_host_worker(username@worker_ip)
 ```
 
 # -------------------------------------------------------------------------------------------------------------

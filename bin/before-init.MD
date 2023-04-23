@@ -25,6 +25,7 @@ After creating VM with a linux distro:
 ```
 # copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt
 scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
+
 # ssh into remote host and set passwordless sudo prompt for remote host username
 cat << EOF | sudo tee -a /etc/sudoers
 $USER ALL=(ALL) NOPASSWD: ALL

@@ -33,11 +33,11 @@ for h in ${hosts[@]}; do
   wait
 
   echo -e "${LCYAN}install_kubernetes.sh" &
-  wait
   ssh -A $h "/home/binanceB/bin/install_kubernetes.sh" &
   wait
 
   echo -e "${LCYAN}Joining cluster.sh" &
   wait
   ssh -A $h "$join"
+  wait
 done

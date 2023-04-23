@@ -24,7 +24,7 @@ export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
 export docker_username=$docker_username
 export docker_password=$docker_password
-export join_command=$join
+export join_command="$join"
 EOF
 
 for h in ${host_list[@]}; do
@@ -50,7 +50,7 @@ for h in ${host_list[@]}; do
   wait
   # clone github repository code 
   echo -e "${LCYAN}Cloning repository"
-  ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/" &
+  ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
   wait
 
   echo -e "${LCYAN}set_host_settings.sh"

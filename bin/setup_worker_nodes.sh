@@ -55,26 +55,29 @@ for h in ${host_list[@]}; do
 
   echo -e "${LCYAN}set_host_settings.sh"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
+  wait
   ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
 
   echo -e "${LCYAN}install_docker.sh"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
+  wait
   ssh -A $h "/home/$host_username/binanceB/bin/install_docker.sh --username $docker_username --password $docker_password" &
   wait
 
   echo -e "${LCYAN}install_cri_docker.sh"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_cri_docker.sh" &
+  wait
   ssh -A $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
 
   echo -e "${LCYAN}install_kubernetes.sh" &
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_kubernetes.sh" &
+  wait
   ssh -A $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
 
   echo -e "${LCYAN}Joining cluster.sh" &
-  wait
   ssh -A $h "$join"
   wait
 done

@@ -9,7 +9,7 @@
 # cat << EOF | sudo tee -a /etc/hosts
 # $ip_addr $host_name
 # EOF
-sudof
+
 #disable swap
 echo -e "${CYAN}disable swap${WHITE}"
 sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab

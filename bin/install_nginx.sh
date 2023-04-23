@@ -1,9 +1,8 @@
 #!/bin/bash
 
-sudof
 #export ip address
 export ip_addr=$(hostname -I | awk '{print $1}')
-
+echo $ip_addr
 #add nginx helm repository (kubernetes version)
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
@@ -22,7 +21,7 @@ controller:
     error-log-level: warn
     http2-max-header-size: 1024k
     log-format-escape-json: true
-    log-format-upstream: '{"time": "", "remote_addr": "", "x_forwarded_for": "", "request_id": "","remote_user": "", "bytes_sent": , "request_time": , "status": , "vhost": "", "request_proto": "",   "path": "", "request_query": "", "request_length": , "duration": ,"method": "", "http_referrer": "","http_user_agent": "" }'
+  # log-format-upstream: '{"time": "", "remote_addr": "", "x_forwarded_for": "", "request_id": "","remote_user": "", "bytes_sent": , "request_time": , "status": , "vhost": "", "request_proto": "",   "path": "", "request_query": "", "request_length": , "duration": ,"method": "", "http_referrer": "","http_user_agent": "" }'
 EOF
 
-helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f ./nginx_helm_config.yaml
+helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml

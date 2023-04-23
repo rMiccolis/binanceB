@@ -1,16 +1,25 @@
 #!/bin/bash
 
+# list of hosts IP that will join the cluster
+export hosts=()
 ############### IMPORTANT ###############
-while getopts ":u:p:" opt; do
+while getopts ":u:p:h:" opt; do
   case $opt in
     u) docker_username="$OPTARG"
     ;;
     p) docker_password="$OPTARG"
     ;;
+    h) hosts+=("$OPTARG")
+    ;;
     \?) echo "Invalid option -$OPTARG" >&2
         exit
     ;;
   esac
+done
+
+echo "Cluster host list:"
+for h in ${hosts[@]}; do
+        echo $h
 done
 
 export docker_username=$docker_username
@@ -33,16 +42,18 @@ export CYAN="\033[0;36m"
 export LCYAN="\033[1;36m"
 export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
+
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
 # take sudof psw so it is asked just once and ensure that sudof is used just when really needed
-echo "[sudo] password for m1:"; read -s sudoPassword
-sudof() 
-{
-  echo $sudoPass | sudo -S echo ""
-}
-export sudoPass=$sudoPassword
-export -f sudof
+# echo "[sudo] password for m1:"; read -s sudoPassword
+# # to use this function call it at the beginning of a script
+# sudof() 
+# {
+#   echo $sudoPass | sudo -S echo ""
+# }
+# export sudoPass=$sudoPassword
+# export -f sudof
 
 # add github to the list of known_hosts addresses
 echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
@@ -59,14 +70,22 @@ chmod u+x ./binanceB/bin/install-app.sh
 cd binanceB
 
 echo -e "${GREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
-./bin/set-host-settings.sh
+./bin/set_host_settings.sh
 echo -e "${GREEN}Starting phase 2 ===> Installing Docker${WHITE}"
-./bin/install-docker.sh -u $docker_username -p $docker_password
-echo -e "${GREEN}Starting phase 2 ===> Installing Cri-Docker (Container Runtime Interface)${WHITE}"
-./bin/install-cri-docker.sh
-echo -e "${GREEN}Starting phase 2 ===> Installing Kubernetes${WHITE}"
-./bin/install-kubernetes.sh
+./bin/install_docker.sh -u $docker_username -p $docker_password
+echo -e "${GREEN}Starting phase 3 ===> Installing Cri-Docker (Container Runtime Interface)${WHITE}"
+./bin/install_cri_docker.sh
+echo -e "${GREEN}Starting phase 4 ===> Installing Kubernetes${WHITE}"
+./bin/install_kubernetes.sh
+echo -e "${GREEN}Starting phase 5 ===> Initialize Kubernetes cluster${WHITE}"
+./bin/init_kubernetes_cluster.sh
+
+echo -e "${GREEN}Starting phase 6 ===> Setup worker nodes (setting worker dependencies) ${WHITE}"
+./bin/setup_worker_nodes.sh
+
+echo -e "${GREEN}Starting phase 6 ===> Join workers to Kubernetes cluster${WHITE}"
+
 echo -e "${GREEN}Starting phase 2 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
-./bin/install-helm.sh
+./bin/install_helm.sh
 echo -e "${GREEN}Starting phase 2 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
-./bin/install-nginx.sh
+./bin/install_nginx.sh

@@ -9,6 +9,8 @@ do
         in
         u)username=${OPTARG};;
         p)password=${OPTARG};;
+        \?) echo "Invalid option -$OPTARG" >&2
+            exit
     esac
 done
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudof
 # provide docker username and password
 ###############################################################################
 # Install Docker Engine

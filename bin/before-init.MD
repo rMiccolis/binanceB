@@ -16,6 +16,20 @@ After creating VM with a linux distro:
 - set static MAC address and assign a fixed ip address to it from the router (ex MAC address: 00 15 5D 38 01 30 and assign it this example ip address: 192.168.1.200)
 
 # OS Ooerations
-- grant sudo permissions to the system user account to which connect through ssh
+- copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt
+- enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 - install an ssh server
-- disable swap partition if enabled
+
+# MANDATORY OPERATIONS BEFORE EXECUTING infrastructure_setup.sh
+FOR EACH REMOTE HOST EXECUTE THESE INSTRUCTIONS!
+## copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt
+scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
+## ssh into remote host and set passwordless sudo prompt for remote host username
+cat << EOF | sudo tee -a /etc/sudoers
+$USER ALL=(ALL) NOPASSWD: ALL
+EOF
+
+scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/
+ssh -A m1@m1
+chmod u+x ./infrastructure_setup.sh
+./infrastructure_setup.sh

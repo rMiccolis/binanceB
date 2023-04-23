@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudof
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package

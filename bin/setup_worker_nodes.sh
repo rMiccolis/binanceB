@@ -4,6 +4,7 @@ join=$(kubeadm token create --print-join-command)
 touch ~/.ssh/known_hosts
 touch ~/config_file.sh
 cat << EOF | sudo tee ~/config_file.sh
+#!/bin/bash
 #export colors for colored output strings
 export BLACK="\033[0;30m"
 export DARK_GREY="\033[1;30m"
@@ -33,6 +34,10 @@ for h in ${host_list[@]}; do
   echo -e "${LCYAN}LOOPING ON $host_username@$host_ip"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
   wait
+
+  scp ~/config_file.sh $h:/home/$host_username/ &
+  wait
+  
   # add github to the list of known_hosts addresses
   ssh -A $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait

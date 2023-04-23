@@ -24,6 +24,7 @@ export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
 export docker_username=$docker_username
 export docker_password=$docker_password
+export join_command=$join
 EOF
 
 for h in ${host_list[@]}; do
@@ -37,7 +38,13 @@ for h in ${host_list[@]}; do
 
   scp ~/config_file.sh $h:/home/$host_username/ &
   wait
-  
+
+  ssh -A $h "chmod u+x /home/$host_username/config_file.sh" &
+  wait
+
+  ssh -A $h "./home/$host_username/config_file.sh" &
+  wait
+
   # add github to the list of known_hosts addresses
   ssh -A $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait
@@ -47,18 +54,22 @@ for h in ${host_list[@]}; do
   wait
 
   echo -e "${LCYAN}set_host_settings.sh"
+  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/set_host_settings.sh" &
   ssh -A $h "/home/$USER/binanceB/bin/set_host_settings.sh" &
   wait
 
   echo -e "${LCYAN}install_docker.sh"
+  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/install_docker.sh" &
   ssh -A $h "/home/$USER/binanceB/bin/install_docker.sh --username $docker_username --password $docker_password" &
   wait
 
   echo -e "${LCYAN}install_cri_docker.sh"
+  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/install_cri_docker.sh" &
   ssh -A $h "/home/$USER/binanceB/bin/install_cri_docker.sh" &
   wait
 
   echo -e "${LCYAN}install_kubernetes.sh" &
+  ssh -A $h "chmod u+x /home/$USER/binanceB/bin/install_kubernetes.sh" &
   ssh -A $h "/home/$USER/binanceB/bin/install_kubernetes.sh" &
   wait
 

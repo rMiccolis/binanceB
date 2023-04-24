@@ -1,6 +1,7 @@
 #!/bin/bash
 
-join=$(kubeadm token create --print-join-command)
+export join="sudo $(kubeadm token create --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
+echo $join
 touch ~/.ssh/known_hosts
 touch ~/config_file.sh
 cat << EOF | sudo tee ~/config_file.sh
@@ -78,6 +79,6 @@ for h in ${host_list[@]}; do
   wait
 
   echo -e "${LCYAN}Joining cluster.sh" &
-  ssh -A $h "sudo $join"
+  ssh -A $h "$join"
   wait
 done

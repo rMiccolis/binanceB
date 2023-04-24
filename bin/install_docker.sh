@@ -3,7 +3,7 @@
 # provide docker username and password
 ###############################################################################
 # Install Docker Engine
-echo -e "${CYAN}Installinging Docker Engine${WHITE}"
+echo -e "${LBLUE}Installinging Docker Engine${WHITE}"
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 sudo apt-get update
 
@@ -39,6 +39,6 @@ sudo docker run hello-world
 ###############################################################################
 
 #login into docker hub
-echo "${CYAN}Docker Hub login with username: $docker_username${WHITE}";
+echo "${LBLUE}Docker Hub login with username: $docker_username${WHITE}";
 # login into docker
 sudo docker login --username $docker_username --password $docker_password

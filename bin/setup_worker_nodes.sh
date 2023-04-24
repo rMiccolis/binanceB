@@ -1,7 +1,5 @@
 #!/bin/bash
-
 export join="sudo $(kubeadm token create --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
-echo $join
 touch ~/.ssh/known_hosts
 touch ~/config_file.sh
 cat << EOF | sudo tee ~/config_file.sh
@@ -23,17 +21,17 @@ export CYAN="\033[0;36m"
 export LCYAN="\033[1;36m"
 export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
-export docker_username=$docker_username
-export docker_password=$docker_password
-export join_command="$join"
 EOF
+
+echo -e "${LBLUE}Setting environment and installing dependencies to worker nodes which will join the cluster${WHITE}"
+echo -e "${LBLUE}list of worker nodes: ${host_list[@]}${WHITE}"
 
 for h in ${host_list[@]}; do
   host_string=()
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
   host_ip=${host_string[1]}
-  echo -e "${LCYAN}LOOPING ON $host_username@$host_ip"
+  echo -e "${LCYAN}Working on: ${LGREEN}$host_username@$host_ip${WHITE}"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
   wait
 
@@ -49,36 +47,37 @@ for h in ${host_list[@]}; do
   # add github to the list of known_hosts addresses
   ssh -A $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait
+
   # clone github repository code 
-  echo -e "${LCYAN}Cloning repository"
+  echo -e "${LCYAN}Cloning code repository...${WHITE}"
   ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
   wait
 
-  echo -e "${LCYAN}set_host_settings.sh"
+  echo -e "${LCYAN}Setting host settings and dependencies...${WHITE}"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
   ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
 
-  echo -e "${LCYAN}install_docker.sh"
+  echo -e "${LCYAN}Installing Docker...${WHITE}"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
   wait
   ssh -A $h "/home/$host_username/binanceB/bin/install_docker.sh --username $docker_username --password $docker_password" &
   wait
 
-  echo -e "${LCYAN}install_cri_docker.sh"
+  echo -e "${LCYAN}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
   ssh -A $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
 
-  echo -e "${LCYAN}install_kubernetes.sh" &
+  echo -e "${LCYAN}Installing Kubernetes${WHITE}"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
   ssh -A $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
 
-  echo -e "${LCYAN}Joining cluster.sh" &
-  ssh -A $h "$join"
+  echo -e "${LCYAN}Joining $host_username@$host_ip to the cluster${WHITE}"
+  ssh -A $h "$join" &
   wait
 done

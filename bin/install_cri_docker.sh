@@ -3,7 +3,7 @@
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
-echo -e "${CYAN}Installinging the docker cri (Container Runtime Interface)${WHITE}"
+echo -e "${LBLUE}Installinging the docker cri (Container Runtime Interface)${WHITE}"
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
 
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz

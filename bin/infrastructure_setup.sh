@@ -91,8 +91,8 @@ echo -e "${GREEN}Starting phase 5 ===> Initialize Kubernetes cluster${WHITE}"
 echo -e "${GREEN}Starting phase 6 ===> Setup worker nodes and joining them to cluster ${WHITE}"
 ./bin/setup_worker_nodes.sh
 wait
-echo -e "${GREEN}Starting phase 2 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
+echo -e "${GREEN}Starting phase 7 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
 ./bin/install_helm.sh
 
-echo -e "${GREEN}Starting phase 2 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
+echo -e "${GREEN}Starting phase 8 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
 ./bin/install_nginx.sh

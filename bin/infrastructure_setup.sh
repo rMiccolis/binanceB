@@ -95,3 +95,24 @@ echo -e "${GREEN}Starting phase 7 ===> Installing Helm (package manager for Kube
 
 echo -e "${GREEN}Starting phase 8 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
 ./bin/install_nginx.sh
+
+echo -e "${GREEN}Starting phase 9 ===> Applying configuration file and deployng the application to the cluster${WHITE}"
+./bin/install_app.sh
+
+echo -e "${GREEN}Starting phase 10 ===> Starting Application...${WHITE}"
+kubectl apply -f ./kubernetes/app/1-namespaces/
+kubectl apply -f ./kubernetes/app/2-mongodb/
+kubectl apply -f ./kubernetes/app/3-server/
+kubectl apply -f ./kubernetes/app/4-client/
+
+echo -e "${GREEN}Waiting for the Application to get started...${WHITE}"
+sleep 120
+status=$(kubectl get pods --all-namespaces --field-selector status.phase!=Running)
+
+if [[ $a != NAMESPACE* ]]
+then
+  echo -e "${GREEN}Application is correctly running!${WHITE}"
+  echo -e "${GREEN}Check it out at http://$cluster_dns_name/${WHITE}"
+else
+  echo -e "${RED}Something is not working... :( ${WHITE}"
+  echo -e "${YELLOW}kubectl get pod -A to see what is not working!(${WHITE}"

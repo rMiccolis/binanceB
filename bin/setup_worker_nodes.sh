@@ -38,9 +38,7 @@ for h in ${host_list[@]}; do
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
   host_ip=${host_string[1]}
-  echo -e "${LPURPLE}------------------------------------------------${WHITE}"
   echo -e "${LCYAN}Working on: ${LPURPLE}$host_username@$host_ip${WHITE}"
-
 
   echo -e "${LCYAN}Adding $host_ip to the list of known hosts...${WHITE}"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -90,7 +88,9 @@ for h in ${host_list[@]}; do
   echo -e "${LCYAN}Joining $host_username@$host_ip to the cluster${WHITE}"
   ssh -A $h "$join" &
   wait
+  echo -e "${LPURPLE}HOST $host_username@$host_ip COMPLETED!${WHITE}"
+
 done
 
-echo -e "${LPURPLE}Remote worker hosts configured and joined to the cluster!${WHITE}"
+echo -e "${LPURPLE}All remote worker hosts configured and joined to the cluster!${WHITE}"
 echo -e "${LPURPLE}------------------------------------------------${WHITE}"

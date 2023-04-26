@@ -12,7 +12,7 @@ eval mongo_root_username="$(jq -r '.mongo_root_username | @sh' $config_file_path
 eval mongo_root_password="$(jq -r '.mongo_root_password | @sh' $config_file_path | base64 --decode)"
 
 
-envsubst < $repository_root_dir/kubernetes/mongodb/2-mongodb-secrets.yaml | sudo tee $repository_root_dir/kubernetes/mongodb/2-mongodb-secrets.yaml
-envsubst < $repository_root_dir/kubernetes/server/3-server-secrets.yaml | sudo tee $repository_root_dir/kubernetes/server/3-server-secrets.yaml
-envsubst < $repository_root_dir/kubernetes/server/4-server-configmap.yaml | sudo tee $repository_root_dir/kubernetes/server/4-server-configmap.yaml
-envsubst < $repository_root_dir/kubernetes/client/3-client-configmap.yaml | sudo tee $repository_root_dir/kubernetes/client/3-client-configmap.yaml
+envsubst < $repository_root_dir/app/kubernetes/mongodb/2-mongodb-secrets.yaml | sudo tee $repository_root_dir/app/kubernetes/mongodb/2-mongodb-secrets.yaml
+envsubst < $repository_root_dir/app/kubernetes/server/3-server-secrets.yaml | sudo tee $repository_root_dir/app/kubernetes/server/3-server-secrets.yaml
+envsubst < $repository_root_dir/app/kubernetes/server/4-server-configmap.yaml | sudo tee $repository_root_dir/app/kubernetes/server/4-server-configmap.yaml
+envsubst < $repository_root_dir/app/kubernetes/client/3-client-configmap.yaml | sudo tee $repository_root_dir/app/kubernetes/client/3-client-configmap.yaml

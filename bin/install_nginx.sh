@@ -2,7 +2,7 @@
 
 #export ip address
 # export ip_addr=$(hostname -I | awk '{print $1}')
-echo $ip_addr
+echo -e "${LCYAN}Installing NGINX to be reachble on $ip_addr.${WHITE}"
 #add nginx helm repository (kubernetes version)
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update

@@ -57,7 +57,8 @@ echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
 # save host ip address
-export ip_addr=$(hostname -I)
+eval ip_addr="$(hostname -I)"
+export ip_addr=$ip_addr
 export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
 #hostnamectl set-hostname $host_name
 

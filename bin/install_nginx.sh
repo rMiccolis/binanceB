@@ -13,5 +13,5 @@ controller:
     externalIPs: [$ip_addr]
 EOF
 
-helm install ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml
+helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml
 echo -e "${LBLUE}Nginx successfully installed with Helm!${WHITE}"

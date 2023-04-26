@@ -45,6 +45,7 @@ ssh -A w1@w1
 cat << EOF | sudo tee -a /etc/sudoers
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
+
 ```
 
 ### Run infrastructure_setup.sh script on the master remote host

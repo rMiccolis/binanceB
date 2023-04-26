@@ -49,11 +49,11 @@ for h in "${!hosts[@]}"; do
   echo $h
 done
 export host_list=$hosts
-echo -e "${LPURPLE}Cluster host list:${WHITE}"
+echo -e "${GREEN}Cluster host list:${WHITE}"
 for h in "${host_list[@]}"; do
-  echo "${LPURPLE}$h${WHITE}"
+  echo -e "${LPURPLE}$h${WHITE}"
 done
-
+echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
 # save host ip address
@@ -120,9 +120,10 @@ sleep 120
 status=$(kubectl get pods --all-namespaces --field-selector status.phase!=Running)
 
 if [[ $a != NAMESPACE* ]]
-then
-  echo -e "${GREEN}Application is correctly running!${WHITE}"
-  echo -e "${GREEN}Check it out at http://$cluster_dns_name/${WHITE}"
-else
-  echo -e "${RED}Something is not working... :( ${WHITE}"
-  echo -e "${YELLOW}kubectl get pod -A to see what is not working!(${WHITE}"
+  then
+    echo -e "${GREEN}Application is correctly running!${WHITE}"
+    echo -e "${GREEN}Check it out at http://$cluster_dns_name/${WHITE}"
+  else
+    echo -e "${RED}Something is not working... :( ${WHITE}"
+    echo -e "${YELLOW}kubectl get pod -A to see what is not working!(${WHITE}"
+fi

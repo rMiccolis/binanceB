@@ -2,7 +2,7 @@
 
 ###############################################################################
 # Install Kubernetes
-echo -e "${LBLUE}Installinging Kubernetes${WHITE}"
+echo -e "${LBLUE}Installing Kubernetes${WHITE}"
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 sudo apt-get update

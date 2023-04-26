@@ -3,7 +3,7 @@
 # provide docker username and password
 ###############################################################################
 # Install Docker Engine
-echo -e "${LBLUE}Installinging Docker Engine${WHITE}"
+echo -e "${LBLUE}Installing Docker Engine${WHITE}"
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 sudo apt-get update
 

@@ -1,6 +1,13 @@
 #!/bin/bash
+
+###############################################################################
+# export the cluster join command to be executed on worker host
 export join="sudo $(kubeadm token create --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
+
+# create known_hosts file if not exists. needed to add remote worker nodes inside of it
 touch ~/.ssh/known_hosts
+
+# create config_file.sh to export colors into the worker hosts
 touch ~/config_file.sh
 cat << EOF | sudo tee ~/config_file.sh
 #!/bin/bash
@@ -31,16 +38,19 @@ for h in ${host_list[@]}; do
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
   host_ip=${host_string[1]}
-  echo -e "${LCYAN}Working on: ${LGREEN}$host_username@$host_ip${WHITE}"
+  echo -e "${LPURPLE}------------------------------------------------${WHITE}"
+  echo -e "${LCYAN}Working on: ${LPURPLE}$host_username@$host_ip${WHITE}"
+
+
+  echo -e "${LCYAN}Adding $host_ip to the list of known hosts...${WHITE}"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
   wait
 
+  # executing config_file.sh on the remote host
   scp ~/config_file.sh $h:/home/$host_username/ &
   wait
-
   ssh -A $h "chmod u+x /home/$host_username/config_file.sh" &
   wait
-
   ssh -A $h "/home/$host_username/config_file.sh" &
   wait
 
@@ -81,3 +91,6 @@ for h in ${host_list[@]}; do
   ssh -A $h "$join" &
   wait
 done
+
+echo -e "${LPURPLE}Remote worker hosts configured and joined to the cluster!${WHITE}"
+echo -e "${LPURPLE}------------------------------------------------${WHITE}"

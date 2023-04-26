@@ -17,17 +17,6 @@ while getopts ":u:p:c:h:" opt; do
   esac
 done
 
-export config_file_path=$config_file_path
-
-sudo apt-get install -y jq
-host_list=("$(jq -r '.hosts | @sh' $config_file_path)")
-export host_list=$host_list
-
-echo "${GREEN}Cluster host list:${WHITE}"
-for h in ${host_list[@]}; do
-  echo $h
-done
-
 #export colors for colored output strings
 export BLACK="\033[0;30m"
 export DARK_GREY="\033[1;30m"
@@ -45,6 +34,18 @@ export CYAN="\033[0;36m"
 export LCYAN="\033[1;36m"
 export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
+
+export config_file_path=$config_file_path
+
+sudo apt-get install -y jq
+host=("$(jq -r '.hosts | @sh' $config_file_path)")
+export host_list=$host
+
+echo "${GREEN}Cluster host list:${WHITE}"
+for h in ${host_list[@]}; do
+  echo $h
+done
+
 
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 

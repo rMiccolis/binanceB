@@ -76,9 +76,11 @@ chmod u+x ./binanceB/bin/setup_worker_nodes.sh
 chmod u+x ./binanceB/bin/install_helm.sh
 chmod u+x ./binanceB/bin/install_nginx.sh
 chmod u+x ./binanceB/bin/install_app.sh
-cd binanceB
 
 export repository_root_dir=$(pwd)
+
+cd binanceB
+
 
 echo -e "${GREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
 ./bin/set_host_settings.sh

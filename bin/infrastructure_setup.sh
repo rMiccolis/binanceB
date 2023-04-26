@@ -37,15 +37,22 @@ export WHITE="\033[1;37m"
 
 export config_file_path=$config_file_path
 
+# install jq library to read and parse json files
 sudo apt-get install -y jq
-host=("$(jq -r '.hosts | @sh' $config_file_path)")
-export host_list=$host
+# read hosts array from configuration file
+hosts=("$(jq -r '.hosts | @sh' $config_file_path)")
 
-echo -e "${GREEN}Cluster host list:${WHITE}"
-for h in ${host_list[@]}; do
+# cleaning strings single quotes from elements read by json file through jq library
+for h in "${!hosts[@]}"; do
+  temp_host=${hosts[$h]}
+  eval hosts[$h]=$temp_host
   echo $h
 done
-
+export host_list=$hosts
+echo -e "${LPURPLE}Cluster host list:${WHITE}"
+for h in "${host_list[@]}"; do
+  echo "${LPURPLE}$h${WHITE}"
+done
 
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 

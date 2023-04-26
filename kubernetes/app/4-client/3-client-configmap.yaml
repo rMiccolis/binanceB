@@ -4,4 +4,4 @@ metadata:
   name: client-configmap
   namespace: binance-b
 data:
-  proxy_uri: "$cluster_dns_name/server/"
+  proxy_uri: cluster.com/server/

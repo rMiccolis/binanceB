@@ -88,6 +88,9 @@ for h in ${host_list[@]}; do
   echo -e "${LCYAN}Joining $host_username@$host_ip to the cluster${WHITE}"
   ssh -A $h "$join" &
   wait
+
+  kubectl wait --for=condition=Ready --all pods --all-namespaces &
+  wait
   echo -e "${LPURPLE}HOST $host_username@$host_ip COMPLETED!${WHITE}"
 
 done

@@ -41,7 +41,7 @@ sudo apt-get install -y jq
 host=("$(jq -r '.hosts | @sh' $config_file_path)")
 export host_list=$host
 
-echo "${GREEN}Cluster host list:${WHITE}"
+echo -e "${GREEN}Cluster host list:${WHITE}"
 for h in ${host_list[@]}; do
   echo $h
 done

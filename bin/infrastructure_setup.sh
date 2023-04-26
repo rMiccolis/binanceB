@@ -119,14 +119,7 @@ kubectl apply -f ./kubernetes/app/3-server/
 kubectl apply -f ./kubernetes/app/4-client/
 
 echo -e "${GREEN}Waiting for the Application to get started...${WHITE}"
-sleep 120
-status=$(kubectl get pods --all-namespaces --field-selector status.phase!=Running)
+kubectl wait --for=condition=Ready --all pods --all-namespaces
 
-if [[ $a != NAMESPACE* ]]
-  then
-    echo -e "${GREEN}Application is correctly running!${WHITE}"
-    echo -e "${GREEN}Check it out at http://$cluster_dns_name/${WHITE}"
-  else
-    echo -e "${RED}Something is not working... :( ${WHITE}"
-    echo -e "${YELLOW}kubectl get pod -A to see what is not working!(${WHITE}"
-fi
+echo -e "${GREEN}Application is correctly running!${WHITE}"
+echo -e "${GREEN}Check it out at http://$cluster_dns_name/${WHITE}"

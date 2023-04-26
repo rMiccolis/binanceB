@@ -16,3 +16,7 @@ echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O
 
 kubectl apply -f calico.yaml
+
+sleep 10
+
+kubectl wait --for=condition=Ready --all pods --all-namespaces

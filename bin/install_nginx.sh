@@ -14,4 +14,5 @@ controller:
 EOF
 
 helm install --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml
+kubectl wait --for=condition=Ready --all pods -n ingress-nginx
 echo -e "${LBLUE}Nginx successfully installed with Helm!${WHITE}"

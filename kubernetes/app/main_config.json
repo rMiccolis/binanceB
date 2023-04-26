@@ -1,0 +1,10 @@
+{
+"cluster_dns_name": "cluster.com",
+"hosts": ["192.168.1.203"],
+"server_access_token_secret": "jwttestaccess",
+"server_refresh_token_secret": "jwttestrefresh",
+"server_access_token_lifetime": "50",
+"server_refresh_token_lifetime": "50",
+"mongo_root_username": "dGVzdAo=",
+"mongo_root_password": "dGVzdAo="
+}

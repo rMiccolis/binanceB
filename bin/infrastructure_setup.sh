@@ -3,13 +3,13 @@
 # list of hosts IP that will join the cluster
 hosts=()
 ############### IMPORTANT ###############
-while getopts ":u:p:h:" opt; do
+while getopts ":u:p:c:h:" opt; do
   case $opt in
     u) docker_username="$OPTARG"
     ;;
     p) docker_password="$OPTARG"
     ;;
-    h) hosts+=("$OPTARG")
+    c) config_file_path="$OPTARG"
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
         exit
@@ -17,15 +17,14 @@ while getopts ":u:p:h:" opt; do
   esac
 done
 
+export config_file_path=$config_file_path
 
-export host_list=$hosts
+export host_list=("$(jq -r '.hosts | @sh' $config_file_path)")
+
 echo "${GREEN}Cluster host list:${WHITE}"
 for h in ${host_list[@]}; do
   echo $h
 done
-
-export docker_username=$docker_username
-export docker_password=$docker_password
 
 #export colors for colored output strings
 export BLACK="\033[0;30m"
@@ -47,15 +46,10 @@ export WHITE="\033[1;37m"
 
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
-# take sudof psw so it is asked just once and ensure that sudof is used just when really needed
-# echo "[sudo] password for m1:"; read -s sudoPassword
-# # to use this function call it at the beginning of a script
-# sudof() 
-# {
-#   echo $sudoPass | sudo -S echo ""
-# }
-# export sudoPass=$sudoPassword
-# export -f sudof
+# save host ip address
+export ip_addr=$(hostname -I)
+export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
+#hostnamectl set-hostname $host_name
 
 # add github to the list of known_hosts addresses
 echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
@@ -73,11 +67,16 @@ chmod u+x ./binanceB/bin/install_nginx.sh
 chmod u+x ./binanceB/bin/install_app.sh
 cd binanceB
 
+export repository_root_dir=$(pwd)
+
 echo -e "${GREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
 ./bin/set_host_settings.sh
 
 echo -e "${GREEN}Starting phase 2 ===> Installing Docker${WHITE}"
-./bin/install_docker.sh -u $docker_username -p $docker_password
+./bin/install_docker.sh
+echo "${LBLUE}Docker Hub login with username: $docker_username${WHITE}";
+# login into docker
+sudo docker login --username $docker_username --password $docker_password
 
 echo -e "${GREEN}Starting phase 3 ===> Installing Cri-Docker (Container Runtime Interface)${WHITE}"
 ./bin/install_cri_docker.sh

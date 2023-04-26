@@ -77,13 +77,13 @@ spec:
              key: BINANCE_WEBSOCKET_BASE_URL
         - name: ACCESS_TOKEN_SECRET
           valueFrom:
-           configMapKeyRef:
-             name: server-configmap
+           secretKeyRef:
+             name: server-secret
              key: ACCESS_TOKEN_SECRET
         - name: REFRESH_TOKEN_SECRET
           valueFrom:
-           configMapKeyRef:
-             name: server-configmap
+           secretKeyRef:
+             name: server-secret
              key: REFRESH_TOKEN_SECRET
         - name: ACCESS_TOKEN_LIFETIME
           valueFrom:

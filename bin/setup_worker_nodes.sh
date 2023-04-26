@@ -72,7 +72,7 @@ for h in ${host_list[@]}; do
   echo -e "${LCYAN}Installing Docker...${WHITE}"
   ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
   wait
-  ssh -A $h "/home/$host_username/binanceB/bin/install_docker.sh --username $docker_username --password $docker_password" &
+  ssh -A $h "/home/$host_username/binanceB/bin/install_docker.sh" &
   wait
 
   echo -e "${LCYAN}Installing Cri-Docker (Container Runtime Interface)${WHITE}"

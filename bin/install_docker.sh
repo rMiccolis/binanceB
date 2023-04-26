@@ -37,8 +37,3 @@ sudo systemctl enable docker
 # Verify installation
 sudo docker run hello-world
 ###############################################################################
-
-#login into docker hub
-echo "${LBLUE}Docker Hub login with username: $docker_username${WHITE}";
-# login into docker
-sudo docker login --username $docker_username --password $docker_password

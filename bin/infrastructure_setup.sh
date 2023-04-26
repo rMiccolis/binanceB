@@ -19,6 +19,7 @@ done
 
 export config_file_path=$config_file_path
 
+sudo apt-get install -y jq
 export host_list=("$(jq -r '.hosts | @sh' $config_file_path)")
 
 echo "${GREEN}Cluster host list:${WHITE}"

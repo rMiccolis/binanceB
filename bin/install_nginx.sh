@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #export ip address
-export ip_addr=$(hostname -I | awk '{print $1}')
+# export ip_addr=$(hostname -I | awk '{print $1}')
 echo $ip_addr
 #add nginx helm repository (kubernetes version)
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx

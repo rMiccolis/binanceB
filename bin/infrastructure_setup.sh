@@ -119,7 +119,8 @@ kubectl apply -f ./kubernetes/app/3-server/
 kubectl apply -f ./kubernetes/app/4-client/
 
 echo -e "${GREEN}Waiting for the Application to get started...${WHITE}"
-kubectl wait --for=condition=Ready --all pods --all-namespaces
+kubectl wait --for=condition=Ready --all pods --all-namespaces &
+wait
 
 echo -e "${GREEN}Application is correctly running!${WHITE}"
 echo -e "${GREEN}Check it out at http://$cluster_dns_name/${WHITE}"

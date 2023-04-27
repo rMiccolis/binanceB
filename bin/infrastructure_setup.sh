@@ -78,7 +78,8 @@ fi
 echo -e "${LPURPLE}$h${WHITE}"
 done
 
-export host_list=$(echo ${host_list[*]})
+prova=${host_list[*]}
+export host_list=$prova
 
 echo -e "${RED}$host_list${WHITE}"
 

@@ -43,15 +43,15 @@ for h in ${host_list[@]}; do
   host_ip=${host_string[1]}
   echo -e "${LCYAN}Working on: ${LPURPLE}$host_username@$host_ip${WHITE}"
 
+  echo -e "${LCYAN}Adding $host_ip to the list of known hosts...${WHITE}"
+  ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
+  wait
+
   # save host ip address
   ssh -A $h 'eval ip_addr="$(hostname -I)"'
   ssh -A $h "export ip_addr=$ip_addr"
   ssh -A $h "export host_name=$(whoami)"
   ssh -A $h "sudo hostnamectl set-hostname $host_name"
-
-  echo -e "${LCYAN}Adding $host_ip to the list of known hosts...${WHITE}"
-  ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
-  wait
 
   # executing config_file.sh on the remote host
   scp ~/config_file.sh $h:/home/$host_username/ &

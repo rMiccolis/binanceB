@@ -9,9 +9,8 @@ while getopts ":r:" opt; do
   esac
 done
 
-host_list=($host_list)
-
 if [ "$remote" -eq "1" ]; then
+echo -e "${CYAN}Adding master host ip to /etc/hosts${WHITE}"
 cat << EOF | sudo tee -a /etc/hosts > /dev/null
 $master_host_ip $master_host_name
 EOF

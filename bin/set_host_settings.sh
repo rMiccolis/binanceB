@@ -13,7 +13,7 @@ done
 
 echo $remote
 if [ $remote == 1]; then
-cat << EOF | sudo tee -a /etc/hosts
+cat << EOF | sudo tee -a /etc/hosts > /dev/null
 $master_host_ip $master_host_name
 EOF
 fi
@@ -25,12 +25,12 @@ sudo swapoff -a
 
 # Forwarding IPv4 and letting iptables see bridged traffic
 echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic${WHITE}"
-cat << EOF | sudo tee /etc/modules-load.d/k8s.conf
+cat << EOF | sudo tee /etc/modules-load.d/k8s.conf > /dev/null
 overlay
 br_netfilter
 EOF
 
-cat << EOF | sudo tee /etc/modules-load.d/modules.conf
+cat << EOF | sudo tee /etc/modules-load.d/modules.conf > /dev/null
 overlay
 br_netfilter
 EOF
@@ -40,7 +40,7 @@ sudo modprobe overlay
 sudo modprobe br_netfilter
 
 # sysctl params required by setup, params persist across reboots
-cat << EOF | sudo tee /etc/sysctl.d/k8s.conf
+cat << EOF | sudo tee /etc/sysctl.d/k8s.conf > /dev/null
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.ipv4.ip_forward                 = 1

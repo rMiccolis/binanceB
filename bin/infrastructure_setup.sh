@@ -44,7 +44,7 @@ export master_host_name=$(whoami)
 sudo hostnamectl set-hostname $master_host_name
 
 # save host ip address into host file
-cat << EOF | sudo tee -a /etc/hosts
+cat << EOF | sudo tee -a /etc/hosts > /dev/null
 $master_host_ip $master_host_name
 EOF
 
@@ -57,7 +57,6 @@ hosts=("$(jq -r '.hosts | @sh' $config_file_path)")
 for h in "${!hosts[@]}"; do
   temp_host=${hosts[$h]}
   eval hosts[$h]=$temp_host
-  echo $h
 done
 
 export repository_root_dir=$(pwd)
@@ -72,7 +71,7 @@ IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 if [ $master_host_name != $host_username ]; then
-sudo tee -a /etc/hosts << EOF
+sudo tee -a /etc/hosts << EOF > /dev/null
 $host_ip $host_username
 EOF
 fi

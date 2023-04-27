@@ -20,7 +20,7 @@ eval mongo_root_password="$(jq -r '.mongo_root_password | @sh' $config_file_path
 mongo_root_password=$(echo $mongo_root_password | base64 --decode)
 
 
-envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/2-mongodb-secrets.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/2-mongodb/2-mongodb-secrets.yaml
-envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml
-envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml
-envsubst < $repository_root_dir/binanceB/kubernetes/app/4-client/3-client-configmap.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/4-client/3-client-configmap.yaml
+envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/2-mongodb-secrets.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/2-mongodb/2-mongodb-secrets.yaml > /dev/null
+envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml > /dev/null
+envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml > /dev/null
+envsubst < $repository_root_dir/binanceB/kubernetes/app/4-client/3-client-configmap.yaml | sudo tee $repository_root_dir/binanceB/kubernetes/app/4-client/3-client-configmap.yaml > /dev/null

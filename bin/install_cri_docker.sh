@@ -17,7 +17,7 @@ sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 # edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
 # into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin='
 
-sudo tee /etc/systemd/system/cri-docker.service << EOF
+sudo tee /etc/systemd/system/cri-docker.service << EOF > /dev/null
 [Unit]
 Description=CRI Interface for Docker Application Container Engine
 Documentation=https://docs.mirantis.com
@@ -43,7 +43,7 @@ KillMode=process
 WantedBy=multi-user.target
 EOF
 
-sudo tee /etc/systemd/system/cri-docker.socket << EOF
+sudo tee /etc/systemd/system/cri-docker.socket << EOF > /dev/null
 [Unit]
 Description=CRI Docker Socket for the API
 PartOf=cri-docker.service

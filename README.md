@@ -37,12 +37,12 @@ scp E:\Download\main_config.json m1@m1_host:/home/m1/
 
 # ssh into all remote hosts and set passwordless sudo prompt for remote host username
 ssh -A m1@m1_host
-cat << EOF | sudo tee -a /etc/sudoers
+cat << EOF | sudo tee -a /etc/sudoers > /dev/null
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
 
 ssh -A w1@w1_host
-cat << EOF | sudo tee -a /etc/sudoers
+cat << EOF | sudo tee -a /etc/sudoers > /dev/null
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
 

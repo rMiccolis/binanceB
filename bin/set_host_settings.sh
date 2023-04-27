@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###############################################################################
-$remote=0
+remote=0
 while getopts ":r:" opt; do
   case $opt in
     r) remote="$OPTARG"

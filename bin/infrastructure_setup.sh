@@ -87,7 +87,6 @@ fi
 host_list="$host_list $h"
 echo -e "${LPURPLE}$h${WHITE}"
 done
-eval host_list="$host_list"
 export host_list=$host_list
 
 echo -e "${RED}$host_list${WHITE}"

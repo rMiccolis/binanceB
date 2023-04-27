@@ -54,7 +54,8 @@ EOF
 # install jq library to read and parse json files
 sudo apt-get install -y jq
 # read hosts array from configuration file
-hosts=("$(jq -r '.hosts | @sh' $config_file_path)")
+hosts="$(jq -r '.hosts | @sh' $config_file_path)"
+hosts=($hosts)
 
 # cleaning strings single quotes from elements read by json file through jq library
 for h in "${!hosts[@]}"; do

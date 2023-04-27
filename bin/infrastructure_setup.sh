@@ -75,7 +75,7 @@ sudo tee -a /etc/hosts << EOF > /dev/null
 $host_ip $host_username
 EOF
 fi
-host_list +=' $h'
+host_list+=' $h'
 echo -e "${LPURPLE}$h${WHITE}"
 done
 

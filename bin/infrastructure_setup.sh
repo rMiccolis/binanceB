@@ -60,7 +60,7 @@ for h in "${!hosts[@]}"; do
 done
 
 export repository_root_dir=$(pwd)
-export host_list=(${hosts[@]})
+host_list=(${hosts[@]})
 
 echo -e "${GREEN}Cluster worker host list:${WHITE}"
 
@@ -78,7 +78,7 @@ fi
 echo -e "${LPURPLE}$h${WHITE}"
 done
 
-export host_list=$(echo ${host_list[@]})
+export host_list=$(echo "${host_list[@]}")
 
 echo -e "${RED}$host_list${WHITE}"
 

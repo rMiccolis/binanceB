@@ -43,6 +43,9 @@ export master_host_ip=$ip_addr
 export master_host_name=$(whoami)
 sudo hostnamectl set-hostname $master_host_name
 
+echo -e "${GREEN}master_host_ip => $master_host_ip:${WHITE}"
+echo -e "${GREEN}master_host_name => $master_host_name:${WHITE}"
+
 # save host ip address into host file
 cat << EOF | sudo tee -a /etc/hosts > /dev/null
 $master_host_ip $master_host_name
@@ -70,11 +73,15 @@ host_string=()
 IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
+echo -e "${GREEN}host_ip => $host_ip:${WHITE}"
+echo -e "${GREEN}host_username => $host_username:${WHITE}"
+
 if [ $master_host_name != $host_username ]; then
 sudo tee -a /etc/hosts << EOF > /dev/null
 $host_ip $host_username
 EOF
 fi
+#adding remote host to the remote host list
 host_list="$host_list $h"
 echo -e "${LPURPLE}$h${WHITE}"
 done

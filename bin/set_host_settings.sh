@@ -1,12 +1,10 @@
 #!/bin/bash
 
 ###############################################################################
-
+$remote=0
 while getopts ":r:" opt; do
   case $opt in
     r) remote="$OPTARG"
-    ;;
-    \?) remote=0
     ;;
   esac
 done

@@ -48,10 +48,7 @@ for h in ${host_list[@]}; do
   wait
 
   # save host ip address
-  ssh -A $h 'eval ip_addr="$(hostname -I)"'
-  ssh -A $h "export ip_addr=$ip_addr"
-  ssh -A $h "export host_name=$(whoami)"
-  ssh -A $h "sudo hostnamectl set-hostname $host_name"
+  ssh -A $h "sudo hostnamectl set-hostname $(whoami)"
 
   # executing config_file.sh on the remote host
   scp ~/config_file.sh $h:/home/$host_username/ &
@@ -71,9 +68,9 @@ for h in ${host_list[@]}; do
   wait
 
   echo -e "${LCYAN}Setting host settings and dependencies...${WHITE}"
-  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
+  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
-  ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
+  ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
   wait
 
   echo -e "${LCYAN}Installing Docker...${WHITE}"

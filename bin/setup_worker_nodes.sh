@@ -3,7 +3,6 @@
 ###############################################################################
 # export the cluster join command to be executed on worker host
 export join="sudo $(kubeadm token create --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
-
 # create known_hosts file if not exists. needed to add remote worker nodes inside of it
 touch ~/.ssh/known_hosts
 

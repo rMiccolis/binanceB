@@ -55,6 +55,7 @@ EOF
 sudo apt-get install -y jq
 # read hosts array from configuration file
 hosts="$(jq -r '.hosts | @sh' $config_file_path)"
+#split hosts string into and array
 hosts=($hosts)
 
 # cleaning strings single quotes from elements read by json file through jq library
@@ -67,7 +68,7 @@ export repository_root_dir=$(pwd)
 
 echo -e "${GREEN}Cluster worker host list:${WHITE}"
 
-export host_list=""
+host_list=""
 for h in "${hosts[@]}"; do
 # adding remote hosts to the hosts file
 host_string=()
@@ -89,7 +90,7 @@ done
 eval host_list="$host_list"
 export host_list=$host_list
 
-echo -e "${RED}$host_list\${WHITE}"
+echo -e "${RED}$host_list${WHITE}"
 
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"

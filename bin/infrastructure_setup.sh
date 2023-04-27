@@ -85,10 +85,10 @@ fi
 host_list="$host_list $h"
 echo -e "${LPURPLE}$h${WHITE}"
 done
-
+eval host_list="$host_list"
 export host_list=$host_list
 
-echo -e "${RED}$host_list\n$prova${WHITE}"
+echo -e "${RED}$host_list\${WHITE}"
 
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"

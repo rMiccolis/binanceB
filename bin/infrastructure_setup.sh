@@ -78,6 +78,8 @@ fi
 echo -e "${LPURPLE}$h${WHITE}"
 done
 
+echo -e "${RED}${host_list[@]}${WHITE}"
+
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 

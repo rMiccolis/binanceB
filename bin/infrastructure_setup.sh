@@ -37,6 +37,17 @@ export WHITE="\033[1;37m"
 
 export config_file_path=$config_file_path
 
+# set host name and address
+eval ip_addr="$(hostname -I)"
+export master_host_ip=$ip_addr
+export master_host_name=$(whoami)
+sudo hostnamectl set-hostname $master_host_name
+
+# save host ip address into host file
+cat << EOF | sudo tee -a /etc/hosts
+$master_host_ip $master_host_name
+EOF
+
 # install jq library to read and parse json files
 sudo apt-get install -y jq
 # read hosts array from configuration file
@@ -48,19 +59,29 @@ for h in "${!hosts[@]}"; do
   eval hosts[$h]=$temp_host
   echo $h
 done
-export host_list=$hosts
-echo -e "${GREEN}Cluster host list:${WHITE}"
+
+export repository_root_dir=$(pwd)
+export host_list=(${hosts[@]})
+
+echo -e "${GREEN}Cluster worker host list:${WHITE}"
+
 for h in "${host_list[@]}"; do
-  echo -e "${LPURPLE}$h${WHITE}"
+# adding remote hosts to the hosts file
+host_string=()
+IFS='@' read -r -a host_string <<< "$h"
+host_username=${host_string[0]}
+host_ip=${host_string[1]}
+if [ $host_name != $host_username ]; then
+sudo tee -a /etc/hosts << EOF
+$host_ip $host_username
+EOF
+fi
+echo -e "${LPURPLE}$h${WHITE}"
 done
+
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
-# save host ip address
-eval ip_addr="$(hostname -I)"
-export ip_addr=$ip_addr
-export host_name=$(cat /etc/hosts | grep -i 127.0.1.1 | awk 'NR==1{print $2}')
-#hostnamectl set-hostname $host_name
 
 # add github to the list of known_hosts addresses
 echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
@@ -77,10 +98,7 @@ chmod u+x ./binanceB/bin/install_helm.sh
 chmod u+x ./binanceB/bin/install_nginx.sh
 chmod u+x ./binanceB/bin/install_app.sh
 
-export repository_root_dir=$(pwd)
-
 cd binanceB
-
 
 echo -e "${GREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
 ./bin/set_host_settings.sh
@@ -111,7 +129,7 @@ echo -e "${GREEN}Starting phase 8 ===> Installing Nginx (to be used as a reverse
 ./bin/install_nginx.sh
 
 echo -e "${GREEN}Starting phase 9 ===> Applying configuration file and deployng the application to the cluster${WHITE}"
-# ./bin/install_app.sh
+./bin/install_app.sh
 
 echo -e "${GREEN}Starting phase 10 ===> Starting Application...${WHITE}"
 kubectl apply -f ./kubernetes/app/1-namespaces/

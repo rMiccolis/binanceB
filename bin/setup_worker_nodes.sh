@@ -28,6 +28,9 @@ export CYAN="\033[0;36m"
 export LCYAN="\033[1;36m"
 export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
+export master_host_ip=$master_host_ip
+export master_host_name=$master_host_name
+export host_list=(${host_list[@]})
 EOF
 
 echo -e "${LBLUE}Setting environment and installing dependencies to worker nodes which will join the cluster${WHITE}"
@@ -39,6 +42,12 @@ for h in ${host_list[@]}; do
   host_username=${host_string[0]}
   host_ip=${host_string[1]}
   echo -e "${LCYAN}Working on: ${LPURPLE}$host_username@$host_ip${WHITE}"
+
+  # save host ip address
+  ssh -A $h 'eval ip_addr="$(hostname -I)"'
+  ssh -A $h "export ip_addr=$ip_addr"
+  ssh -A $h "export host_name=$(whoami)"
+  ssh -A $h "sudo hostnamectl set-hostname $host_name"
 
   echo -e "${LCYAN}Adding $host_ip to the list of known hosts...${WHITE}"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -62,7 +71,7 @@ for h in ${host_list[@]}; do
   wait
 
   echo -e "${LCYAN}Setting host settings and dependencies...${WHITE}"
-  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
+  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
   wait
   ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait

@@ -1,6 +1,6 @@
 controller:
   service:
-    externalIPs: [$ip_addr]
+    externalIPs: [$master_host_ip]
   config:
     use-forwarded-headers: true
     use-gzip: true

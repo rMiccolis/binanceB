@@ -79,7 +79,7 @@ host_list +=' $h'
 echo -e "${LPURPLE}$h${WHITE}"
 done
 
-export host_list=$(cat /home/$USER/remote_hosts)
+export host_list=$host_list
 
 echo -e "${RED}$host_list\n$prova${WHITE}"
 

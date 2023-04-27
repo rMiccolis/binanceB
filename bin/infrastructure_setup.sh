@@ -60,11 +60,11 @@ for h in "${!hosts[@]}"; do
 done
 
 export repository_root_dir=$(pwd)
-host_list=(${hosts[@]})
 
 echo -e "${GREEN}Cluster worker host list:${WHITE}"
 
-for h in "${host_list[@]}"; do
+touch /home/$USER/remote_hosts
+for h in "${hosts[@]}"; do
 # adding remote hosts to the hosts file
 host_string=()
 IFS='@' read -r -a host_string <<< "$h"
@@ -75,11 +75,13 @@ sudo tee -a /etc/hosts << EOF > /dev/null
 $host_ip $host_username
 EOF
 fi
+sudo tee -a /home/$USER/remote_hosts << EOF
+$h 
+EOF
 echo -e "${LPURPLE}$h${WHITE}"
 done
 
-prova=${host_list[*]}
-export host_list=$prova
+export host_list=$(cat /home/$USER/remote_hosts)
 
 echo -e "${RED}$host_list\n$prova${WHITE}"
 

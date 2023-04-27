@@ -9,7 +9,7 @@ while getopts ":r:" opt; do
   esac
 done
 
-printenv
+printenv | grep -i host_list
 
 
 if [ "$remote" -eq "1" ]; then

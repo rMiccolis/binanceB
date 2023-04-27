@@ -81,7 +81,7 @@ done
 prova=${host_list[*]}
 export host_list=$prova
 
-echo -e "${RED}$host_list${WHITE}"
+echo -e "${RED}$host_list\n$prova${WHITE}"
 
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"

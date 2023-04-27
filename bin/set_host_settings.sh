@@ -9,7 +9,7 @@ while getopts ":r:" opt; do
   esac
 done
 echo -e "${RED}hostLIIiiiiiist:$host_list${WHITE}"
-host_list=($$host_list)
+host_list=($host_list)
 echo -e "${RED}vero: ${host_list[@]} \n$remote ${WHITE}"
 if [ "$remote" -eq "1" ]; then
 cat << EOF | sudo tee -a /etc/hosts > /dev/null

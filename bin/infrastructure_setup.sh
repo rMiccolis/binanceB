@@ -63,7 +63,7 @@ export repository_root_dir=$(pwd)
 
 echo -e "${GREEN}Cluster worker host list:${WHITE}"
 
-touch /home/$USER/remote_hosts
+export host_list=""
 for h in "${hosts[@]}"; do
 # adding remote hosts to the hosts file
 host_string=()
@@ -75,9 +75,7 @@ sudo tee -a /etc/hosts << EOF > /dev/null
 $host_ip $host_username
 EOF
 fi
-sudo tee -a /home/$USER/remote_hosts << EOF
-$h 
-EOF
+host_list +=' $h'
 echo -e "${LPURPLE}$h${WHITE}"
 done
 

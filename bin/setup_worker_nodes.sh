@@ -9,6 +9,7 @@ touch ~/.ssh/known_hosts
 
 # create config_file.sh to export colors into the worker hosts
 touch ~/config_file.sh
+echo -e "${LBLUE}${host_list[@]}${WHITE}"
 cat << EOF | sudo tee ~/config_file.sh
 #!/bin/bash
 #export colors for colored output strings

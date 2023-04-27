@@ -71,7 +71,7 @@ host_string=()
 IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
-if [ $host_name != $host_username ]; then
+if [ $master_host_name != $host_username ]; then
 sudo tee -a /etc/hosts << EOF
 $host_ip $host_username
 EOF

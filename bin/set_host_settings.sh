@@ -11,7 +11,8 @@ while getopts ":r:" opt; do
   esac
 done
 
-if [ $remote == "1"]; then
+echo $remote
+if [ $remote == 1]; then
 cat << EOF | sudo tee -a /etc/hosts
 $master_host_ip $master_host_name
 EOF

@@ -10,6 +10,10 @@ while getopts ":r:" opt; do
 done
 
 printenv | grep -i host_list
+host_list=($host_list)
+for h in "${host_list[@]}"; do
+echo -e "${YELLOW}$h${WHITE}"
+done
 
 
 if [ "$remote" -eq "1" ]; then

@@ -26,22 +26,22 @@ After creating VM with a linux distro:
 #### ('w1' is the host that will have the worker role inside the cluster)
 ```
 # copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (to be done for all hosts)
-scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
-scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
+scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1_host:/home/m1/.ssh/authorized_keys
+scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1_host:/home/w1/.ssh/authorized_keys
 
 # copy infrastructure_setup.sh into the master remote host and execute it
-scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/
+scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1_host:/home/m1/
 
 # copy main_config.json to master remote host to for application configuration
-scp E:\Download\main_config.json m1@m1:/home/m1/
+scp E:\Download\main_config.json m1@m1_host:/home/m1/
 
 # ssh into all remote hosts and set passwordless sudo prompt for remote host username
-ssh -A m1@m1
+ssh -A m1@m1_host
 cat << EOF | sudo tee -a /etc/sudoers
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
 
-ssh -A w1@w1
+ssh -A w1@w1_host
 cat << EOF | sudo tee -a /etc/sudoers
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF

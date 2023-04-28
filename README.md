@@ -30,7 +30,10 @@ scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
 scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 
 # copy infrastructure_setup.sh into the master remote host and execute it
-scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/
+# scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/
+
+# clone the repo into master remote host
+ssh -A m1@m1 "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/m1/"
 
 # copy main_config.json to master remote host to for application configuration
 scp E:\Download\main_config.json m1@m1:/home/m1/
@@ -55,7 +58,8 @@ exit
 ### Run infrastructure_setup.sh script on the master remote host
 ```
 ssh -A m1@m1
-chmod u+x ./infrastructure_setup.sh
+chmod u+x ./binanceB/infrastructure_setup.sh
+sed -i -e 's/\r$//' ./binanceB/infrastructure_setup.sh
 ./infrastructure_setup.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
 ```
 

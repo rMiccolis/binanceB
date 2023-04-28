@@ -47,51 +47,51 @@ for h in ${host_list[@]}; do
   wait
 
   # save host ip address
-  ssh -A $h "sudo hostnamectl set-hostname $host_username"
+  ssh $h "sudo hostnamectl set-hostname $host_username"
 
   # executing config_file.sh on the remote host
   scp ~/config_file.sh $h:/home/$host_username/ &
   wait
-  ssh -A $h "chmod u+x /home/$host_username/config_file.sh" &
+  ssh $h "chmod u+x /home/$host_username/config_file.sh" &
   wait
-  ssh -A $h "/home/$host_username/config_file.sh" &
+  ssh $h "/home/$host_username/config_file.sh" &
   wait
 
   # add github to the list of known_hosts addresses
-  ssh -A $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
+  ssh $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait
 
   # clone github repository code 
   echo -e "${LCYAN}Cloning code repository...${WHITE}"
-  ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
+  ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/" &
   wait
 
   echo -e "${LCYAN}Setting host settings and dependencies...${WHITE}"
-  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
+  ssh $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
-  ssh -A $h "/home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
+  ssh $h "/home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
   wait
 
   echo -e "${LCYAN}Installing Docker...${WHITE}"
-  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
+  ssh $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
   wait
-  ssh -A $h "/home/$host_username/binanceB/bin/install_docker.sh" &
+  ssh $h "/home/$host_username/binanceB/bin/install_docker.sh" &
   wait
 
   echo -e "${LCYAN}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
-  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_cri_docker.sh" &
+  ssh $h "chmod u+x /home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
-  ssh -A $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
+  ssh $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
 
   echo -e "${LCYAN}Installing Kubernetes${WHITE}"
-  ssh -A $h "chmod u+x /home/$host_username/binanceB/bin/install_kubernetes.sh" &
+  ssh $h "chmod u+x /home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
-  ssh -A $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
+  ssh $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
 
   echo -e "${LCYAN}Joining $host_username@$host_ip to the cluster${WHITE}"
-  ssh -A $h "$join" &
+  ssh $h "$join" &
   wait
 
   kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1200s &

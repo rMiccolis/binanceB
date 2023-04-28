@@ -55,6 +55,7 @@ EOF
 sudo apt-get install -y jq
 # read hosts array from configuration file
 hosts="$(jq -r '.hosts | @sh' $config_file_path)"
+cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
 #split hosts string into and array
 hosts=($hosts)
 

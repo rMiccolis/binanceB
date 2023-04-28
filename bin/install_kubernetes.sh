@@ -20,6 +20,6 @@ sudo apt-get update
 
 # sudo apt-get install -y kubelet kubeadm kubectl
 
-sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install -y kubelet=1.26.1-00 kubeadm=1.26.1-00 kubectl=1.26.1-00
 sudo apt-mark hold kubelet kubeadm kubectl
 ###############################################################################

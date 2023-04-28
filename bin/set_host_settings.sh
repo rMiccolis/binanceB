@@ -1,20 +1,20 @@
 #!/bin/bash
 
 ###############################################################################
-remote=0
-while getopts ":r:" opt; do
-  case $opt in
-    r) remote="$OPTARG"
-    ;;
-  esac
-done
+# remote=0
+# while getopts ":r:" opt; do
+#   case $opt in
+#     r) remote="$OPTARG"
+#     ;;
+#   esac
+# done
 
-if [ "$remote" -eq "1" ]; then
-echo -e "${CYAN}Adding master host ip to /etc/hosts${WHITE}"
-cat << EOF | sudo tee -a /etc/hosts > /dev/null
-$master_host_ip $master_host_name
-EOF
-fi
+# if [ "$remote" -eq "1" ]; then
+# echo -e "${CYAN}Adding master host ip to /etc/hosts${WHITE}"
+# cat << EOF | sudo tee -a /etc/hosts > /dev/null
+# $master_host_ip $master_host_name
+# EOF
+# fi
 
 #disable swap
 echo -e "${CYAN}disable swap${WHITE}"

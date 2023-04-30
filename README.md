@@ -40,6 +40,7 @@ scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 
 # clone the repo into master remote host
 scp -r E:\Desktop\binanceB m1@m1:/home/m1/
+ssh m1@m1 "chmod -R u+x ./binanceB"
 
 # copy main_config.json to master remote host to for application configuration
 scp E:\Download\main_config.json m1@m1:/home/m1/

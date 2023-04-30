@@ -3,7 +3,7 @@
 ###############################################################################
 # Init kubeadm cluster
 echo -e "${LBLUE}Init kubeadm cluster${WHITE}"
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///var/run/cri-dockerd.sock --kubernetes-version=1.26.1 --control-plane-endpoint=$master_host_ip
 
 mkdir -p $HOME/.kube

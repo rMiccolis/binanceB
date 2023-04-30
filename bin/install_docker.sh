@@ -6,7 +6,7 @@
 echo -e "${LBLUE}Installing Docker Engine${WHITE}"
 # Update the apt package index and install packages to allow apt to use a repository over HTTPS:
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 sudo apt-get install \
     ca-certificates \
     curl \
@@ -28,7 +28,8 @@ echo \
 sudo apt-get update
 
 # install the latest version
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+VERSION_STRING=5:23.0.1-1~ubuntu.20.04~focal
+sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo systemctl start docker
 

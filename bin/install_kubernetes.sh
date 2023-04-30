@@ -6,7 +6,7 @@ echo -e "${LBLUE}Installing Kubernetes${WHITE}"
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 sudo apt-get install -y apt-transport-https ca-certificates curl
 
 # Download the Google Cloud public signing key:

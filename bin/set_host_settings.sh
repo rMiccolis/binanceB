@@ -16,7 +16,7 @@
 # EOF
 # fi
 
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 
 #disable swap
 echo -e "${CYAN}disable swap${WHITE}"
@@ -52,7 +52,7 @@ sudo sysctl --system
 # installing jq to parse and read json files
 sudo apt-get install -y jq
 
-# sudo apt-get upgrade -y
+# sudo apt-get upgrade -y -y
 
 # Verify that the br_netfilter, overlay modules are loaded by running below instructions:
 # lsmod | grep br_netfilter

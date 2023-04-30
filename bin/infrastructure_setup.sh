@@ -98,15 +98,7 @@ echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binan
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 # clone github repository code
 git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
-chmod u+x ./binanceB/bin/set_host_settings.sh
-chmod u+x ./binanceB/bin/install_docker.sh
-chmod u+x ./binanceB/bin/install_cri_docker.sh
-chmod u+x ./binanceB/bin/install_kubernetes.sh
-chmod u+x ./binanceB/bin/init_kubernetes_cluster.sh
-chmod u+x ./binanceB/bin/setup_worker_nodes.sh
-chmod u+x ./binanceB/bin/install_helm.sh
-chmod u+x ./binanceB/bin/install_nginx.sh
-chmod u+x ./binanceB/bin/install_app.sh
+chmod -R u+x ./binanceB
 
 cd binanceB
 

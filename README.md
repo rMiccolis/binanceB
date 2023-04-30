@@ -36,12 +36,10 @@ scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 
 # copy infrastructure_setup.sh into the master remote host and execute it
-scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/
+<!-- scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/ -->
 
 # clone the repo into master remote host
-
-<!-- ssh m1@m1 "mkdir binanceB"
-ssh -A m1@m1 "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/m1/binanceB" -->
+scp -r E:\Desktop\binanceB m1@m1:/home/m1/
 
 # copy main_config.json to master remote host to for application configuration
 scp E:\Download\main_config.json m1@m1:/home/m1/

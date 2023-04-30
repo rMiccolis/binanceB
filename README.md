@@ -45,14 +45,14 @@ scp -r E:\Desktop\binanceB m1@m1:/home/m1/
 scp E:\Download\main_config.json m1@m1:/home/m1/
 
 # ssh into all remote hosts and set passwordless sudo prompt for remote host username
-ssh -A m1@m1
+ssh m1@m1
 cat << EOF | sudo tee -a /etc/sudoers > /dev/null
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
 
 exit
 
-ssh -A w1@w1
+ssh w1@w1
 cat << EOF | sudo tee -a /etc/sudoers > /dev/null
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
@@ -63,9 +63,9 @@ exit
 
 ### Run infrastructure_setup.sh script on the master remote host
 ```
-ssh -A m1@m1
-chmod u+x ./infrastructure_setup.sh
-sed -i -e 's/\r$//' ./infrastructure_setup.sh
+ssh m1@m1
+chmod -R u+x ./binanceB
+sed -i -e 's/\r$//' ./binanceB/bin/infrastructure_setup.sh
 ./infrastructure_setup.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
 ```
 

@@ -97,8 +97,8 @@ echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies:
 echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 # clone github repository code
-git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
-chmod -R u+x ./binanceB
+# git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
+# chmod -R u+x ./binanceB
 
 cd binanceB
 

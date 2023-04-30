@@ -65,28 +65,25 @@ for h in ${host_list[@]}; do
   echo -e "${LCYAN}Cloning code repository...${WHITE}"
   # ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
   scp -r /home/$master_host_name/binanceB $h:/home/$host_username/ &
+  ssh $h "chmod -R u+x ./binanceB"
   wait
 
   echo -e "${LCYAN}Setting host settings and dependencies...${WHITE}"
-  ssh $h "chmod u+x /home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
   ssh $h "/home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
   wait
 
   echo -e "${LCYAN}Installing Docker...${WHITE}"
-  ssh $h "chmod u+x /home/$host_username/binanceB/bin/install_docker.sh" &
   wait
   ssh $h "/home/$host_username/binanceB/bin/install_docker.sh" &
   wait
 
   echo -e "${LCYAN}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
-  ssh $h "chmod u+x /home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
   ssh $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
 
   echo -e "${LCYAN}Installing Kubernetes${WHITE}"
-  ssh $h "chmod u+x /home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
   ssh $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait

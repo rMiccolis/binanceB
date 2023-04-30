@@ -11,6 +11,15 @@ cat << EOF | tee nginx_helm_config.yaml
 controller:
   service:
     externalIPs: [$master_host_ip]
+  config:
+    use-forwarded-headers: true
+    use-gzip: true
+    generate-request-id: true
+    proxy-body-size: 1024k
+    client-body-buffer-size: 1024k
+    client-header-buffer-size: 1024k
+    error-log-level: warn
+    http2-max-header-size: 1024k
 EOF
 
 kubectl create namespace ingress-nginx

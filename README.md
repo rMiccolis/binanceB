@@ -27,16 +27,21 @@ After creating VM with a linux distro:
 ```
 # copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (to be done for all hosts)
 scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
+scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
+
+# create master and workers ssh key pairs
 ssh m1@m1
 ssh-keygen
+
+exitssh w1@w1
+ssh-keygen
 exit
+
+# download master's public key
 scp m1@m1:/home/m1/.ssh/id_rsa.pub E:\Download\
 
-scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
+# insert master's public key into workers' authorized_keys file
 scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
-
-# copy infrastructure_setup.sh into the master remote host and execute it
-<!-- scp E:\Desktop\binanceB\bin\infrastructure_setup.sh m1@m1:/home/m1/ -->
 
 # clone the repo into master remote host
 scp -r E:\Desktop\binanceB m1@m1:/home/m1/

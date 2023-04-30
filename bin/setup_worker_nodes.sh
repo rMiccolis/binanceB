@@ -8,7 +8,7 @@ touch ~/.ssh/known_hosts
 
 # create config_file.sh to export colors into the worker hosts
 touch ~/config_file.sh
-cat << EOF | sudo tee ~/config_file.sh
+cat << EOF | tee ~/config_file.sh
 #!/bin/bash
 #export colors for colored output strings
 export BLACK="\033[0;30m"

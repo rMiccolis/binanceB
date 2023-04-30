@@ -13,12 +13,11 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 #install calico CNI to kubernetes cluster:
 echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"
-# curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/tigera-operator.yaml
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/custom-resources.yaml
-watch kubectl get pods -n calico-system
-
-# kubectl apply -f calico.yaml
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O
+kubectl apply -f calico.yaml
+# kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/tigera-operator.yaml
+# kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/custom-resources.yaml
+# watch kubectl get pods -n calico-system
 
 sleep 10
 

@@ -16,6 +16,8 @@
 # EOF
 # fi
 
+sudo apt-get upgrade
+
 #disable swap
 echo -e "${CYAN}disable swap${WHITE}"
 sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab

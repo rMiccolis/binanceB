@@ -47,7 +47,8 @@ for h in ${host_list[@]}; do
   wait
 
   # save host ip address
-  ssh $h "sudo hostnamectl set-hostname $host_username"
+  ssh $h "sudo hostnamectl set-hostname $host_username"&
+  wait
 
   # executing config_file.sh on the remote host
   scp ~/config_file.sh $h:/home/$host_username/ &
@@ -61,16 +62,19 @@ for h in ${host_list[@]}; do
   ssh $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait
 
+  # add master to the list of known_hosts addresses
+  ssh $h "ssh-keyscan $master_host_ip >> ~/.ssh/known_hosts" &
+  wait
+
   # clone github repository code 
   echo -e "${LCYAN}Cloning code repository...${WHITE}"
   # ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
   scp -r /home/$master_host_name/binanceB $h:/home/$host_username/ &
-  ssh $h "chmod -R u+x ./binanceB"
+  ssh $h "chmod -R u+x ./binanceB" &
   wait
 
   echo -e "${LCYAN}Setting host settings and dependencies...${WHITE}"
-  wait
-  ssh $h "/home/$host_username/binanceB/bin/set_host_settings.sh -r 1" &
+  ssh $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
 
   echo -e "${LCYAN}Installing Docker...${WHITE}"

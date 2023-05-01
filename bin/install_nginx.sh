@@ -7,11 +7,14 @@ sudo apt-get upgrade -y
 #add nginx helm repository (kubernetes version)
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
-
+externalIPs="$master_host_ip"
+for h in "${hosts[@]}"; do
+externalIPs=$externalIPs,$h
+fi
 cat << EOF | tee nginx_helm_config.yaml
 controller:
   service:
-    externalIPs: [$master_host_ip]
+    externalIPs: [$externalIPs]
   config:
     use-forwarded-headers: true
     use-gzip: true

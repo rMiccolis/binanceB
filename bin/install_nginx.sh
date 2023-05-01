@@ -9,7 +9,10 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 externalIPs="$master_host_ip"
 for h in "${host_list[@]}"; do
-externalIPs=$externalIPs,$h
+IFS='@' read -r -a host_string <<< "$h"
+host_username=${host_string[0]}
+host_ip=${host_string[1]}
+externalIPs=$externalIPs,$host_ip
 done
 cat << EOF | tee nginx_helm_config.yaml
 controller:

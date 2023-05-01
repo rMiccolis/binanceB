@@ -8,7 +8,7 @@ sudo apt-get upgrade -y
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 externalIPs="$master_host_ip"
-for h in "${hosts[@]}"; do
+for h in "${host_list[@]}"; do
 externalIPs=$externalIPs,$h
 done
 cat << EOF | tee nginx_helm_config.yaml

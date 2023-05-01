@@ -10,7 +10,7 @@ helm repo update
 externalIPs="$master_host_ip"
 for h in "${hosts[@]}"; do
 externalIPs=$externalIPs,$h
-fi
+done
 cat << EOF | tee nginx_helm_config.yaml
 controller:
   service:

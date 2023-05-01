@@ -30,17 +30,13 @@ scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
 scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 
 # create master and workers ssh key pairs
-ssh m1@m1
-ssh-keygen
-
-exitssh w1@w1
-ssh-keygen
-exit
+ssh m1@m1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
+ssh w1@w1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
 
 # download master's public key
 scp m1@m1:/home/m1/.ssh/id_rsa.pub E:\Download\
 
-# insert master's public key into workers' authorized_keys file
+# insert master's public key into workers' authorized_keys file (to be done for all workers)
 scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 
 # clone the repo into master remote host
@@ -52,7 +48,7 @@ scp E:\Download\main_config.json m1@m1:/home/m1/
 
 # ssh into all remote hosts and set passwordless sudo prompt for remote host username
 ssh m1@m1
-cat << EOF | sudo tee -a /etc/sudoers > /dev/null
+cat << EOF | sudo tee -a /etc/sudoers > /dev/null 2>&1
 $USER ALL=(ALL) NOPASSWD: ALL
 EOF
 
@@ -71,7 +67,7 @@ exit
 ```
 ssh m1@m1
 chmod -R u+x ./binanceB
-sed -i -e 's/\r$//' ./binanceB/bin/infrastructure_setup.sh
+# sed -i -e 's/\r$//' ./binanceB/bin/infrastructure_setup.sh
 ./infrastructure_setup.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
 ```
 

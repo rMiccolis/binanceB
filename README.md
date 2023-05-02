@@ -66,7 +66,7 @@ exit
 ### Run infrastructure_setup.sh script on the master remote host
 ```
 ssh m1@m1
-chmod -R u+x ./binanceB
+# chmod -R u+x ./binanceB
 # sed -i -e 's/\r$//' ./binanceB/bin/infrastructure_setup.sh
 ./infrastructure_setup.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
 ```

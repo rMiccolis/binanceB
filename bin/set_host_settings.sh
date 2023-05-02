@@ -18,11 +18,6 @@
 
 sudo apt-get upgrade -y
 
-#disable swap
-echo -e "${CYAN}disable swap${WHITE}"
-sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
-sudo swapoff -a
-
 # Forwarding IPv4 and letting iptables see bridged traffic
 echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic${WHITE}"
 cat << EOF | sudo tee /etc/modules-load.d/k8s.conf > /dev/null

@@ -17,7 +17,7 @@ done
 cat << EOF | tee nginx_helm_config.yaml
 controller:
   service:
-    externalIPs: [$externalIPs]
+    loadBalancerIP: [$master_host_ip]
   config:
     use-forwarded-headers: true
     use-gzip: true

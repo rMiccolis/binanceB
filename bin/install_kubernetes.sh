@@ -1,6 +1,10 @@
 #!/bin/bash
 
 ###############################################################################
+#disable swap
+echo -e "${CYAN}disable swap${WHITE}"
+sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
+sudo swapoff -a
 # Install Kubernetes
 echo -e "${LBLUE}Installing Kubernetes${WHITE}"
 # install kubeadm, kubelet and kubectl:

@@ -96,7 +96,7 @@ for h in ${host_list[@]}; do
   ssh $h "$join" &
   wait
 
-  kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1200s &
+  kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=2000s &
   wait
   echo -e "${LPURPLE}HOST $host_username@$host_ip COMPLETED!${WHITE}"
 

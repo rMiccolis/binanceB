@@ -120,7 +120,7 @@ echo -e "${GREEN}Starting phase 5 ===> Initialize Kubernetes cluster${WHITE}"
 
 echo -e "${GREEN}Starting phase 6 ===> Setup worker nodes and joining them to cluster ${WHITE}"
 ./bin/setup_worker_nodes.sh
-kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=2000s &
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait
 echo -e "${GREEN}Starting phase 7 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
 ./bin/install_helm.sh
@@ -132,7 +132,7 @@ echo -e "${GREEN}Starting phase 9 ===> Applying configuration file and deployng 
 ./bin/install_app.sh
 
 echo -e "${GREEN}Waiting for the Application to get started...${WHITE}"
-kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=2000s &
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait
 
 echo -e "${GREEN}Application is correctly running!${WHITE}"

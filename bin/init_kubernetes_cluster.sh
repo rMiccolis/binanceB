@@ -19,5 +19,5 @@ kubectl apply -f calico.yaml
 
 sleep 5
 
-kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=2000s &
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait

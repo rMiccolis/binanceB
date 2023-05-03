@@ -57,6 +57,7 @@ ssh m1@m1 "chmod -R u+x ./binanceB"
 
 # copy main_config.json to master remote host to for application configuration
 scp E:\Download\main_config.json m1@m1:/home/m1/
+ssh m1@m1 "chmod -R u+x ./main_config.json"
 
 # ssh into all remote hosts and set passwordless sudo prompt for remote host username
 ssh w1@w1

@@ -131,12 +131,6 @@ echo -e "${GREEN}Starting phase 8 ===> Installing Nginx (to be used as a reverse
 echo -e "${GREEN}Starting phase 9 ===> Applying configuration file and deployng the application to the cluster${WHITE}"
 ./bin/install_app.sh
 
-echo -e "${GREEN}Starting phase 10 ===> Starting Application...${WHITE}"
-kubectl apply -f ./kubernetes/app/1-namespaces/
-kubectl apply -f ./kubernetes/app/2-mongodb/
-kubectl apply -f ./kubernetes/app/3-server/
-kubectl apply -f ./kubernetes/app/4-client/
-
 echo -e "${GREEN}Waiting for the Application to get started...${WHITE}"
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1200s &
 wait

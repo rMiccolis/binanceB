@@ -4,4 +4,4 @@ metadata:
   name: client-configmap
   namespace: binance-b
 data:
-  SERVER_URI: $(SERVER_SERVICE_HOST):$(SERVER_SERVICE_PORT)/server/
+  SERVER_URI: $master_host_ip/server/

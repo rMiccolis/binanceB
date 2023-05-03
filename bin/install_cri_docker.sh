@@ -16,7 +16,7 @@ sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 
 # check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
 # edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
-# into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin='
+# into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin=cni'
 
 sudo tee /etc/systemd/system/cri-docker.service << EOF > /dev/null
 [Unit]

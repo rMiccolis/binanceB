@@ -6,7 +6,7 @@
 cd $repository_root_dir/binanceB/
 
 #before building images we have to set a .env file to pass client its environment variables
-cat << EOF | sudo tee $repository_root_dir/binanceB/client/.env
+cat << EOF | sudo tee $repository_root_dir/binanceB/client/.env.production
 VITE_SERVER_URI=$master_host_ip/server/
 EOF
 

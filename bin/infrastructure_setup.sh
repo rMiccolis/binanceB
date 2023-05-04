@@ -128,7 +128,10 @@ echo -e "${GREEN}Starting phase 7 ===> Installing Helm (package manager for Kube
 echo -e "${GREEN}Starting phase 8 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
 ./bin/install_nginx.sh
 
-echo -e "${GREEN}Starting phase 9 ===> Applying configuration file and deployng the application to the cluster${WHITE}"
+echo -e "${GREEN}Starting phase 9 ===> Building server and client docker images and pushing them to docker hub${WHITE}"
+./bin/manage_docker_images.sh
+
+echo -e "${GREEN}Starting phase 10 ===> Applying configuration file and deployng the application to the cluster${WHITE}"
 ./bin/install_app.sh
 
 echo -e "${GREEN}Waiting for the Application to get started...${WHITE}"

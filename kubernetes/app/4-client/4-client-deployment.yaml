@@ -28,9 +28,3 @@ spec:
             cpu: 200m
         ports:
         - containerPort: 80
-        env: 
-        - name: VITE_SERVER_URI
-          valueFrom:
-           configMapKeyRef:
-             name: client-configmap
-             key: SERVER_URI

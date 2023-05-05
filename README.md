@@ -20,7 +20,7 @@ After creating VM with a linux distro:
 - copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
 - enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 
-## EXAMPLE OF main_config.json
+## EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
 {
 "environment": "production",
 "cluster_dns_name": "cluster.com",

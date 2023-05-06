@@ -5,7 +5,13 @@
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
 echo -e "${LBLUE}Installing the docker cri (Container Runtime Interface)${WHITE}"
 sudo apt-get upgrade -y
-wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
+
+# fetch latest release from github repository
+LATEST_CRI_DOCKERD_VERSION=$(sudo curl -L -s -H 'Accept: application/json' https://github.com/Mirantis/cri-dockerd/releases/latest)
+LATEST_CRI_DOCKERD_VERSION=$(echo $LATEST_CRI_DOCKERD_VERSION | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION:1}.amd64.tgz"
+RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
+wget $RELEASE_URL
 
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz
 

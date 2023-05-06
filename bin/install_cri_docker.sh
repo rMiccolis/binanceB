@@ -9,21 +9,25 @@ sudo apt-get upgrade -y
 # fetch latest release from github repository
 LATEST_CRI_DOCKERD_VERSION=$(sudo curl -L -s -H 'Accept: application/json' https://github.com/Mirantis/cri-dockerd/releases/latest)
 LATEST_CRI_DOCKERD_VERSION=$(echo $LATEST_CRI_DOCKERD_VERSION | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+
+# download latest cri-dockerd version
 FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION:1}.amd64.tgz"
 RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
 wget $RELEASE_URL
 
+# extract it
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz
 
+# install cri-dockerd
 cd cri-dockerd/
 mkdir -p /usr/local/bin
-
 sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd
 
+
+# edit original installed files 
 # check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
 # edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
 # into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin=cni'
-
 sudo tee /etc/systemd/system/cri-docker.service << EOF > /dev/null
 [Unit]
 Description=CRI Interface for Docker Application Container Engine

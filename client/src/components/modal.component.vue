@@ -1,24 +1,5 @@
 <template>
   <v-row justify="center">
-<<<<<<< HEAD
-    <v-dialog
-      v-model="modalState"
-      :persistent="persistent"
-      @click:outside="toggleModal"
-    >
-      <v-card :min-width="'75vw'" :max-width="'100vw'" :width="'85vw'">
-        <v-card-title>
-          <v-row class="justify-center">
-            <slot name="header"></slot>
-          </v-row>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <slot name="body"></slot>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-=======
     <v-dialog v-model="modalState" :persistent="persistent">
       <v-toolbar dark color="blue" class="text-center">
         <v-row no-gutters align="center" :justify="'end'">
@@ -45,7 +26,6 @@
           <!-- </v-container> -->
         </v-card-text>
         <v-card-actions v-if="$slots.footer">
->>>>>>> develop
           <v-spacer></v-spacer>
           <slot name="footer"></slot>
         </v-card-actions>

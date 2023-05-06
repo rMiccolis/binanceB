@@ -3,15 +3,6 @@ import { watch, ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
 
-<<<<<<< HEAD
-
-// You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
-// the first argument is a unique id of the store across your application
-export const useMainStore = defineStore("mainStore", () => {
-    const baseURL = import.meta.env.VITE_baseURL;
-    const router = useRouter();
-    const isUserloggedIn = ref(false);
-=======
 // You can name the return value of `defineStore()` anything you want, but it's best to use the name of the store and surround it with `use` and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
 // the first argument is a unique id of the store across your application
 export const useMainStore = defineStore("mainStore", () => {
@@ -19,19 +10,11 @@ export const useMainStore = defineStore("mainStore", () => {
     const router = useRouter();
     const isUserloggedIn = ref(false);
     const userId = ref(null);
->>>>>>> develop
     const session = ref(null);
 
     const setLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
         if (session.refreshTimeoutId) {
             clearTimeout(session.refreshTimeoutId);
-<<<<<<< HEAD
-          }
-        if (loggedIn === true) {
-            session.value = {"userId":"aa","iat":1663433314286,"exp":1699999963436314286};
-            isUserloggedIn.value = true;
-            let expiryDate = session.value.exp - 10000 - session.value.iat;
-=======
         }
         if (loggedIn === true && sessionInfo) {
             session.value = sessionInfo;
@@ -40,27 +23,11 @@ export const useMainStore = defineStore("mainStore", () => {
             let expiryDate = session.value.exp - 10000 - session.value.iat;
             console.log("issued at:", new Date(session.value.iat).toLocaleString());
             console.log("expires at:", new Date(session.value.exp).toLocaleString());
->>>>>>> develop
 
             let refreshTimeoutId = setTimeout(async () => {
                 console.log("you have finished your session time!");
                 console.log("trying to refresh token...");
                 //TODO TRY TO REFRESH TOKEN
-<<<<<<< HEAD
-                // let response = await axios.get(`${baseURL}auth/refresh`, {
-                //     withCredentials: true,
-                // });
-                // if (response.data.error === false) {
-                //     isUserloggedIn.value = true;
-                //     session.value = response.data.sessionInfo;
-                //     console.log("Token refreshed, session is still valid!");
-                // } else {
-                //     isUserloggedIn.value = false;
-                //     session.value = null;
-                //     console.log("Token NOT refreshed, session is not valid!");
-                // }
-                
-=======
                 let response = await axios.get(`${baseURL}auth/refresh`, {
                     withCredentials: true,
                 });
@@ -75,33 +42,22 @@ export const useMainStore = defineStore("mainStore", () => {
                     userId.value = null;
                     console.log("Token NOT refreshed, session is not valid!");
                 }
->>>>>>> develop
             }, expiryDate);
 
             session.value.refreshTimeoutId = refreshTimeoutId;
         } else {
             isUserloggedIn.value = false;
-<<<<<<< HEAD
-            session.value = null;
-            if (router.currentRoute.value.name != "notFound" && router.currentRoute.value.name != "home") {
-                router.push({
-                    name: "home",
-=======
             session.value = false;
             userId.value = null;
             if (router.currentRoute.value.name != "notFound" && router.currentRoute.value.name != "login") {
                 router.push({
                     name: "login",
->>>>>>> develop
                 });
             }
         }
         isUserloggedIn.value = loggedIn;
     };
 
-<<<<<<< HEAD
-    return { isUserloggedIn, session, setLoggedIn };
-=======
     const isLoggedIn = async () => {
         if (isUserloggedIn.value === true && Date.now() < session?.value.exp) {
             return true;
@@ -132,5 +88,4 @@ export const useMainStore = defineStore("mainStore", () => {
     };
 
     return { isUserloggedIn, session, setLoggedIn, isLoggedIn };
->>>>>>> develop
 });

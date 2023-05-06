@@ -1,40 +1,96 @@
-*Set vm resolution to full HD:*
 
-1. Open a Terminal.
-2. Enter sudo nano /etc/default/grub
-3. Alter the line starting with GRUB_CMDLINE_LINUX_DEFAULT to add the resolution setting. In my case, this was GRUB_CMDLINE_LINUX_DEFAULT="quiet splash video=hyperv_fb:1920x1200"
-3. Alter the line starting with GRUB_CMDLINE_LINUXT to add the resolution setting: "GRUB_CMDLINE_LINUX=quiet splash video=hyperv_fb:1920x1200"
-4. Run sudo update-grub.
-5. Shut down the VM.
-6. Start the VM again.
+# Virtual machine operations
 
-vm instructions:
-1. install git: sudo apt install git
-2. use the ssh key to clone project
-3. git clone git@github.com:rMiccolis/binanceB.git
-4. install docker: 
-   1. sudo apt-get update
-   2. sudo apt-get install ca-certificates curl gnupg lsb-release
-   3. sudo mkdir -p /etc/apt/keyrings
-   4. curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-   5. echo  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-   6. sudo apt-get update
-   7. sudo chmod a+r /etc/apt/keyrings/docker.gpg
-   8. sudo apt-get update
-   9. sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-   10. sudo docker run hello-world
-5. install kubernetes: (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) (https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/)
-   1. sudo apt-get update
-   2. sudo apt-get install -y apt-transport-https ca-certificates curl
-   3. sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-   4. echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-   5. sudo apt-get update
-   6. sudo apt-get install -y kubelet kubeadm kubectl
-   7. sudo apt-mark hold kubelet kubeadm kubectl
-6. create cluster:
-   1. sudo apt-get update
-   2. sudo apt-get upgrade
-   3. sudo rm /etc/containerd/config.toml
-   4. sudo systemctl restart containerd
-   5. sudo kubeadm init
+# tested versions:
+- Ubuntu version: 20.04.6 LTS
+- kernel version: Linux 5.4.0-148-generic
+- docker version: /23.0.5
+- cri-dockerd version: 0.3.1
+- kubernetes version 1.27.1
 
+After creating VM with a linux distro:
+- disable windows secure boot
+- set at least 2 cpus
+- set at least 2048MB or RAM (if you have not enough set a max RAM usage tipically 4096MB)
+- set static MAC address and assign a fixed ip address to it from the router (ex MAC address: 00 15 5D 38 01 30 and assign it for example to ip address: 192.168.1.200)
+
+# Mandatory OS OPerations before executing 'infrastructure_setup.sh' (follow these steps in the example paragraph)
+- ### Choose a linux distro which makes use of systemd as init service
+- install an ssh server
+- copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
+- enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
+
+## EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
+{
+"environment": "production",
+"cluster_dns_name": "cluster.com",
+"cluster_public_ip": "84.248.17.191",
+"hosts": ["w1@192.168.1.203"], #user_name@ip_address (ip address must be from internal interface like in this example)
+"server_access_token_secret": "server_access_token_secret",
+"server_refresh_token_secret": "server_refresh_token_secret",
+"server_access_token_lifetime": "50",
+"server_refresh_token_lifetime": "50",
+"mongo_root_username": "mongorootusername",
+"mongo_root_password": "mongorootpassword"
+}
+
+# EXAMPLE:
+### EXECUTE THESE INSTRUCTIONS!
+#### ('m1' is the host that will have the master role inside the cluster)
+#### ('w1' is the host that will have the worker role inside the cluster, the others will be w2,w3 and so on)
+
+##### copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (## to be done for all hosts)
+```
+
+scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
+scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
+```
+
+##### create master and workers ssh key pairs
+```
+ssh m1@m1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
+ssh w1@w1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
+```
+
+##### download master's public key
+```
+scp m1@m1:/home/m1/.ssh/id_rsa.pub E:\Download\
+```
+
+##### insert master's public key into workers' authorized_keys file (to be done for all workers)
+```
+scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
+```
+
+##### clone the repo into master remote host
+```
+scp -r E:\Desktop\binanceB m1@m1:/home/m1/
+ssh m1@m1 "chmod -R u+x ./binanceB"
+```
+
+##### copy main_config.json to master remote host to for application configuration
+```
+scp E:\Download\main_config.json m1@m1:/home/m1/
+ssh m1@m1 "chmod -R u+x ./main_config.json"
+```
+
+##### ssh into all remote hosts and set passwordless sudo prompt for remote host username
+```
+ssh w1@w1
+cat << EOF | sudo tee -a /etc/sudoers > /dev/null
+$USER ALL=(ALL) NOPASSWD: ALL
+EOF
+
+exit
+
+ssh m1@m1
+cat << EOF | sudo tee -a /etc/sudoers > /dev/null 2>&1
+$USER ALL=(ALL) NOPASSWD: ALL
+EOF
+
+```
+
+### Run infrastructure_setup.sh script on the master remote host
+```
+./infrastructure_setup.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
+```

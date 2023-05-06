@@ -4,8 +4,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . ./
-RUN l=$(ls) && echo $l
-RUN env_content=$(cat .env) && echo $env_content
 RUN npm run build
 
 # production stage
@@ -16,7 +14,8 @@ RUN npm run build
 # CMD ["nginx", "-g", "daemon off;"]
 
 FROM nginx:latest AS nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+# COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build-stage /app/dist /usr/share/nginx/html/
+COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;" ]

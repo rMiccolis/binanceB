@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const db = require("../mongodb/database");
 const testStrategy = require("../src/test");
 const sessionHandler = require("../handlers/session.handler");

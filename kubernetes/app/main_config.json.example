@@ -1,0 +1,12 @@
+{
+"environment": "production",
+"cluster_dns_name": "cluster.com",
+"cluster_public_ip": "84.248.17.191",
+"hosts": ["w1@192.168.1.203"],
+"server_access_token_secret": "server_access_token_secret",
+"server_refresh_token_secret": "server_refresh_token_secret",
+"server_access_token_lifetime": "50",
+"server_refresh_token_lifetime": "50",
+"mongo_root_username": "mongorootusername",
+"mongo_root_password": "mongorootpassword"
+}

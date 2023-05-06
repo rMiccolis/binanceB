@@ -1,4 +1,7 @@
+const express = require("express");
+const db = require("../mongodb/database");
 const generalRouter = express.Router();
+
 generalRouter.route("/").get(async function (req, res) {
     try {
         if (global.globalDBConnection.readyState === 1) res.json({ health: "OK", message: "App is running!" });
@@ -16,18 +19,8 @@ generalRouter.route("/healthCheck").get(async function (req, res) {
             res.json({ health: "OK", message: "DB is correctly running!", healthCheck: healt });
         }
     } catch (error) {
-        res.json({ health: "KO", message: "DB is is not running!" });
+        res.json({ health: "KO", message: "DB is is not running!", error: error.message });
     }
 });
 
-generalRouter.route("/test").post(async function (req, res) {
-    try {
-        res.json({
-            test: "passed!",
-            params: req.params,
-            query: require.query,
-            body: require.body})
-    } catch (error) {
-        res.json({ test: "not passed :("});
-    }
-});
+module.exports = generalRouter;

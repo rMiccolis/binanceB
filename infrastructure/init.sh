@@ -17,83 +17,15 @@ while getopts ":u:p:c:h:" opt; do
   esac
 done
 
-#export colors for colored output strings
-export BLACK="\033[0;30m"
-export DARK_GREY="\033[1;30m"
-export RED="\033[0;31m"
-export LRED="\033[1;31m"
-export GREEN="\033[0;32m"
-export LGREEN="\033[1;32m"
-export ORANGE="\033[0;33m"
-export YELLOW="\033[1;33m"
-export BLUE="\033[0;34m"
-export LBLUE="\033[1;34m"
-export PURPLE="\033[0;35m"
-export LPURPLE="\033[1;35m"
-export CYAN="\033[0;36m"
-export LCYAN="\033[1;36m"
-export LGRAY="\033[0;37m"
-export WHITE="\033[1;37m"
-
+echo -e "${GREEN}Starting phase 0: Reading data and preparing working environment:${WHITE}"
 export config_file_path=$config_file_path
+./binanceB/bin/prepare_environment.sh
 
-# set host name and address
-eval ip_addr="$(hostname -I)"
-export master_host_ip=$ip_addr
-export master_host_name=$(whoami)
-sudo hostnamectl set-hostname $master_host_name
-
-echo -e "${GREEN}master_host_ip => $master_host_ip${WHITE}"
-echo -e "${GREEN}master_host_name => $master_host_name${WHITE}"
-
-# save host ip address into host file
-cat << EOF | sudo tee -a /etc/hosts > /dev/null
-$master_host_ip $master_host_name
-EOF
-
-# install jq library to read and parse json files
-sudo apt-get install -y jq
-# read hosts array from configuration file
-hosts="$(jq -r '.hosts | @sh' $config_file_path)"
-cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
-#split hosts string into and array
-hosts=($hosts)
-
-# cleaning strings single quotes from elements read by json file through jq library
-for h in "${!hosts[@]}"; do
-  temp_host=${hosts[$h]}
-  eval hosts[$h]=$temp_host
-done
-
-export repository_root_dir=$(pwd)
-
-echo -e "${GREEN}Cluster worker host list:${WHITE}"
-
-host_list=""
-for h in "${hosts[@]}"; do
-# adding remote hosts to the hosts file
-host_string=()
-IFS='@' read -r -a host_string <<< "$h"
-host_username=${host_string[0]}
-host_ip=${host_string[1]}
-if [ $master_host_name != $host_username ]; then
-sudo tee -a /etc/hosts << EOF > /dev/null
-$host_ip $host_username
-EOF
-fi
-#adding remote host to the remote host list
-host_list="$host_list $h"
-echo -e "${LPURPLE}$h${WHITE}"
-done
-export host_list=$host_list
-
-echo -e "${LPURPLE}----------------${WHITE}"
-echo -e "${GREEN}Starting phase 0: Setting up host environment and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
+echo -e "${GREEN}Starting phase 0: Setting up host settings and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 
 
 # add github to the list of known_hosts addresses
-echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
-ssh-keyscan github.com >> ~/.ssh/known_hosts
+# echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
 # clone github repository code
 # git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
 # chmod -R u+x ./binanceB
@@ -122,6 +54,7 @@ echo -e "${GREEN}Starting phase 6 ===> Setup worker nodes and joining them to cl
 ./bin/setup_worker_nodes.sh
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait
+
 echo -e "${GREEN}Starting phase 7 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
 ./bin/install_helm.sh
 

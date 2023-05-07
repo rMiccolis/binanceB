@@ -1,7 +1,7 @@
+# INSTRUCTION TO RUN THE INFRASTRUCTURE SETUP
+## Virtual machine operations
 
-# Virtual machine operations
-
-# tested versions:
+### tested versions:
 - Ubuntu version: 20.04.6 LTS
 - kernel version: Linux 5.4.0-148-generic
 - docker version: /23.0.5
@@ -14,7 +14,7 @@ After creating VM with a linux distro:
 - set at least 2048MB or RAM (if you have not enough set a max RAM usage tipically 4096MB)
 - set static MAC address and assign a fixed ip address to it from the router (ex MAC address: 00 15 5D 38 01 30 and assign it for example to ip address: 192.168.1.200)
 
-# Mandatory OS OPerations before executing 'infrastructure_setup.sh' (follow these steps in the example paragraph)
+# Mandatory OS OPerations before executing './infrastructure/init.sh' (follow these steps in the example paragraph)
 - ### Choose a linux distro which makes use of systemd as init service
 - install an ssh server
 - copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
@@ -90,7 +90,7 @@ EOF
 
 ```
 
-### Run infrastructure_setup.sh script on the master remote host
+### Run ./infrastructure/init.sh script on the master remote host
 ```
-./infrastructure_setup.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
+./infrastructure/init.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
 ```

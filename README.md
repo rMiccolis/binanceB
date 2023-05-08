@@ -22,7 +22,7 @@ After creating VM with a linux distro:
 
 ## EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
 {
-"environment": "production",
+"environment": "production", #or "development" to set master ip as cluster_public_ip (sets it as private master ip: ES: 192.168.1.202. With 'development' cluster won't be accessible from outside of the network)
 "cluster_dns_name": "cluster.com",
 "cluster_public_ip": "84.248.17.191",
 "hosts": ["w1@192.168.1.203"], #user_name@ip_address (ip address must be from internal interface like in this example)

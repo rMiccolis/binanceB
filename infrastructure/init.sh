@@ -3,7 +3,7 @@
 # list of hosts IP that will join the cluster
 hosts=()
 ############### IMPORTANT ###############
-while getopts ":u:p:c:h:" opt; do
+while getopts ":u:p:c:" opt; do
   case $opt in
     u) docker_username="$OPTARG"
     ;;
@@ -19,7 +19,7 @@ done
 
 echo -e "${GREEN}Starting phase 0: Reading data and preparing working environment:${WHITE}"
 export config_file_path=$config_file_path
-./binanceB/bin/prepare_environment.sh
+. ./binanceB/bin/prepare_environment.sh
 
 echo -e "${GREEN}Starting phase 0: Setting up host settings and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
 

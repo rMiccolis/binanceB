@@ -2,28 +2,28 @@
 
 ###############################################################################
 #disable swap
-echo -e "${CYAN}disable swap${WHITE}"
+echo -e "${CYAN}disabling swap...${WHITE}"
 sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
 sudo swapoff -a
 # Install Kubernetes
 echo -e "${LBLUE}Installing Kubernetes${WHITE}"
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt-get update > /dev/null 2>&1
+sudo apt-get upgrade -y -q > /dev/null 2>&1
+sudo apt-get install -y -q apt-transport-https ca-certificates curl > /dev/null 2>&1
 
 # Download the Google Cloud public signing key:
-sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg > /dev/null 2>&1
 
 # Add the Kubernetes apt repository:
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null 2>&1
 
 # Update apt package index, install kubelet, kubeadm and kubectl, and pin their version:
-sudo apt-get update
+sudo apt-get update > /dev/null
 
 # sudo apt-get install -y kubelet kubeadm kubectl
 
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
+sudo apt-get install -y -q kubelet kubeadm kubectl > /dev/null 2>&1
+sudo apt-mark hold kubelet kubeadm kubectl > /dev/null 2>&1
 ###############################################################################

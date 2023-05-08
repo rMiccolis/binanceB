@@ -8,7 +8,7 @@ touch ~/.ssh/known_hosts
 
 # create config_file.sh to export colors into the worker hosts
 touch ~/config_file.sh
-cat << EOF | tee ~/config_file.sh
+cat << EOF | tee ~/config_file.sh > /dev/null
 #!/bin/bash
 #export colors for colored output strings
 export BLACK="\033[0;30m"
@@ -69,7 +69,8 @@ for h in ${host_list[@]}; do
   # clone github repository code 
   echo -e "${LCYAN}Cloning code repository...${WHITE}"
   # ssh -A $h "git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
-  scp -r /home/$master_host_name/binanceB $h:/home/$host_username/ &
+  scp -q -r /home/$master_host_name/binanceB $h:/home/$host_username/
+  wait
   ssh $h "chmod -R u+x ./binanceB" &
   wait
 

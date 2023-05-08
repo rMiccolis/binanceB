@@ -36,7 +36,7 @@ EOF
 
 echo -e "${GREEN}Installing jq library to read and parse json files...${WHITE}"
 # install jq library to read and parse json files
-sudo apt-get install -y jq > /dev/null
+sudo apt-get install -y -q jq > /dev/null
 
 # list of hosts IP that will join the cluster
 hosts=()

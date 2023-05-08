@@ -64,7 +64,7 @@ scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 
 ##### clone the repo into master remote host
 ```
-scp -r E:\Desktop\binanceB m1@m1:/home/m1/
+scp -r -q E:\Desktop\binanceB m1@m1:/home/m1/
 ssh m1@m1 "chmod -R u+x ./binanceB"
 ```
 

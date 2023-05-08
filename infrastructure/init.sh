@@ -21,15 +21,6 @@ echo -e "${GREEN}Starting phase 0: Reading data and preparing working environmen
 export config_file_path=$config_file_path
 . ./binanceB/bin/prepare_environment.sh
 
-echo -e "${GREEN}Starting phase 0: Setting up host settings and dependencies: ===> HOST IP: $(hostname) - $(hostname -I)${WHITE}"
-
-
-# add github to the list of known_hosts addresses
-# echo -e "${GREEN}Cloning private repository: ===> git@github.com:rMiccolis/binanceB.git${WHITE}"
-# clone github repository code
-# git clone --single-branch --branch develop git@github.com:rMiccolis/binanceB.git
-# chmod -R u+x ./binanceB
-
 cd binanceB
 
 echo -e "${GREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
@@ -39,7 +30,7 @@ echo -e "${GREEN}Starting phase 2 ===> Installing Docker${WHITE}"
 ./bin/install_docker.sh
 echo "${LBLUE}Docker Hub login with username: $docker_username${WHITE}";
 # login into docker
-sudo docker login --username $docker_username --password $docker_password
+sudo docker login --username $docker_username --password $docker_password > /dev/null 2>&1
 
 echo -e "${GREEN}Starting phase 3 ===> Installing Cri-Docker (Container Runtime Interface)${WHITE}"
 ./bin/install_cri_docker.sh

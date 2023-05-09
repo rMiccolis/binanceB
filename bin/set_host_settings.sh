@@ -19,7 +19,7 @@
 sudo apt-get upgrade -y -q > /dev/null 2>&1
 
 # Forwarding IPv4 and letting iptables see bridged traffic
-echo -e "${CYAN}Forwarding IPv4 and letting iptables see bridged traffic${WHITE}"
+echo -e "${LBLUE}Forwarding IPv4 and letting iptables see bridged traffic${WHITE}"
 cat << EOF | sudo tee /etc/modules-load.d/k8s.conf > /dev/null 2>&1
 overlay
 br_netfilter
@@ -31,7 +31,6 @@ br_netfilter
 EOF
 
 sudo modprobe overlay
-
 sudo modprobe br_netfilter
 
 # sysctl params required by setup, params persist across reboots
@@ -42,6 +41,7 @@ net.ipv4.ip_forward                 = 1
 EOF
 
 # Apply sysctl params without reboot
+echo -e "${LBLUE}Applying sysctl params without reboot...${WHITE}"
 sudo sysctl --system > /dev/null 2>&1
 
 # installing jq to parse and read json files

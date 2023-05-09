@@ -3,22 +3,25 @@
 ###############################################################################
 # Install the docker cri (Container Runtime Interface)
 #https://github.com/Mirantis/cri-dockerd/releases this is the release package
-echo -e "${LBLUE}Installing the docker cri (Container Runtime Interface)${WHITE}"
 sudo apt-get upgrade -y -q > /dev/null 2>&1
 
 # fetch latest release from github repository
+echo -e "${LBLUE}Fetching latest release from github repository...${WHITE}"
 LATEST_CRI_DOCKERD_VERSION=$(sudo curl -L -s -H 'Accept: application/json' https://github.com/Mirantis/cri-dockerd/releases/latest)
 LATEST_CRI_DOCKERD_VERSION=$(echo $LATEST_CRI_DOCKERD_VERSION | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
 
 # download latest cri-dockerd version
+echo -e "${LBLUE}Downloading package...${WHITE}"
 FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION:1}.amd64.tgz"
 RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
 wget $RELEASE_URL > /dev/null 2>&1
 
 # extract it
+echo -e "${LBLUE}Exctracting package...${WHITE}"
 sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz > /dev/null 2>&1
 
 # install cri-dockerd
+echo -e "${LBLUE}Installing Cri-Dockerd...${WHITE}"
 cd cri-dockerd/
 mkdir -p /usr/local/bin
 sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd > /dev/null 2>&1

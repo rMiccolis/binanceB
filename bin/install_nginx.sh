@@ -1,18 +1,11 @@
 #!/bin/bash
 
-#export ip address
-# export ip_addr=$(hostname -I | awk '{print $1}')
 echo -e "${LCYAN}Installing NGINX to be reachble on $master_host_ip.${WHITE}"
 #add nginx helm repository (kubernetes version)
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx > /dev/null 2>&1
+helm repo update > /dev/null 2>&1
 externalIPs="$master_host_ip"
-for h in "${host_list[@]}"; do
-IFS='@' read -r -a host_string <<< "$h"
-host_username=${host_string[0]}
-host_ip=${host_string[1]}
-externalIPs=$externalIPs,$host_ip
-done
+
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
   service:

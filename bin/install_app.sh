@@ -1,6 +1,9 @@
 #!/bin/bash
 
 ###############################################################################
+echo -e "${LBLUE}Reading and processing application settings from input file...${WHITE}"
+
+
 # Configuring application settings
 eval cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
 export cluster_dns_name=$cluster_dns_name
@@ -33,7 +36,7 @@ envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/2-mongodb-secr
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml | sudo tee /home/$USER/temp/3-server/3-server-secrets.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml | sudo tee /home/$USER/temp/3-server/4-server-configmap.yaml > /dev/null
 
-echo -e "${GREEN}Starting Application...${WHITE}"
+echo -e "${LBLUE}Starting Application...${WHITE}"
 kubectl apply -f /home/$USER/temp/1-namespaces/
 kubectl apply -f /home/$USER/temp/2-mongodb/
 kubectl apply -f /home/$USER/temp/3-server/

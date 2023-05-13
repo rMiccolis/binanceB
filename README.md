@@ -17,6 +17,7 @@ After creating VM with a linux distro:
 # Mandatory OS OPerations before executing './infrastructure/init.sh' (follow these steps in the example paragraph)
 - ### Choose a linux distro which makes use of systemd as init service
 - install an ssh server
+- add all cluster partecipating hosts to the hosts file
 - copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
 - enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 
@@ -46,7 +47,7 @@ scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
 scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 ```
 
-##### create master and workers ssh key pairs
+##### create master and workers ssh key pairs (## to be done for all hosts)
 ```
 ssh m1@m1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
 ssh w1@w1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
@@ -74,7 +75,7 @@ scp E:\Download\main_config.json m1@m1:/home/m1/
 ssh m1@m1 "chmod -R u+x ./main_config.json"
 ```
 
-##### ssh into all remote hosts and set passwordless sudo prompt for remote host username
+##### ssh into all remote hosts and set passwordless sudo prompt for remote host username (## to be done for all hosts)
 ```
 ssh w1@w1
 cat << EOF | sudo tee -a /etc/sudoers > /dev/null

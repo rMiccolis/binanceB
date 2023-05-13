@@ -42,19 +42,18 @@ done
 
 echo -e "${LBLUE}Adding worker nodes to the hosts file...${WHITE}"
 host_list=""
+printable_hosts=()
 for h in "${hosts[@]}"; do
 # adding remote hosts to the hosts file
 host_string=()
-printable_hosts=()
 IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 printable_hosts+=("$host_username - $host_ip")
-if [ $master_host_name != $host_username ]; then
+# add host to hosts file
 sudo tee -a /etc/hosts << EOF > /dev/null
 $host_ip $host_username
 EOF
-fi
 #adding remote host to the remote host list string (so it can be exported as variable and read by other scripts)
 host_list="$host_list $h"
 done

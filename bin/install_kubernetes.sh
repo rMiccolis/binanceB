@@ -3,8 +3,8 @@
 ###############################################################################
 #disable swap
 echo -e "${LBLUE}Disabling swap...${WHITE}"
-sudo sed -i '/swap/ s/^\(.*\)$/#\1/g' /etc/fstab
-sudo swapoff -a
+/home/$USER/binanceB/bin/disable_swap.sh
+
 # Install Kubernetes
 # install kubeadm, kubelet and kubectl:
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:

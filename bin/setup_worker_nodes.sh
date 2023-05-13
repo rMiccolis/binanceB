@@ -85,7 +85,7 @@ for h in ${host_list[@]}; do
   
   # Setting host settings and dependencies
   echo -e "${LBLUE}Setting host settings and dependencies...${WHITE}"
-  ssh $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
+  ssh -t $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -93,7 +93,7 @@ for h in ${host_list[@]}; do
   # Installing Docker Engine
   echo -e "${LBLUE}Installing Docker Engine...${WHITE}"
   wait
-  ssh $h "/home/$host_username/binanceB/bin/install_docker.sh" &
+  ssh -t $h "/home/$host_username/binanceB/bin/install_docker.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -101,7 +101,7 @@ for h in ${host_list[@]}; do
   # Installing Cri-Docker (Container Runtime Interface)
   echo -e "${LBLUE}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
   wait
-  ssh $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
+  ssh -t $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -109,7 +109,7 @@ for h in ${host_list[@]}; do
   # Installing Kubernetes
   echo -e "${LBLUE}Installing Kubernetes${WHITE}"
   wait
-  ssh $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
+  ssh -t $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 

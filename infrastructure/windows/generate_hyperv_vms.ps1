@@ -2,16 +2,18 @@ param(
 [string]$config_path
 )
 
+$vm_store_path="$env:USERPROFILE\binanceB_vm"
+echo "Generating VMs in $vm_store_path folder"
+
 $config=Get-Content $config_path | ConvertFrom-Json
 $vm_adapter=Get-NetAdapter -Name "Ethernet"
 $vm_adapter=$vm_adapter.InterfaceDescription
 # echo $vm_adapter
 if ($vm_adapter -eq "") { 
-    echo "generating Virtual switch 'VM' with adapte: $vm_adapter..."
+    echo "generating Virtual switch 'VM' with adapter: $vm_adapter..."
     New-VMSwitch -Name "VM" -NetAdapterName "Ethernet"
 }
 
-$vm_store_path="$env:USERPROFILE\binanceB_vm"
 if (Test-Path -Path $vm_store_path) {
     Remove-Item -LiteralPath $vm_store_path -Recurse
     New-Item -Path $vm_store_path -ItemType Directory

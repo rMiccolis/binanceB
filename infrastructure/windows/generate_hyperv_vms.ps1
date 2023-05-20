@@ -57,3 +57,5 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
 }
 echo ""
 echo "You have now to install operating system to the newly generated virtual machines!"
+echo "Then you have to follow README.md file to setup these virtual machines!"
+

@@ -14,7 +14,7 @@ After creating VM with a linux distro:
 - set at least 2048MB or RAM (if you have not enough set a max RAM usage tipically 4096MB)
 - set static MAC address and assign a fixed ip address to it from the router (ex MAC address: 00 15 5D 38 01 30 and assign it for example to ip address: 192.168.1.200)
 
-# Mandatory OS OPerations before executing './infrastructure/init.sh' (follow these steps in the example paragraph)
+# Mandatory OS OPerations before executing './infrastructure/start.sh' (follow these steps in the example paragraph)
 - ### Choose a linux distro which makes use of systemd as init service
 - install an ssh server
 - add all cluster partecipating hosts to the hosts file
@@ -26,7 +26,8 @@ After creating VM with a linux distro:
 "environment": "production", #or "development" to set master ip as cluster_public_ip (sets it as private master ip: ES: 192.168.1.202. With 'development' cluster won't be accessible from outside of the network)
 "cluster_dns_name": "cluster.com",
 "cluster_public_ip": "84.248.17.191",
-"hosts": ["w1@192.168.1.203"], #user_name@ip_address (ip address must be from internal interface like in this example)
+"master_host": "m1@192.168.1.200",
+"hosts": ["w1@192.168.1.201","w2@192.168.1.202"], #user_name@ip_address (ip address must be from internal interface like in this example)
 "server_access_token_secret": "server_access_token_secret",
 "server_refresh_token_secret": "server_refresh_token_secret",
 "server_access_token_lifetime": "50",
@@ -35,12 +36,12 @@ After creating VM with a linux distro:
 "mongo_root_password": "mongorootpassword"
 }
 
-# EXAMPLE:
-### EXECUTE THESE INSTRUCTIONS!
+# MANUAL STARTUP EXAMPLE:
+### EXECUTE THESE INSTRUCTIONS on host with github cloning permissions!
 #### ('m1' is the host that will have the master role inside the cluster)
 #### ('w1' is the host that will have the worker role inside the cluster, the others will be w2,w3 and so on)
 
-##### copy ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (## to be done for all hosts)
+##### copy your ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (## to be done for all hosts)
 ```
 
 scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
@@ -91,7 +92,7 @@ EOF
 
 ```
 
-### Run ./infrastructure/init.sh script on the master remote host
+### Run ./infrastructure/start.sh script on the master remote host
 ```
-./infrastructure/init.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
+./infrastructure/start.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
 ```

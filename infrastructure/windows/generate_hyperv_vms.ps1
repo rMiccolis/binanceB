@@ -1,16 +1,19 @@
 param(
-[string]$config_path
+[string]$config_path,
+[string]$linux_iso_path
 )
 
 $vm_store_path="$env:USERPROFILE\binanceB_vm"
 echo "Generating VMs in $vm_store_path folder"
 
 $config=Get-Content $config_path | ConvertFrom-Json
-$vm_adapter=Get-NetAdapter -Name "Ethernet"
-$vm_adapter=$vm_adapter.InterfaceDescription
-# echo $vm_adapter
+$eth_adapter=Get-NetAdapter -Name "Ethernet"
+$eth_adapter=$eth_adapter.InterfaceDescription
+
+$vm_adapter=Get-NetAdapter -Name "vEthernet (VM)"
+# echo $eth_adapter
 if ($vm_adapter -eq "") { 
-    echo "generating Virtual switch 'VM' with adapter: $vm_adapter..."
+    echo "generating Virtual switch 'VM' with adapter: $eth_adapter..."
     New-VMSwitch -Name "VM" -NetAdapterName "Ethernet"
 }
 
@@ -34,7 +37,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     # Set VM Name, Switch Name, and Installation Media Path.
     $VMName = $host_user
     $Switch = 'VM'
-    $InstallMedia = 'E:\Desktop\torrent downloads\SO\ubuntu-20.04.6-live-server-amd64.iso'
+    $InstallMedia = $linux_iso_path
     $decimal_host = 3
     if ($i -gt 9) {
         $decimal_host += 1

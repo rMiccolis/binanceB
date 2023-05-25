@@ -26,8 +26,6 @@ echo -e "${LGREEN}Starting phase 0: Reading data and preparing working environme
 export config_file_path=$config_file_path
 . ./binanceB/bin/prepare_environment.sh
 
-cd binanceB
-
 echo -e "${LGREEN}Starting phase 1 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
 ./bin/set_host_settings.sh
 echo -e "${LCYAN}Operation Done!${WHITE}"

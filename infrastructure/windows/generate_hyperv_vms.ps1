@@ -1,28 +1,27 @@
 param(
 [string]$config_path,
-[string]$linux_iso_path
+[string]$linux_iso_path,
+[string]$vm_store_path
 )
-
+if (!$vm_store_path) {
 $vm_store_path="$env:USERPROFILE\binanceB_vm"
 echo "Generating VMs in $vm_store_path folder"
+}
 
 $config=Get-Content $config_path | ConvertFrom-Json
 $eth_adapter=Get-NetAdapter -Name "Ethernet"
 $eth_adapter=$eth_adapter.InterfaceDescription
 
-$vm_adapter=Get-NetAdapter -Name "vEthernet (VM)"
-# echo $eth_adapter
-if ($vm_adapter -eq "") { 
+$vm_adapter=Get-NetAdapter -Name "vEthernet (VM)" -ErrorAction SilentlyContinue
+if (!$vm_adapter) { 
     echo "generating Virtual switch 'VM' with adapter: $eth_adapter..."
     New-VMSwitch -Name "VM" -NetAdapterName "Ethernet"
 }
 
-if (Test-Path -Path $vm_store_path) {
-    Remove-Item -LiteralPath $vm_store_path -Recurse
-    New-Item -Path $vm_store_path -ItemType Directory
-} else {
-    New-Item -Path $vm_store_path -ItemType Directory
-}
+# if (Test-Path -Path $vm_store_path) {
+#     Remove-Item -LiteralPath $vm_store_path -Recurse
+# }
+# New-Item -Path $vm_store_path -ItemType Directory
 
 $hosts=@{}
 $all_hosts=@()
@@ -33,7 +32,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $host_user=$host_info[0]
     $host_ip=$host_info[1]
     $hosts[$host_user]=$host_ip
-    New-Item -Path "$vm_store_path\\$host_user" -ItemType Directory
+
     # Set VM Name, Switch Name, and Installation Media Path.
     $VMName = $host_user
     $Switch = 'VM'
@@ -43,6 +42,17 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
         $decimal_host += 1
     }
     $mac_address = "00155D3801" + $decimal_host + $i
+    $VM_exist = Get-VM -name $VMName -ErrorAction SilentlyContinue | ConvertTo-Json
+    echo $VM_exist
+    if ($VM_exist) { 
+        echo "Removing already existing VM $VM_exist..."
+        Remove-VM -Name $VMName -Force
+    }
+
+    if (Test-Path -Path "$vm_store_path\\$host_user") {
+        Remove-Item -LiteralPath "$vm_store_path\\$host_user" -Recurse
+    }
+    New-Item -Path "$vm_store_path\\$host_user" -ItemType Directory
 
     echo "Generating VM $host_user with mac address: $mac_address"
 
@@ -60,7 +70,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     # Configure Virtual Machine to Boot from DVD
     Set-VMFirmware -VMName $VMName -FirstBootDevice $DVDDrive -EnableSecureBoot "Off"
 }
-echo ""
+echo "Virtual Machines installed at $vm_store_path"
 echo "You have now to install operating system to the newly generated virtual machines!"
 echo "Then you have to follow README.md file to setup these virtual machines!"
 

@@ -10,6 +10,12 @@ echo -e "${LBLUE}Fetching latest release from github repository...${WHITE}"
 LATEST_CRI_DOCKERD_VERSION=$(sudo curl -L -s -H 'Accept: application/json' https://github.com/Mirantis/cri-dockerd/releases/latest)
 LATEST_CRI_DOCKERD_VERSION=$(echo $LATEST_CRI_DOCKERD_VERSION | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
 
+# download FIXED cri-dockerd version
+# echo -e "${LBLUE}Downloading package...${WHITE}"
+# FILE_NAME="cri-dockerd-0.3.1.amd64.tgz"
+# RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/$FILE_NAME"
+# wget $RELEASE_URL > /dev/null 2>&1
+
 # download latest cri-dockerd version
 echo -e "${LBLUE}Downloading package...${WHITE}"
 FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION:1}.amd64.tgz"
@@ -18,7 +24,7 @@ wget $RELEASE_URL > /dev/null 2>&1
 
 # extract it
 echo -e "${LBLUE}Exctracting package...${WHITE}"
-sudo tar -xvf cri-dockerd-0.3.1.amd64.tgz > /dev/null 2>&1
+sudo tar -xvf $FILE_NAME > /dev/null 2>&1
 
 # install cri-dockerd
 echo -e "${LBLUE}Installing Cri-Dockerd...${WHITE}"

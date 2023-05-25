@@ -47,7 +47,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     echo "Generating VM $host_user with mac address: $mac_address"
 
     # Create New Virtual Machine
-    New-VM -Name $VMName -Generation 2 -NewVHDPath "$vm_store_path\$host_user\$VMName.vhdx" -NewVHDSizeBytes 20GB -Path "$vm_store_path\$VMName" -SwitchName $Switch
+    New-VM -Name $VMName -Generation 2 -NewVHDPath "$vm_store_path\$host_user\$VMName.vhdx" -NewVHDSizeBytes 30GB -Path "$vm_store_path\$VMName" -SwitchName $Switch
     Set-VMMemory $VMName -DynamicMemoryEnabled $True -MinimumBytes 512MB -StartupBytes 2GB -MaximumBytes 4GB
     Set-VMProcessor $VMName -Count 2
     # Add DVD Drive to Virtual Machine

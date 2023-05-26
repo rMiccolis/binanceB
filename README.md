@@ -3,23 +3,24 @@
 
 ### tested versions:
 - Ubuntu version: 20.04.6 LTS
-- kernel version: Linux 5.4.0-148-generic
-- docker version: /23.0.5
-- cri-dockerd version: 0.3.1
-- kubernetes version 1.27.1
+- Kernel version: Linux 5.4.0-148-generic
+- Docker version: /23.0.5
+- Cri-dockerd version: 0.3.2
+- Kubernetes version 1.27.2
 
 After creating VM with a linux distro:
-- disable windows secure boot
-- set at least 2 cpus
-- set at least 2048MB or RAM (if you have not enough set a max RAM usage tipically 4096MB)
-- set static MAC address and assign a fixed ip address to it from the router (ex MAC address: 00 15 5D 38 01 30 and assign it for example to ip address: 192.168.1.200)
+- Disable windows secure boot
+- Set minimum 30GB of disk space
+- Set at least 2 cpus
+- Set at least 2048MB or RAM (if you have not enough set a max RAM usage tipically 4096MB)
+- Set static MAC address and assign a fixed ip address to it from the router (ex MAC address: 00 15 5D 38 01 30 and assign it for example to ip address: 192.168.1.200)
 
 # Mandatory OS OPerations before executing './infrastructure/start.sh' (follow these steps in the example paragraph)
 - ### Choose a linux distro which makes use of systemd as init service
-- install an ssh server
-- add all cluster partecipating hosts to the hosts file
-- copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
-- enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
+- Install an ssh server
+- Add all cluster partecipating hosts to the hosts file
+- Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
+- Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 
 ## EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
 {
@@ -37,7 +38,7 @@ After creating VM with a linux distro:
 }
 
 # script for auto creating VM on hyper-v (windows):
-launch generate_hyperv_vms.ps1:
+Launch generate_hyperv_vms.ps1:
 powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_path "E:\Download\main_config.json" -linux_iso_path "E:\Desktop\torrent downloads\SO\ubuntu-20.04.6-live-server-amd64.iso" -vm_store_path "D:\VM"
 
 # MANUAL STARTUP EXAMPLE:

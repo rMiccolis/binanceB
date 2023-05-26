@@ -52,47 +52,47 @@ powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\inf
 **EXECUTE THESE INSTRUCTIONS on host with github cloning permissions! ('m1' is the host that will have the master role inside the cluster)**
 **('w1' is the host that will have the worker role inside the cluster, the others will be w2,w3 and so on)**
 
-**copy your ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (## to be done for all hosts):**
+**Copy your ssh public key into .ssh authorized file of the remote host to use ssh connection without password prompt (## to be done for all hosts):**
 
 ```bash
 scp C:\Users\ROB\.ssh\id_rsa.pub m1@m1:/home/m1/.ssh/authorized_keys
 scp C:\Users\ROB\.ssh\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 ```
 
-**create master and workers ssh key pairs (## to be done for all hosts):**
+**Create master and workers ssh key pairs (## to be done for all hosts):**
 
 ```bash
 ssh m1@m1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
 ssh w1@w1 "ssh-keygen -q -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
 ```
 
-**download master's public key:**
+**Download master's public key:**
 
 ```bash
 scp m1@m1:/home/m1/.ssh/id_rsa.pub E:\Download\
 ```
 
-**insert master's public key into workers' authorized_keys file (to be done for all workers):**
+**Insert master's public key into workers' authorized_keys file (to be done for all workers):**
 
 ```bash
 scp E:\Download\id_rsa.pub w1@w1:/home/w1/.ssh/authorized_keys
 ```
 
-**clone the repo into master remote host:**
+**Clone the repo into master remote host:**
 
 ```bash
 scp -r -q E:\Desktop\binanceB m1@m1:/home/m1/
 ssh m1@m1 "chmod -R u+x ./binanceB"
 ```
 
-**copy main_config.json to master remote host to for application configuration:**
+**Copy main_config.json to master remote host to for application configuration:**
 
 ```bash
 scp E:\Download\main_config.json m1@m1:/home/m1/
 ssh m1@m1 "chmod -R u+x ./main_config.json"
 ```
 
-**ssh into all remote hosts and set passwordless sudo prompt for remote host username (## to be done for all hosts):**
+**Ssh into all remote hosts and set passwordless sudo prompt for remote host username (## to be done for all hosts):**
 
 ```bash
 ssh w1@w1

@@ -1,0 +1,14 @@
+{
+"environment": "development",   # this will cause app to be reachable at master_host IP (192.168.1.200)
+"cluster_dns_name": "cluster.com",  # public dns name where app will be reachable
+"cluster_public_ip": "130.25.41.241", # this is the cluster public IP (so this is the real public IP)
+"master_host": "m1@192.168.1.200",  # kubernetes master host IP: provide it from internal interfase (192.168...)
+"pub_ssh_key_path": "C:\\Users\\ROB\\.ssh\\binanceB.pub",   # path of ssh key of the pc you're launching all the infrastructure from. (used to access and setup all other hosts)
+"hosts": ["w1@192.168.1.201","w2@192.168.1.202"],   # list of ONLY worker nodes: made from USERNAME@IP_ADDRESS
+"server_access_token_secret": "server_access_token_secret",
+"server_refresh_token_secret": "server_refresh_token_secret",
+"server_access_token_lifetime": "50",
+"server_refresh_token_lifetime": "50",
+"mongo_root_username": "mongorootusername",
+"mongo_root_password": "mongorootpassword"
+}

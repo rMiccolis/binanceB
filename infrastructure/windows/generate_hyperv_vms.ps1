@@ -15,7 +15,7 @@ $eth_adapter=$eth_adapter.InterfaceDescription
 $vm_adapter=Get-NetAdapter -Name "vEthernet (VM)" -ErrorAction SilentlyContinue
 if (!$vm_adapter) { 
     echo "generating Virtual switch 'VM' with adapter: $eth_adapter..."
-    New-VMSwitch -Name "VM" -NetAdapterName "Ethernet"
+    New-VMSwitch -Name "VM" -NetAdapterName "Ethernet" | Out-Null
 }
 
 # if (Test-Path -Path $vm_store_path) {
@@ -55,8 +55,8 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
 
     # Virtual Machine data:
     $GuestOSName = $host_user
-    $GuestOSID = "iid-123456"
-    $GuestAdminPassword = "caiosempronio"
+    $GuestOSID = $mac_address
+    $GuestAdminPassword = "ciaociao2"
 
 $metadata = @"
 instance-id: $($GuestOSID)
@@ -65,15 +65,22 @@ local-hostname: $($GuestOSName)
 
 $userdata = @"
 #cloud-config
-groups:
-  - admingroup: [root,sys]
+password: $($GuestAdminPassword)
+runcmd:
+ - [ useradd, -m, -p, "", ben ]
+ - [ chage, -d, 0, ben ]
 users:
-- name: $host_user
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    groups: users, admin
-    ssh_authorized_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNTl95KZTM8YSoI6CdHIBvdxtot/WgkayctfAq1bld30A+fW1W5b7PG/LDzWFpSgxVxPOHJ83g3EHSoO9XmCfzT15s9Of5OWaTYayL36NKVRTXXtTnK3Y4Mv6wZbxu+fqEwsv0uttR3tKNWBTGfOEB1NVgXx6xupm4eo3m3fcEYHQ87lHEmOurqxOHqnrVbL541p6rNVGov51SjyzkkXiIxpMdiET6dxTD9jPbY1O6RO4iybazdyMoXJ0Ip9738jy5XYSAEsMt4MWBnV2EAZbU/z7TywwYeyuablF1kkjBgRlgtfSTTjUZIeaaum4V2Nh63gMYpxga+aTimVPQ9MxVW3YIYdxjmaqH13qKbG60DN8zEs1XtolifcsiylET0f0CNThUn5g9gVvoyO3u4OgmJKguNheh9wp8e1jos3/NKG3r/T5uRgczZfAlbA8lI+I1u5RPqSxCU48tyA/0Q9+Cf+27190e8Kv00/DxUwLGpznd7zrzmYtoDMwBG4Masw0= rob@DESKTOP-FKGSJO6
-    lock_passwd: true
+ - name: master
+   passwd: ciaociao123
+write_files:
+ - encoding: b64
+   content: Y2lhb2NpYW8K
+   path: /home/master
+   permissions: '0555'
+ - encoding: b64
+   content: Y2lhb2NpYW8K
+   path: /home/ben
+   permissions: '0555'
 "@
 
     # set temp path to store temporary files

@@ -44,8 +44,11 @@ After creating VM with a linux distro:
 
 ## Launch script for auto creating VM on hyper-v (windows)
 
+**IMPORTANT:**
+TO LET THIS SCRIPT WORK, YOU MUST PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO
+
 Launch generate_hyperv_vms.ps1:
-powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_path "E:\Download\main_config.json" -linux_iso_path "E:\Desktop\torrent downloads\SO\ubuntu-20.04.6-live-server-amd64.iso" -vm_store_path "D:\VM"
+powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_path "E:\Download\main_config.json" -imagePath "E:\Desktop\torrent downloads\SO\focal-server-cloudimg-amd64.img" -vm_store_path "F:\VM"
 
 ## MANUAL STARTUP EXAMPLE
 

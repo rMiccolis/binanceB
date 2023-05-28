@@ -56,7 +56,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     # Virtual Machine data:
     $GuestOSName = $host_user
     $GuestOSID = $mac_address
-    $GuestAdminPassword = "ciaociao2"
+    $GuestAdminPassword = "ciaociao"
 
 $metadata = @"
 instance-id: $($GuestOSID)
@@ -75,11 +75,11 @@ users:
 write_files:
  - encoding: b64
    content: Y2lhb2NpYW8K
-   path: /home/master
+   path: /home/master/ciao.txt
    permissions: '0555'
  - encoding: b64
    content: Y2lhb2NpYW8K
-   path: /home/ben
+   path: /home/ben/ciaociao.txt
    permissions: '0555'
 "@
 

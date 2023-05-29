@@ -42,13 +42,15 @@ After creating VM with a linux distro:
 "mongo_root_password": "mongorootpassword"
 }
 
-## Launch script for auto creating VM on hyper-v (windows)
+## Launch script for auto creating VM on hyper-v (windows) and setup and boot all the application
 
 **IMPORTANT:**
 TO LET THIS SCRIPT WORK, YOU MUST PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO (ex: focal-server-cloudimg-amd64)
 
 Launch generate_hyperv_vms.ps1:
-powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_path "E:\Download\main_config.json" -imagePath "E:\Desktop\torrent downloads\SO\focal-server-cloudimg-amd64.img" -vm_store_path "F:\VM"
+Input parameter: 
+config_file_path => This file MUST be called "main_config.json". This is the json file to configure virtual machines and application (example at [https://github](https://github.com/rMiccolis/binanceB/blob/master/main_config.json.example))
+powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.json"
 
 ## MANUAL STARTUP EXAMPLE
 

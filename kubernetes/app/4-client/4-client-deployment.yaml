@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: rmiccolis/binanceb_vuejs_client
+        image: $docker_username/$docker_client_repository_name
         imagePullPolicy: "Always"
         resources:
           requests:

@@ -27,7 +27,11 @@ echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 # read hosts array from configuration file
 hosts="$(jq -r '.hosts | @sh' $config_file_path)"
 cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
+docker_server_repository_name="$(jq -r '.docker_server_repository_name | @sh' $config_file_path)"
+docker_client_repository_name="$(jq -r '.docker_client_repository_name | @sh' $config_file_path)"
 
+export $docker_server_repository_name=$docker_server_repository_name
+export $docker_client_repository_name=$docker_client_repository_name
 
 echo -e "${LLBLUE}Collecting workers' names and IPs...${WHITE}"
 #split hosts string into and array

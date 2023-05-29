@@ -22,10 +22,10 @@ EOF
 
 echo -e "${LBLUE}Building docker images...${WHITE}"
 # Start building docker images
-sudo docker build -t rmiccolis/binanceb_nodejs_server -f ./server/server.dockerfile ./server/
-sudo docker build -t rmiccolis/binanceb_vuejs_client -f ./client/client.dockerfile ./client/
+sudo docker build -t $docker_username/binanceb_nodejs_server -f ./server/server.dockerfile ./server/
+sudo docker build -t $docker_username/binanceb_vuejs_client -f ./client/client.dockerfile ./client/
 
 echo -e "${LBLUE}Pushing docker images to dockerhub...${WHITE}"
 # Push generated docker images to docker hub
-sudo docker push rmiccolis/binanceb_nodejs_server:latest
-sudo docker push rmiccolis/binanceb_vuejs_client:latest
+sudo docker push $docker_username/binanceb_nodejs_server:latest
+sudo docker push $docker_username/binanceb_vuejs_client:latest

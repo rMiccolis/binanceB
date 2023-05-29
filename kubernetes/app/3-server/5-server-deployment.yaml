@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: rmiccolis/binanceb_nodejs_server
+        image: $docker_username/$docker_server_repository_name
         imagePullPolicy: "Always"
         resources:
           limits:

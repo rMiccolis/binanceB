@@ -1,14 +1,23 @@
 param(
-[string]$config_path,
-[string]$imagePath,
-[string]$vm_store_path
+[string]$config_file_path
 )
 if (!$vm_store_path) {
 $vm_store_path="$env:USERPROFILE\binanceB_vm"
 echo "Generating VMs in $vm_store_path folder"
 }
 
-$config=Get-Content $config_path | ConvertFrom-Json
+# READ ALL CONFIGURATION KEYS
+$config=Get-Content $config_file_path | ConvertFrom-Json
+$pub_key = $config.ssh_public_key_path
+$vm_store_path = $config.vm_store_path
+$os_image_path = $config.os_image_path
+$imagePath = $config.os_image_path
+$hosts=@{}
+$all_hosts=@()
+$all_hosts+=$config.master_host
+$all_hosts+=$config.hosts
+
+
 $eth_adapter=Get-NetAdapter -Name "Ethernet"
 $eth_adapter=$eth_adapter.InterfaceDescription
 
@@ -18,20 +27,27 @@ if (!$vm_adapter) {
     New-VMSwitch -Name "VM" -NetAdapterName "Ethernet" | Out-Null
 }
 
-# if (Test-Path -Path $vm_store_path) {
-#     Remove-Item -LiteralPath $vm_store_path -Recurse
-# }
-# New-Item -Path $vm_store_path -ItemType Directory
+if (Test-Path -Path $vm_store_path) {
+    Remove-Item -LiteralPath $vm_store_path -Recurse
+}
+New-Item -Path $vm_store_path -ItemType Directory
 
-$hosts=@{}
-$all_hosts=@()
-$all_hosts+=$config.master_host
-$all_hosts+=$config.hosts
+$master_host_name = ""
+
 for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $host_info=$all_hosts[$i].split("@")
     $host_user=$host_info[0]
     $host_ip=$host_info[1]
     $hosts[$host_user]=$host_ip
+    echo "Setting up $host_user virtual machine..."
+
+    $encoded_config_content=""
+    if ($all_hosts[$i] -eq $config.master_host) {
+        $master_host_name = $host_user
+        $main_config_content = Get-Content $config_file_path
+        $encodedBytes = [System.Text.Encoding]::UTF8.GetBytes($main_config_content)
+        $encoded_config_content = [System.Convert]::ToBase64String($encodedBytes)
+    }
 
     # Set VM Name, Virtual Switch Name, and Installation Media Path.
     $VMName = $host_user
@@ -65,21 +81,20 @@ local-hostname: $($GuestOSName)
 
 $userdata = @"
 #cloud-config
-password: $($GuestAdminPassword)
-runcmd:
- - [ useradd, -m, -p, "", ben ]
- - [ chage, -d, 0, ben ]
 users:
- - name: master
-   passwd: ciaociao123
+ - default
+ - name: $($host_user)
+   groups: sudo
+   shell: /bin/bash
+   sudo: ['ALL=(ALL) NOPASSWD:ALL']
+   ssh-authorized-keys:
+   - $($pub_key)
+keyboard:
+  layout: it
 write_files:
  - encoding: b64
-   content: Y2lhb2NpYW8K
-   path: /home/master/ciao.txt
-   permissions: '0555'
- - encoding: b64
-   content: Y2lhb2NpYW8K
-   path: /home/ben/ciaociao.txt
+   content: $($encoded_config_content)
+   path: /home/$($host_user)/main_config.json
    permissions: '0555'
 "@
 
@@ -131,7 +146,20 @@ write_files:
 
     # Disable Secure Boot
     Set-VMFirmware -VMName $VMName -EnableSecureBoot "Off"
+    echo "$host_user Virtual Machine installed at $vm_store_path"
+    echo "Booting up $host_user virtual machine and preparing for first boot..."
+    Start-VM -Name $host_user
 }
-echo "Virtual Machines installed at $vm_store_path"
-echo "You have now to install operating system to the newly generated virtual machines!"
-echo "Then you have to follow README.md file to setup these virtual machines!"
+
+echo "Starting application installation..."
+
+$work = 1
+echo "Waiting for $master_host_name virtual machine to fully boot up..."
+while ($work -eq 1) {
+    try { 
+        ssh -A $config.master_host "./binanceB/infrastructure/start.sh -u $config.docker_username -p '$docker_password' -c '/home/$master_host_name/main_config.json'"
+        $work = 0
+    } catch {
+        start-sleep -s 60
+    }
+}

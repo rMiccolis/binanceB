@@ -17,6 +17,16 @@ while getopts ":u:p:c:" opt; do
   esac
 done
 
+export docker_username=$docker_username
+export LGREEN="\033[1;32m"
+export WHITE="\033[1;37m"
+
+# clone github repository code 
+echo -e "${LGREEN}Cloning code repository...${WHITE}"
+git clone --single-branch --branch cloud-init git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB
+chmod -R u+x ./binanceB
+echo -e "${LCYAN}Operation Done!${WHITE}"
+
 # export colors to highlight output text in console
 . ./binanceB/bin/export_colors.sh # executed this way: . ./filename to let exported variables into the script to be added to (this) main process
                                   # if executed this other way: ./filename filename open a new shell that is closed when script ends. So exported variables are not visible here

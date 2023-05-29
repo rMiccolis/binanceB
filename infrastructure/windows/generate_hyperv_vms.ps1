@@ -156,10 +156,12 @@ echo "Starting application installation..."
 $work = 1
 echo "Waiting for $master_host_name virtual machine to fully boot up..."
 while ($work -eq 1) {
-    try { 
+    try {
+        ssh -A $config.master_host "git clone --single-branch --branch cloud-init git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB"
         ssh -A $config.master_host "./binanceB/infrastructure/start.sh -u $config.docker_username -p '$docker_password' -c '/home/$master_host_name/main_config.json'"
         $work = 0
     } catch {
+        Write-Error $_.message
         start-sleep -s 60
     }
 }

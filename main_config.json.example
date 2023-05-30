@@ -5,6 +5,7 @@
 "master_host": "m1@192.168.1.200",  # kubernetes master host IP: provide it from internal interfase (192.168...)
 "pub_ssh_key_path": "C:\\Users\\ROB\\.ssh\\binanceB.pub",   # path of ssh key of the pc you're launching all the infrastructure from. (used to access and setup all other hosts)
 "hosts": ["w1@192.168.1.201","w2@192.168.1.202"],   # list of ONLY worker nodes: made from USERNAME@IP_ADDRESS
+"github_branch_name": "cloud-init",
 "ssh_public_key_path": "C:\\Users\\ROB\\.ssh\\id_rsa.pub", # the host to command all the cluster from's public key. The host is your host that has access to github repo and from which the script will be launched
 "vm_store_path": "F:\\VM", # the path where all the virtual machines will be stored
 "os_image_path": "E:\\Desktop\\torrent downloads\\SO\\focal-server-cloudimg-amd64.img", # the operating system path to be installed on all virtual machines

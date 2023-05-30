@@ -1,14 +1,10 @@
 param(
 [string]$config_file_path
 )
-if (!$vm_store_path) {
-$vm_store_path="$env:USERPROFILE\binanceB_vm"
-echo "Generating VMs in $vm_store_path folder"
-}
 
 # READ ALL CONFIGURATION KEYS
 $config=Get-Content $config_file_path | ConvertFrom-Json
-$pub_key = $config.ssh_public_key_path
+$pub_key = Get-Content $config.ssh_public_key_path
 $vm_store_path = $config.vm_store_path
 $os_image_path = $config.os_image_path
 $imagePath = $config.os_image_path
@@ -16,6 +12,11 @@ $hosts=@{}
 $all_hosts=@()
 $all_hosts+=$config.master_host
 $all_hosts+=$config.hosts
+
+if (!$vm_store_path) {
+    $vm_store_path="$env:USERPROFILE\binanceB_vm"
+}
+echo "Generating VMs in $vm_store_path folder"
 
 
 $eth_adapter=Get-NetAdapter -Name "Ethernet"
@@ -33,6 +34,7 @@ if (Test-Path -Path $vm_store_path) {
 New-Item -Path $vm_store_path -ItemType Directory
 
 $master_host_name = ""
+$master_host_ip = ""
 
 for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $host_info=$all_hosts[$i].split("@")
@@ -44,6 +46,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $encoded_config_content=""
     if ($all_hosts[$i] -eq $config.master_host) {
         $master_host_name = $host_user
+        $master_host_ip = $host_ip
         $main_config_content = Get-Content $config_file_path
         $encodedBytes = [System.Text.Encoding]::UTF8.GetBytes($main_config_content)
         $encoded_config_content = [System.Convert]::ToBase64String($encodedBytes)
@@ -84,7 +87,7 @@ $userdata = @"
 users:
  - default
  - name: $($host_user)
-   groups: sudo
+   groups: [adm, audio, cdrom, dialout, floppy, video, plugdev, dip, netdev, sudo, users, admin, lxd]
    shell: /bin/bash
    sudo: ['ALL=(ALL) NOPASSWD:ALL']
    ssh-authorized-keys:
@@ -95,7 +98,10 @@ write_files:
  - encoding: b64
    content: $($encoded_config_content)
    path: /home/$($host_user)/main_config.json
-   permissions: '0555'
+   permissions: '0777'
+   defer: true
+runcmd:
+ - ssh-keyscan github.com >> ~/.ssh/known_hosts
 "@
 
     # set temp path to store temporary files
@@ -146,8 +152,8 @@ write_files:
 
     # Disable Secure Boot
     Set-VMFirmware -VMName $VMName -EnableSecureBoot "Off"
-    echo "$host_user Virtual Machine installed at $vm_store_path"
-    echo "Booting up $host_user virtual machine and preparing for first boot..."
+    echo "$host_user Virtual Machine installed at $vm_store_path\$host_user"
+    # echo "Booting up $host_user virtual machine and preparing for first boot..."
     Start-VM -Name $host_user
 }
 
@@ -156,12 +162,12 @@ echo "Starting application installation..."
 $work = 1
 echo "Waiting for $master_host_name virtual machine to fully boot up..."
 while ($work -eq 1) {
-    try {
-        ssh -A $config.master_host "git clone --single-branch --branch cloud-init git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB"
-        ssh -A $config.master_host "./binanceB/infrastructure/start.sh -u $config.docker_username -p '$docker_password' -c '/home/$master_host_name/main_config.json'"
+    Start-Sleep -Seconds 15
+    if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
+        ssh-keyscan $master_host_name | Out-File -Filepath "$env:USERPROFILE/.ssh/known_hosts" -Append
+        Start-Sleep -Seconds 15
+        ssh -A $master_host_name@$master_host_ip "git clone --single-branch --branch cloud-init git@github.com:rMiccolis/binanceB.git /home/$master_host_name/binanceB"
+        ssh -A $master_host_name@$master_host_ip "./binanceB/infrastructure/start.sh -u $config.docker_username -p '$config.docker_password' -c '/home/$master_host_name/main_config.json'"
         $work = 0
-    } catch {
-        Write-Error $_.message
-        start-sleep -s 60
     }
 }

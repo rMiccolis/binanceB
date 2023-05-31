@@ -74,8 +74,6 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     # Set VM Name, Virtual Switch Name, and Installation Media Path.
     $VMName = $host_user
     $virtualSwitchName = 'VM'
-    $GuestOSID = "iid-123456"
-    $GuestAdminPassword = "caiosempronio"
 
     # Set the mac address of the VM
     $decimal_host = 3
@@ -94,7 +92,6 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     # Virtual Machine data:
     $GuestOSName = $host_user
     $GuestOSID = $mac_address
-    $GuestAdminPassword = "ciaociao"
 
 $metadata = @"
 instance-id: $($GuestOSID)
@@ -225,3 +222,5 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
 echo "Done! All hosts are configured."
 echo "To start the infrastructure setup run this command on the just opened cmd:"
 echo "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json'"
+Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json'"
+echo "(This command is already copied in the clipboard, you just have to paste it and run it)"

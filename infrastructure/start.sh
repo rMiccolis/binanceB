@@ -3,12 +3,8 @@
 # list of hosts IP that will join the cluster
 hosts=()
 ############### IMPORTANT ###############
-while getopts ":u:p:c:" opt; do
+while getopts ":c:" opt; do
   case $opt in
-    u) docker_username="$OPTARG"
-    ;;
-    p) docker_password="$OPTARG"
-    ;;
     c) config_file_path="$OPTARG"
     ;;
     \?) echo "Invalid option -$OPTARG" >&2

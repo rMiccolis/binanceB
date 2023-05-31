@@ -30,10 +30,14 @@ cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
 docker_server_repository_name="$(jq -r '.docker_server_repository_name | @sh' $config_file_path)"
 docker_client_repository_name="$(jq -r '.docker_client_repository_name | @sh' $config_file_path)"
 github_branch_name="$(jq -r '.github_branch_name | @sh' $config_file_path)"
+docker_username="$(jq -r '.docker_username | @sh' $config_file_path)"
+docker_password="$(jq -r '.docker_password | @sh' $config_file_path)"
 
 export docker_server_repository_name=$docker_server_repository_name
 export docker_client_repository_name=$docker_client_repository_name
 export github_branch_name=$github_branch_name
+export docker_username=$docker_username
+export docker_password=$docker_password
 
 echo -e "${LLBLUE}Collecting workers' names and IPs...${WHITE}"
 #split hosts string into and array

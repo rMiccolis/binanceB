@@ -26,26 +26,14 @@ After creating VM with a linux distro:
 - Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
 - Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 
-## EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
-
-{
-"environment": "production", #or "development" to set master ip as cluster_public_ip (sets it as private master ip: ES: 192.168.1.200. With 'development' cluster won't be accessible from outside of the network)
-"cluster_dns_name": "cluster.com",
-"cluster_public_ip": "84.248.17.191",
-"master_host": "m1@192.168.1.200",
-"hosts": ["w1@192.168.1.201","w2@192.168.1.202"], #user_name@ip_address (ip address must be from internal interface like in this example)
-"server_access_token_secret": "server_access_token_secret",
-"server_refresh_token_secret": "server_refresh_token_secret",
-"server_access_token_lifetime": "50",
-"server_refresh_token_lifetime": "50",
-"mongo_root_username": "mongorootusername",
-"mongo_root_password": "mongorootpassword"
-}
+### EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
 
 ## Launch script for auto creating VM on hyper-v (windows) and setup and boot all the application
 
 **IMPORTANT:**
-TO LET THIS SCRIPT WORK, YOU MUST PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO (ex: focal-server-cloudimg-amd64)
+TO LET THIS SCRIPT WORK, YOU **MUST**:
+- PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO (ex: focal-server-cloudimg-amd64)
+- have the ssh key pairs of the host you're launching all the infrastructure from (used to access and setup all other hosts. The host is your host that has access to github repo and from which the script will be launched) at the default path C:\Users\USERNAME\.ssh\ . This key must have access to github repository
 
 Launch generate_hyperv_vms.ps1:
 Input parameter: 

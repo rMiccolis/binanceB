@@ -25,6 +25,7 @@ $encoded_priv_key = [System.Convert]::ToBase64String($bytes_priv_key)
 $vm_store_path = $config.vm_store_path
 $os_image_path = $config.os_image_path
 $imagePath = $config.os_image_path
+$github_branch_name = $config.github_branch_name
 
 $hosts=@{}
 $all_hosts=@()
@@ -210,7 +211,8 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
         if ($cloud_init_status -Match "done") {
             $work = 0
             # ssh-keyscan $master_host_ip | Out-File -Filepath "$HOME/.ssh/known_hosts" -Append
-            ssh $master_host_name@$master_host_ip "git clone --single-branch --branch cloud-init 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
+            echo "Cloning branch $github_branch_name..."
+            ssh $master_host_name@$master_host_ip "git clone --single-branch --branch $github_branch_name 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
             ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
             # Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh $master_host_name@$master_host_ip ./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json' && pause"
             Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh m1@192.168.1.200 && pause"

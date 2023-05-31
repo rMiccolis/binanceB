@@ -4,10 +4,28 @@ param(
 
 # READ ALL CONFIGURATION KEYS
 $config=Get-Content $config_file_path | ConvertFrom-Json
-$pub_key = Get-Content $config.ssh_public_key_path
+
+$ssh_path = "$HOME\.ssh"
+$pub_key_path = "$HOME\.ssh\id_rsa.pub"
+
+if (!(Test-Path "$HOME\.ssh\config" -PathType Leaf)) {
+New-Item "$HOME\.ssh\config"
+Set-Content "$HOME\.ssh\config" "StrictHostKeyChecking accept-new"
+}
+
+$pub_key = Get-Content $pub_key_path
+$pub_key_raw = Get-Content "$ssh_path\id_rsa.pub" -Encoding UTF8 -Raw
+$bytes_pub_key = [System.Text.Encoding]::UTF8.GetBytes($pub_key_raw)
+$encoded_pub_key = [System.Convert]::ToBase64String($bytes_pub_key)
+
+$priv_key = Get-Content "$ssh_path\id_rsa" -Encoding UTF8 -Raw
+$bytes_priv_key = [System.Text.Encoding]::UTF8.GetBytes($priv_key)
+$encoded_priv_key = [System.Convert]::ToBase64String($bytes_priv_key)
+
 $vm_store_path = $config.vm_store_path
 $os_image_path = $config.os_image_path
 $imagePath = $config.os_image_path
+
 $hosts=@{}
 $all_hosts=@()
 $all_hosts+=$config.master_host
@@ -84,6 +102,8 @@ local-hostname: $($GuestOSName)
 
 $userdata = @"
 #cloud-config
+package_update: true
+package_upgrade: true
 users:
  - default
  - name: $($host_user)
@@ -96,12 +116,31 @@ keyboard:
   layout: it
 write_files:
  - encoding: b64
+   owner: $($host_user):$($host_user)
+   path: /home/$($host_user)/.ssh/id_rsa.pub
+   content: $($encoded_pub_key)
+   permissions: '0600'
+   defer: true
+ - encoding: b64
+   owner: $($host_user):$($host_user)
+   path: /home/$($host_user)/.ssh/id_rsa
+   content: $($encoded_priv_key)
+   permissions: '0600'
+   defer: true
+ - encoding: b64
+   owner: $($host_user):$($host_user)
    content: $($encoded_config_content)
    path: /home/$($host_user)/main_config.json
    permissions: '0777'
    defer: true
+ - encoding: b64
+   owner: $($host_user):$($host_user)
+   content: Cg==
+   path: /home/$($host_user)/.ssh/known_hosts
+   permissions: '0777'
+   defer: true
 runcmd:
- - ssh-keyscan github.com >> ~/.ssh/known_hosts
+ - "ssh-keyscan github.com >> /home/$($host_user)/.ssh/known_hosts"
 "@
 
     # set temp path to store temporary files
@@ -159,15 +198,28 @@ runcmd:
 
 echo "Starting application installation..."
 
-$work = 1
 echo "Waiting for $master_host_name virtual machine to fully boot up..."
-while ($work -eq 1) {
-    Start-Sleep -Seconds 15
-    if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
-        ssh-keyscan $master_host_name | Out-File -Filepath "$env:USERPROFILE/.ssh/known_hosts" -Append
-        Start-Sleep -Seconds 15
-        ssh -A $master_host_name@$master_host_ip "git clone --single-branch --branch cloud-init git@github.com:rMiccolis/binanceB.git /home/$master_host_name/binanceB"
-        ssh -A $master_host_name@$master_host_ip "./binanceB/infrastructure/start.sh -u $config.docker_username -p '$config.docker_password' -c '/home/$master_host_name/main_config.json'"
-        $work = 0
+Start-Sleep -Seconds 60
+if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
+    $work = 1
+    $seconds = 30
+    while ($work -eq 1) {
+        $seconds = $seconds + 5
+        Start-Sleep -Seconds $seconds
+        $cloud_init_status = ssh $master_host_name@$master_host_ip "cloud-init status"
+        if ($cloud_init_status -Match "done") {
+            $work = 0
+            # ssh-keyscan $master_host_ip | Out-File -Filepath "$HOME/.ssh/known_hosts" -Append
+            ssh $master_host_name@$master_host_ip "git clone --single-branch --branch cloud-init 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
+            ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
+            # Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh $master_host_name@$master_host_ip ./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json' && pause"
+            Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh m1@192.168.1.200 && pause"
+        } else {
+            echo "$master_host_name@$master_host_ip => $cloud_init_status"
+        }
     }
 }
+
+echo "Done! All hosts are configured."
+echo "To start the infrastructure setup run this command on the just opened cmd:"
+echo "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json'"

@@ -75,8 +75,8 @@ for h in ${host_list[@]}; do
   
   # clone github repository code 
   echo -e "${LBLUE}Cloning code repository...${WHITE}"
-  ssh -A $h "git clone --single-branch --branch $github_branch_name git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
-  # scp -q -r /home/$master_host_name/binanceB $h:/home/$host_username/
+  # ssh -A $h "git clone --single-branch --branch $github_branch_name git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
+  scp -q -r /home/$master_host_name/binanceB $h:/home/$host_username/
   # wait
   ssh $h "chmod -R u+x ./binanceB" &
   wait

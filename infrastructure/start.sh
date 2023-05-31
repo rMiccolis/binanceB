@@ -33,8 +33,8 @@ echo -e "${LCYAN}Operation Done!${WHITE}"
 
 echo -e "${LGREEN}Docker Hub login with username: $docker_username${WHITE}";
 # login into docker
-sudo docker login --username $docker_username --password $docker_password #> /dev/null 2>&1
-echo -e "${LCYAN}Operation Done!${WHITE}"
+sudo docker login --username $docker_username --password $docker_password > /dev/null 2>&1
+echo -e "${LCYAN}Login succeded!!${WHITE}"
 
 
 echo -e "${LGREEN}Starting phase 3 ===> Installing Cri-Docker (Container Runtime Interface)${WHITE}"

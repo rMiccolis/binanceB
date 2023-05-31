@@ -62,7 +62,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $hosts[$host_user]=$host_ip
     echo "Setting up $host_user virtual machine..."
 
-    $encoded_config_content=""
+    $encoded_config_content="Cg=="
     if ($all_hosts[$i] -eq $config.master_host) {
         $master_host_name = $host_user
         $master_host_ip = $host_ip

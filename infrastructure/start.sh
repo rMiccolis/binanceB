@@ -13,8 +13,6 @@ while getopts ":c:" opt; do
   esac
 done
 
-export docker_username=$docker_username
-
 # export colors to highlight output text in console
 . ./binanceB/bin/export_colors.sh # executed this way: . ./filename to let exported variables into the script to be added to (this) main process
                                   # if executed this other way: ./filename filename open a new shell that is closed when script ends. So exported variables are not visible here
@@ -35,7 +33,7 @@ echo -e "${LCYAN}Operation Done!${WHITE}"
 
 echo -e "${LGREEN}Docker Hub login with username: $docker_username${WHITE}";
 # login into docker
-sudo docker login --username $docker_username --password $docker_password > /dev/null 2>&1
+sudo docker login --username $docker_username --password $docker_password #> /dev/null 2>&1
 echo -e "${LCYAN}Operation Done!${WHITE}"
 
 

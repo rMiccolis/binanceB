@@ -32,11 +32,12 @@ After creating VM with a linux distro:
 
 **IMPORTANT:**
 TO LET THIS SCRIPT WORK, YOU **MUST**:
+
 - PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO (ex: focal-server-cloudimg-amd64)
 - have the ssh key pairs of the host you're launching all the infrastructure from (used to access and setup all other hosts. The host is your host that has access to github repo and from which the script will be launched) at the default path C:\Users\USERNAME\.ssh\ . This key must have access to github repository
 
 Launch generate_hyperv_vms.ps1:
-Input parameter: 
+Input parameter:
 config_file_path => This file MUST be called "main_config.json". This is the json file to configure virtual machines and application (example at [https://github](https://github.com/rMiccolis/binanceB/blob/master/main_config.json.example))
 powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.json"
 

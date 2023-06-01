@@ -10,6 +10,11 @@ $ssh_path = "$HOME\.ssh"
 # Set the path to the public key which has access to github repository
 $pub_key_path = "$HOME\.ssh\id_rsa.pub"
 
+# Remove the known_hosts if exists
+if (Test-Path -PathType Leaf "$ssh_path\known_hosts" ) {
+    Remove-Item -LiteralPath "$ssh_path\known_hosts" -Recurse
+}
+
 # Create ssh config file and set ssh agent to automatically accept new hosts
 if (!(Test-Path "$HOME\.ssh\config" -PathType Leaf)) {
     New-Item "$HOME\.ssh\config"

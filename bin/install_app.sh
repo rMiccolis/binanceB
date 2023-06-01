@@ -5,9 +5,6 @@ echo -e "${LBLUE}Reading and processing application settings from input file...$
 
 
 # Configuring application settings
-eval cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
-export cluster_dns_name=$cluster_dns_name
-
 eval server_access_token_secret="$(jq -r '.server_access_token_secret | @sh' $config_file_path)"
 server_access_token_secret=$(echo -n $server_access_token_secret | base64)
 export server_access_token_secret=$server_access_token_secret

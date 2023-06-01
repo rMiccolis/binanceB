@@ -26,12 +26,15 @@ hosts=()
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 # read hosts array from configuration file
 hosts="$(jq -r '.hosts | @sh' $config_file_path)"
+
+eval cluster_dns_name="$(jq -r '.cluster_dns_name | @sh' $config_file_path)"
 eval docker_server_repository_name="$(jq -r '.docker_server_repository_name | @sh' $config_file_path)"
 eval docker_client_repository_name="$(jq -r '.docker_client_repository_name | @sh' $config_file_path)"
 eval github_branch_name="$(jq -r '.github_branch_name | @sh' $config_file_path)"
 eval docker_username="$(jq -r '.docker_username | @sh' $config_file_path)"
 eval docker_password="$(jq -r '.docker_password | @sh' $config_file_path)"
 
+export cluster_dns_name=$cluster_dns_name
 export docker_server_repository_name=$docker_server_repository_name
 export docker_client_repository_name=$docker_client_repository_name
 export github_branch_name=$github_branch_name

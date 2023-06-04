@@ -40,8 +40,8 @@ for h in ${host_list[@]}; do
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
   host_ip=${host_string[1]}
-  echo -e "${PURPLE}------------------------------------------------${WHITE}"
-  echo -e "${PURPLE}Working on: $host_username@$host_ip${WHITE}"
+  echo -e "${LPURPLE}------------------------------------------------${WHITE}"
+  echo -e "${LPURPLE}Working on: $host_username@$host_ip${WHITE}"
 
   echo -e "${LBLUE}Adding $host_ip to the list of known hosts...${WHITE}"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -124,7 +124,7 @@ for h in ${host_list[@]}; do
   # wait for kubernetes to spawn all pods and wait them to be ready
   kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
   wait
-  echo -e "${PURPLE}HOST $host_username@$host_ip COMPLETED!${WHITE}"
+  echo -e "${LPURPLE}HOST $host_username@$host_ip COMPLETED!${WHITE}"
 
 done
 

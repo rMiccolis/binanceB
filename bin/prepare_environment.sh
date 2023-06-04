@@ -70,12 +70,12 @@ EOF
 host_list="$host_list $h"
 done
 
-echo -e "${PURPLE}----------------${WHITE}"
-echo -e "${PURPLE}Cluster worker host list:${WHITE}"
+echo -e "${LPURPLE}----------------${WHITE}"
+echo -e "${LPURPLE}Cluster worker host list:${WHITE}"
 for h in "${printable_hosts[@]}"; do
-echo -e "${PURPLE}$h${WHITE}"
+echo -e "${LPURPLE}$h${WHITE}"
 done
-echo -e "${PURPLE}----------------${WHITE}"
+echo -e "${LPURPLE}----------------${WHITE}"
 
 export host_list=$host_list
 

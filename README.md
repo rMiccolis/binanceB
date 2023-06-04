@@ -26,8 +26,6 @@ After creating VM with a linux distro:
 - Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
 - Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 
-### EXAMPLE OF main_config.json (find example file in ./kubernetes/app/main_config.json.example)
-
 ## Launch script for auto creating VM on hyper-v (windows) and setup and boot all the application
 
 **IMPORTANT:**
@@ -40,8 +38,8 @@ TO LET THIS SCRIPT WORK, YOU **MUST**:
 
 Launch generate_hyperv_vms.ps1:
 Input parameter:
-config_file_path => This file MUST be called "main_config.json". This is the json file to configure virtual machines and application (example at [https://github](https://github.com/rMiccolis/binanceB/blob/master/main_config.json.example))
-powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.json"
+config_file_path => This file MUST be called "main_config.yaml". This is the json file to configure virtual machines and application (example at [https://github](https://github.com/rMiccolis/binanceB/blob/master/main_config.example.yaml))
+powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.yaml"
 
 ## MANUAL STARTUP EXAMPLE
 
@@ -81,11 +79,11 @@ scp -r -q E:\Desktop\binanceB m1@m1:/home/m1/
 ssh m1@m1 "chmod -R u+x ./binanceB"
 ```
 
-**Copy main_config.json to master remote host to for application configuration:**
+**Copy main_config.yaml to master remote host to for application configuration:**
 
 ```bash
-scp E:\Download\main_config.json m1@m1:/home/m1/
-ssh m1@m1 "chmod -R u+x ./main_config.json"
+scp E:\Download\main_config.yaml m1@m1:/home/m1/
+ssh m1@m1 "chmod -R u+x ./main_config.yaml"
 ```
 
 **Ssh into all remote hosts and set passwordless sudo prompt for remote host username (## to be done for all hosts):**
@@ -108,5 +106,5 @@ EOF
 **Run ./infrastructure/start.sh script on the master remote host:**
 
 ```bash
-./infrastructure/start.sh -u docker_username -p docker_password -c "/home/m1/main_config.json"
+./infrastructure/start.sh -u docker_username -p docker_password -c "/home/m1/main_config.yaml"
 ```

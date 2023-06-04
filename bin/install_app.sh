@@ -3,29 +3,18 @@
 ###############################################################################
 echo -e "${LBLUE}Reading and processing application settings from input file...${WHITE}"
 
-
 # Configuring application settings
-eval server_access_token_secret="$(jq -r '.server_access_token_secret | @sh' $config_file_path)"
-server_access_token_secret=$(echo -n $server_access_token_secret | base64)
-export server_access_token_secret=$server_access_token_secret
+export server_access_token_secret=$(yq '.server_access_token_secret' $config_file_path | base64)
 
-eval server_refresh_token_secret="$(jq -r '.server_refresh_token_secret | @sh' $config_file_path)"
-server_refresh_token_secret=$(echo -n $server_refresh_token_secret | base64)
-export server_refresh_token_secret=$server_refresh_token_secret
+export server_refresh_token_secret=$(yq '.server_refresh_token_secret' $config_file_path | base64)
 
-eval server_access_token_lifetime="$(jq -r '.server_access_token_lifetime | @sh' $config_file_path)"
-export server_access_token_lifetime=$server_access_token_lifetime
+export server_access_token_lifetime=$(yq '.server_access_token_lifetime' $config_file_path)
 
-eval server_refresh_token_lifetime="$(jq -r '.server_refresh_token_lifetime | @sh' $config_file_path)"
-export server_refresh_token_lifetime=$server_refresh_token_lifetime
+export server_refresh_token_lifetime=$(yq '.server_refresh_token_lifetime' $config_file_path)
 
-eval mongo_root_username="$(jq -r '.mongo_root_username | @sh' $config_file_path)"
-mongo_root_username=$(echo -n $mongo_root_username | base64)
-export mongo_root_username=$mongo_root_username
+export mongo_root_username=$(yq '.mongo_root_username' $config_file_path | base64)
 
-eval mongo_root_password="$(jq -r '.mongo_root_password | @sh' $config_file_path)"
-mongo_root_password=$(echo -n $mongo_root_password | base64)
-export mongo_root_password=$mongo_root_password
+export mongo_root_password=$(yq '.mongo_root_password' $config_file_path | base64)
 
 mkdir /home/$USER/temp
 cp -R $repository_root_dir/binanceB/kubernetes/app/* /home/$USER/temp

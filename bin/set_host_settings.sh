@@ -44,8 +44,9 @@ EOF
 echo -e "${LBLUE}Applying sysctl params without reboot...${WHITE}"
 sudo sysctl --system > /dev/null 2>&1
 
-# installing jq to parse and read json files
-sudo apt-get install -y -q jq > /dev/null 2>&1
+# installing yq to parse and read json files
+echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
 
 # Verify that the br_netfilter, overlay modules are loaded by running below instructions:
 # lsmod | grep br_netfilter

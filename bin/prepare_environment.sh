@@ -31,6 +31,8 @@ export docker_client_repository_name=$(yq '.docker_client_repository_name' $conf
 export github_branch_name=$(yq '.github_branch_name' $config_file_path)
 export docker_username=$(yq '.docker_username' $config_file_path)
 export docker_password=$(yq '.docker_password' $config_file_path)
+export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)
+export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)
 
 echo -e "${LBLUE}Adding worker nodes to the hosts file...${WHITE}"
 #exporting host list as a string (so it can be exported as variable and read by other scripts)

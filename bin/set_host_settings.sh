@@ -47,7 +47,7 @@ sudo sysctl --system > /dev/null 2>&1
 if [ "$master_host_name" != "$(whoami)" ]; then
 # installing yq to parse and read json files
 echo -e "${LBLUE}Installing yq library on $(whoami) to read and parse YAML files...${WHITE}"
-sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq > /dev/null && sudo chmod +x /usr/bin/yq > /dev/null
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
 fi
 
 # Verify that the br_netfilter, overlay modules are loaded by running below instructions:

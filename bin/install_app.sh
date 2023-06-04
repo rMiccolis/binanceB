@@ -4,17 +4,17 @@
 echo -e "${LBLUE}Reading and processing application settings from input file...${WHITE}"
 
 # Configuring application settings
-export server_access_token_secret=$(yq '.server_access_token_secret' $config_file_path | base64)
+export server_access_token_secret=$(echo -n $(yq '.server_access_token_secret' $config_file_path) | base64)
 
-export server_refresh_token_secret=$(yq '.server_refresh_token_secret' $config_file_path | base64)
+export server_refresh_token_secret=$(echo -n $(yq '.server_refresh_token_secret' $config_file_path) | base64)
 
 export server_access_token_lifetime=$(yq '.server_access_token_lifetime' $config_file_path)
 
 export server_refresh_token_lifetime=$(yq '.server_refresh_token_lifetime' $config_file_path)
 
-export mongo_root_username=$(yq '.mongo_root_username' $config_file_path | base64)
+export mongo_root_username=$(echo -n $(yq '.mongo_root_username' $config_file_path) | base64)
 
-export mongo_root_password=$(yq '.mongo_root_password' $config_file_path | base64)
+export mongo_root_password=$(echo -n $(yq '.mongo_root_password' $config_file_path) | base64)
 
 mkdir /home/$USER/temp
 cp -R $repository_root_dir/binanceB/kubernetes/app/* /home/$USER/temp

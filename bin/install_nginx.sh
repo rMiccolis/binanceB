@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "${LCYAN}Installing NGINX to be reachble on $master_host_ip.${WHITE}"
+echo -e "${LBLUE}Installing NGINX to be reachble on $master_host_ip.${WHITE}"
 #add nginx helm repository (kubernetes version)
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx > /dev/null 2>&1
 helm repo update > /dev/null 2>&1

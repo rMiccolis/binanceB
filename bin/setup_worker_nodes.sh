@@ -40,8 +40,8 @@ for h in ${host_list[@]}; do
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
   host_ip=${host_string[1]}
-  echo -e "${LPURPLE}------------------------------------------------${WHITE}"
-  echo -e "${LPURPLE}Working on: ${PURPLE}$host_username@$host_ip${WHITE}"
+  echo -e "${PURPLE}------------------------------------------------${WHITE}"
+  echo -e "${PURPLE}Working on: $host_username@$host_ip${WHITE}"
 
   echo -e "${LBLUE}Adding $host_ip to the list of known hosts...${WHITE}"
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &

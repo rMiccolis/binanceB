@@ -38,8 +38,11 @@ TO LET THIS SCRIPT WORK, YOU **MUST**:
 
 Launch generate_hyperv_vms.ps1:
 Input parameter:
-config_file_path => This is the path to the configuration file and MUST be called "main_config.yaml". This is the yaml file to configure virtual machines and application (example at [https://github](https://github.com/rMiccolis/binanceB/blob/master/main_config.example.yaml))
+- config_file_path => This is the path to the configuration file and MUST be called "main_config.yaml". This is the yaml file to configure virtual machines and application (example at [https://github](https://github.com/rMiccolis/binanceB/blob/master/main_config.example.yaml))
+
+```powershell
 powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.yaml"
+```
 
 ## MANUAL STARTUP EXAMPLE
 

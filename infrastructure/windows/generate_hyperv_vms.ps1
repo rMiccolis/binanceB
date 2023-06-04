@@ -2,8 +2,16 @@ param(
 [string]$config_file_path
 )
 
+# Install NuGet to download and install powershell-yaml to read and parse yaml files
+Get-PackageProvider -Name "NuGet" -ForceBootstrap | out-null
+Set-PSRepository PSGallery -InstallationPolicy Trusted | out-null
+if (!(Get-Module -ListAvailable -Name powershell-yaml)) {
+    Install-Module powershell-yaml
+} 
+
 # READ ALL CONFIGURATION KEYS
-$config=Get-Content $config_file_path | ConvertFrom-Json
+Import-Module powershell-yaml
+$config=Get-Content $config_file_path | ConvertFrom-YAML
 
 # Set the ssh folder where there are all the ssh key pairs
 $ssh_path = "$HOME\.ssh"
@@ -99,12 +107,12 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
 
     echo "Setting up $host_user virtual machine..."
 
-    # Encode the main_config.json content into base64 (we'll use it to feed cloud-init)
+    # Encode the main_config.yaml content into base64 (we'll use it to feed cloud-init)
     $encoded_main_config_content="Cg=="
     if ($all_hosts[$i] -eq $config.master_host) {
         $master_host_name = $host_user
         $master_host_ip = $host_ip
-        $main_config_content = Get-Content $config_file_path
+        $main_config_content = Get-Content $config_file_path -Raw
         $encodedBytes = [System.Text.Encoding]::UTF8.GetBytes($main_config_content)
         $encoded_main_config_content = [System.Convert]::ToBase64String($encodedBytes)
     }
@@ -161,7 +169,7 @@ write_files:
  - encoding: b64
    owner: $($host_user):$($host_user)
    content: $($encoded_main_config_content)
-   path: /home/$($host_user)/main_config.json
+   path: /home/$($host_user)/main_config.yaml
    permissions: '0777'
    defer: true
  - encoding: b64
@@ -177,8 +185,8 @@ runcmd:
     # Set temp path to store temporary files
     $tempPath = [System.IO.Path]::GetTempPath() + [System.Guid]::NewGuid().ToString()
     # Make temp location
-    md -Path $tempPath
-    md -Path "$($tempPath)\Bits"
+    md -Path $tempPath | out-null
+    md -Path "$($tempPath)\Bits" | out-null
 
     # Set the Path where to store the metadata.iso file in ISO 9660, made up from meta-data and user-data files
     $metaDataIso = "$($vm_store_path)\$host_user\metadata.iso"
@@ -186,7 +194,6 @@ runcmd:
     # If virtual machine with same name already exists, delete it
     $VM_exist = Get-VM -name $VMName -ErrorAction SilentlyContinue | ConvertTo-Json | ConvertFrom-Json
     $VM_exist_name = $VM_exist.Name
-    echo $VM_exist_name
     if ($VM_exist_name) { 
         echo "Removing already existing VM $VM_exist_name..."
         Remove-VM -Name $VMName -Force
@@ -197,7 +204,7 @@ runcmd:
     }
 
     # Create the vm specific folder
-    New-Item -Path "$vm_store_path\$host_user" -ItemType Directory
+    New-Item -Path "$vm_store_path\$host_user" -ItemType Directory | out-null
 
     # Output meta and user data to files meta-data and user-data in the temp directory
     sc "$($tempPath)\Bits\meta-data" ([byte[]][char[]] "$metadata") -Encoding Byte
@@ -260,7 +267,7 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
             Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh m1@192.168.1.200 && pause"
             # Copy to clipboard the command to be executed on the just opened cmd shell to run all the infrastructure setup
             # You just have to paste the command and then enter
-            Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json'"
+            Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
         } else {
             echo "$master_host_name@$master_host_ip => $cloud_init_status"
         }
@@ -269,5 +276,5 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
 
 echo "Done! All hosts are configured."
 echo "To start the infrastructure setup run this command on the just opened cmd:"
-echo "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.json'"
+echo "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
 echo "(This command is already copied in the clipboard, you just have to paste it and run it)"

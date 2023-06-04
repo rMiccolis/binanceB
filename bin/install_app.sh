@@ -31,4 +31,4 @@ kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/
 
 rm -rf /home/$USER/temp
-rm -rf /home/$USER/main_config.json
+rm -rf /home/$USER/main_config.yaml

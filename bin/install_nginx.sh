@@ -19,6 +19,12 @@ controller:
     client-header-buffer-size: 1024k
     error-log-level: warn
     http2-max-header-size: 1024k
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 50
+    targetMemoryUtilizationPercentage: 50
 EOF
 
 kubectl create namespace ingress-nginx

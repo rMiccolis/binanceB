@@ -21,6 +21,10 @@ echo -e "${LBLUE}Downloading package...${WHITE}"
 FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION}-linux-amd64.tar.gz"
 RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
 wget $RELEASE_URL > /dev/null 2>&1
+FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION:1}.amd64.tgz"
+RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
+wget $RELEASE_URL > /dev/null 2>&1
+
 
 # extract it
 echo -e "${LBLUE}Exctracting package...${WHITE}"
@@ -28,7 +32,7 @@ sudo tar -xvf $FILE_NAME > /dev/null 2>&1
 
 # install cri-dockerd
 echo -e "${LBLUE}Installing Cri-Dockerd...${WHITE}"
-# cd cri-dockerd/
+cd cri-dockerd/ > /dev/null 2>&1
 mkdir -p /usr/local/bin
 sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd > /dev/null 2>&1
 

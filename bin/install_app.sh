@@ -27,6 +27,8 @@ envsubst < $repository_root_dir/binanceB/kubernetes/app/4-client/4-client-deploy
 echo -e "${LBLUE}Starting Application...${WHITE}"
 kubectl apply -f /home/$USER/temp/1-namespaces/
 kubectl apply -f /home/$USER/temp/2-mongodb/
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
+wait
 kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/
 

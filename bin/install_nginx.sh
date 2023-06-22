@@ -11,6 +11,7 @@ controller:
   service:
     externalIPs: [$master_host_ip]
   config:
+    enable-real-ip: true
     use-forwarded-headers: true
     use-gzip: true
     generate-request-id: true

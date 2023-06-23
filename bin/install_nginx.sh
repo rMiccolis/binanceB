@@ -22,6 +22,7 @@ controller:
     error-log-level: warn
     http2-max-header-size: 1024k
     log-format-escape-json: "true"
+    enable-underscores-in-headers: true
     log-format-upstream: '{"time": "$time_iso8601", "proxy_protocol_addr": "$proxy_protocol_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr", "x_forwarded_for": "$x_forwarded_for" }'
   autoscaling:
     enabled: true

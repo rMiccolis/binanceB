@@ -8,20 +8,21 @@ externalIPs="$master_host_ip"
 
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
   service:
     externalIPs: [$master_host_ip]
   config:
-    enable-real-ip: true
     use-forwarded-headers: true
-    proxy-real-ip-cidr: "37.182.190.24/32"
     use-gzip: true
-    generate-request-id: true
-    proxy-body-size: 1024k
-    client-body-buffer-size: 1024k
-    client-header-buffer-size: 1024k
     error-log-level: warn
-    http2-max-header-size: 1024k
-    log-format-escape-json: "true"
+    log-format-escape-json: true
     enable-underscores-in-headers: true
     log-format-upstream: '{"time": "$time_iso8601", "proxy_protocol_addr": "$proxy_protocol_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr", "x_forwarded_for": "$x_forwarded_for" }'
   autoscaling:

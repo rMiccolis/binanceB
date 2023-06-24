@@ -60,6 +60,9 @@ echo -e "${LGREEN}Starting phase 7 / 10 ===> Installing Helm (package manager fo
 ./binanceB/bin/install_helm.sh
 echo -e "${LGREEN}Phase 7 / 10 ===> Operation Done!${WHITE}"
 
+# echo -e "${LGREEN}Starting EXTRA phase ===> Installing metallb${WHITE}"
+# ./binanceB/bin/install_metallb.sh
+# echo -e "${LGREEN}Phase 8 / 10 ===> Operation Done!${WHITE}"
 
 echo -e "${LGREEN}Starting phase 8 / 10 ===> Installing Nginx (to be used as a reverse proxy for Kubernetes cluster)${WHITE}"
 ./binanceB/bin/install_nginx.sh

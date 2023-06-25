@@ -8,6 +8,8 @@ externalIPs="$master_host_ip"
 
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
+  service:
+    externalTrafficPolicy: Local
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:

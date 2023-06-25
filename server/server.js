@@ -40,6 +40,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
     req.locals = {};
+    console.log(req.headers);
+    console.log(req.ip);
+    console.log(req.ips);
     next();
 });
 

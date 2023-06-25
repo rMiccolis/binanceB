@@ -16,6 +16,10 @@ controller:
           - key: node-role.kubernetes.io/control-plane
             operator: Exists
             effect: NoSchedule
+  tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
   service:
     externalIPs: [$master_host_ip]
   config:

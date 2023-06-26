@@ -2,7 +2,13 @@
 
 ###############################################################################
 # export the cluster join command to be executed on worker host
-export join="sudo $(kubeadm token create --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
+token=$(kubeadm token generate)
+certkeyout=$(sudo kubeadm init phase upload-certs --upload-certs)
+#copy the contents of certkeyout variable into an array and now a[1] contains the certificate key
+readarray -td ':' a <<<"$certkeyout";declare -p a
+certkey=${a[1]}
+
+export join="sudo $(sudo kubeadm token create $token --print-join-command --certificate-key $certkey) --cri-socket=unix:///var/run/cri-dockerd.sock"
 # create known_hosts file if not exists. needed to add remote worker nodes inside of it
 touch ~/.ssh/known_hosts
 

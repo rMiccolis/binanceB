@@ -114,9 +114,15 @@ for h in ${host_list[@]}; do
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
   
-  # Joining worker node to the cluster
+  
   echo -e "${LBLUE}Joining $host_username@$host_ip to the cluster${WHITE}"
-  ssh -q $h "$join" &
+  if [ "${host_username:0:1}" == "m" ]; then
+    echo "Joining control-plane node to the cluster"
+    ssh -q $h "$join --control-plane" &
+  else
+    echo "Joining worker node to the cluster"
+    ssh -q $h "$join" &
+  fi
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -124,5 +130,6 @@ for h in ${host_list[@]}; do
 
 done
 
-echo -e "${LBLUE}All remote worker hosts configured and joined to the cluster!${WHITE}"
+echo -e "${LBLUE}All remote hosts configured and joined to the cluster!${WHITE}"
+kubectl get nodes -o wide
 echo -e "${LBLUE}------------------------------------------------${WHITE}"

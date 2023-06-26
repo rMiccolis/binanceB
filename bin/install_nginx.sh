@@ -22,8 +22,6 @@ controller:
   - key: node-role.kubernetes.io/control-plane
     operator: Exists
     effect: NoSchedule
-  service:
-    externalIPs: [$master_host_ip]
   config:
     use-forwarded-headers: true
     use-gzip: true
@@ -33,7 +31,7 @@ controller:
     log-format-upstream: '{"time": "$time_iso8601", "proxy_protocol_addr": "$proxy_protocol_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr", "x_forwarded_for": "$x_forwarded_for" }'
   autoscaling:
     enabled: true
-    minReplicas: 1
+    minReplicas: 2
     maxReplicas: 3
     targetCPUUtilizationPercentage: 50
     targetMemoryUtilizationPercentage: 50

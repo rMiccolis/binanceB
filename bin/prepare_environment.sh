@@ -56,7 +56,9 @@ $host_ip $host_username
 EOF
 done
 
-export control_plane_hosts=$control_plane_hosts
+export control_plane_hosts_string=$control_plane_hosts_string
+
+echo "${LBLUE}externalIPs: [$master_host_ip $control_plane_hosts_string]${WHITE}"
 
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${LPURPLE}Cluster worker host list:${WHITE}"

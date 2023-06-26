@@ -136,11 +136,6 @@ for h in ${host_list[@]}; do
 
 done
 
-#install calico CNI to kubernetes cluster:
-echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O > /dev/null 2>&1
-kubectl apply -f calico.yaml > /dev/null 2>&1
-
 echo -e "${LBLUE}All remote hosts configured and joined to the cluster!${WHITE}"
 kubectl get nodes -o wide
 echo -e "${LBLUE}------------------------------------------------${WHITE}"

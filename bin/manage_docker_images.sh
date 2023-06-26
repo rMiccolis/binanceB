@@ -5,7 +5,7 @@
 # cd into project root directory
 cd $repository_root_dir/binanceB/
 
-if [ "$skip_docker_build" != "true" ]; then
+if [ $skip_docker_build != true ]; then
 return
 fi
 

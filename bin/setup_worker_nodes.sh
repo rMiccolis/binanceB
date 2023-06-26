@@ -127,11 +127,11 @@ for h in ${host_list[@]}; do
     echo "Joining control-plane node to the cluster"
     ssh -q $h "$join_control_plane" &
     wait
-    ssh -q $h "mkdir -p $HOME/.kube" &
+    ssh -q $h "mkdir -p /home/$host_username/.kube" &
     wait
-    ssh -q $h "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config" &
+    ssh -q $h "sudo cp -i /etc/kubernetes/admin.conf /home/$host_username/.kube/config" &
     wait
-    ssh -q $h "sudo chown $(id -u):$(id -g) $HOME/.kube/config" &
+    ssh -q $h "sudo chown $(id -u):$(id -g) /home/$host_username/.kube/config" &
     wait
   else
     echo "Joining worker node to the cluster"

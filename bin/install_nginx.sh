@@ -9,6 +9,7 @@ externalIPs="$master_host_ip"
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
   service:
+    externalIPs: [$master_host_ip $control_plane_hosts_string]
     externalTrafficPolicy: Local
   affinity:
     nodeAffinity:
@@ -22,6 +23,15 @@ controller:
   - key: node-role.kubernetes.io/control-plane
     operator: Exists
     effect: NoSchedule
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 50
+    targetMemoryUtilizationPercentage: 50
+EOF
+
+cat << 'EOF' | tee -a nginx_helm_config.yaml > /dev/null 2>&1
   config:
     use-forwarded-headers: true
     use-gzip: true
@@ -29,12 +39,6 @@ controller:
     log-format-escape-json: true
     enable-underscores-in-headers: true
     log-format-upstream: '{"time": "$time_iso8601", "proxy_protocol_addr": "$proxy_protocol_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr", "x_forwarded_for": "$x_forwarded_for" }'
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 3
-    targetCPUUtilizationPercentage: 50
-    targetMemoryUtilizationPercentage: 50
 EOF
 
 kubectl create namespace ingress-nginx

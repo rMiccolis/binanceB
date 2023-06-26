@@ -8,7 +8,8 @@ certkeyout=$(sudo kubeadm init phase upload-certs --upload-certs)
 readarray -td ':' a <<<"$certkeyout";declare -p a
 certkey=${a[1]}
 
-export join="sudo $(sudo kubeadm token create $token --print-join-command --certificate-key $certkey) --cri-socket=unix:///var/run/cri-dockerd.sock"
+export join_control_plane="sudo $(sudo kubeadm token create $token --print-join-command --certificate-key $certkey --control-plane) --cri-socket=unix:///var/run/cri-dockerd.sock"
+export join_worker="sudo $(sudo kubeadm token create $token --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
 # create known_hosts file if not exists. needed to add remote worker nodes inside of it
 touch ~/.ssh/known_hosts
 
@@ -124,10 +125,17 @@ for h in ${host_list[@]}; do
   echo -e "${LBLUE}Joining $host_username@$host_ip to the cluster${WHITE}"
   if [ "${host_username:0:1}" == "m" ]; then
     echo "Joining control-plane node to the cluster"
-    ssh -q $h "$join --control-plane" &
+    ssh -q $h "$join_control_plane" &
+    wait
+    ssh -q $h "mkdir -p $HOME/.kube" &
+    wait
+    ssh -q $h "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config" &
+    wait
+    ssh -q $h "sudo chown $(id -u):$(id -g) $HOME/.kube/config" &
+    wait
   else
     echo "Joining worker node to the cluster"
-    ssh -q $h "$join" &
+    ssh -q $h "$join_worker" &
   fi
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"

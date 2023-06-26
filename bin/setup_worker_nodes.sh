@@ -8,7 +8,7 @@ certkeyout=$(sudo kubeadm init phase upload-certs --upload-certs)
 readarray -td ':' a <<<"$certkeyout";declare -p a
 certkey=${a[1]}
 
-export join_control_plane="sudo $(sudo kubeadm token create $token --print-join-command --certificate-key $certkey --control-plane) --cri-socket=unix:///var/run/cri-dockerd.sock"
+export join_control_plane="sudo $(sudo kubeadm token create $token --print-join-command --certificate-key $certkey) --control-plane --cri-socket=unix:///var/run/cri-dockerd.sock"
 export join_worker="sudo $(sudo kubeadm token create $token --print-join-command) --cri-socket=unix:///var/run/cri-dockerd.sock"
 # create known_hosts file if not exists. needed to add remote worker nodes inside of it
 touch ~/.ssh/known_hosts

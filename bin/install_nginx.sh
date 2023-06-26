@@ -38,7 +38,7 @@ cat << 'EOF' | tee -a nginx_helm_config.yaml > /dev/null 2>&1
     error-log-level: warn
     log-format-escape-json: true
     enable-underscores-in-headers: true
-    log-format-upstream: '{"time": "$time_iso8601", "proxy_protocol_addr": "$proxy_protocol_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr", "x_forwarded_for": "$x_forwarded_for" }'
+    log-format-upstream: '{"time": "$time_iso8601", "proxy_protocol_addr": "$proxy_protocol_addr", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr" }'
 EOF
 
 kubectl create namespace ingress-nginx

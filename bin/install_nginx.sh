@@ -9,7 +9,7 @@ externalIPs="$master_host_ip"
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
   service:
-    externalIPs: [$master_host_ip $control_plane_hosts_string]
+    # externalIPs: [$master_host_ip $control_plane_hosts_string]
     externalTrafficPolicy: Local
   affinity:
     nodeAffinity:

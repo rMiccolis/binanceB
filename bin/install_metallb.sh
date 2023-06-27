@@ -19,7 +19,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.1.200-192.168.1.201
+  - 192.168.1.200-192.168.1.202
 EOF
 
 # cat << EOF | tee 'metallb_L2Advertisement.yaml' > /dev/null 2>&1

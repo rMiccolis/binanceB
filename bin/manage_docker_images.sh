@@ -5,9 +5,9 @@
 # cd into project root directory
 cd $repository_root_dir/binanceB/
 
-if [ $skip_docker_build != true ]; then
-return
-fi
+# if [ $skip_docker_build != true ]; then
+# return
+# fi
 
 # Set environment variable VITE_SERVER_URI
 echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"

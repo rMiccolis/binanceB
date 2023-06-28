@@ -6,10 +6,10 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx > /dev/nu
 helm repo update > /dev/null 2>&1
 externalIPs="$master_host_ip"
 
+# externalIPs: [$master_host_ip $control_plane_hosts_string]
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
   service:
-    # externalIPs: [$master_host_ip $control_plane_hosts_string]
     externalTrafficPolicy: Local
   affinity:
     nodeAffinity:

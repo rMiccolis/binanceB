@@ -35,17 +35,17 @@ spec:
             cpu: 100m
         ports:
         - containerPort: 27017
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          valueFrom:
-           secretKeyRef:
-             name: mongodb-secret
-             key: mongo-root-username
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          valueFrom:
-           secretKeyRef:
-             name: mongodb-secret
-             key: mongo-root-password
+        # env:
+        # - name: MONGO_INITDB_ROOT_USERNAME
+        #   valueFrom:
+        #    secretKeyRef:
+        #      name: mongodb-secret
+        #      key: mongo-root-username
+        # - name: MONGO_INITDB_ROOT_PASSWORD
+        #   valueFrom:
+        #    secretKeyRef:
+        #      name: mongodb-secret
+        #      key: mongo-root-password
         volumeMounts:
         - name: mongodb-storage
           mountPath: /data/db

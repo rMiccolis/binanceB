@@ -32,6 +32,13 @@ kubectl apply -f /home/$USER/temp/2-mongodb/
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait
 # when all mongodb replicas are created, let's setup the replicaset
+kubectl exec mongodb-replica-0 -n mongodb "mongosh rs.initiate()"
+kubectl exec mongodb-replica-0 -n mongodb "mongosh var cfg = rs.conf()"
+kubectl exec mongodb-replica-0 -n mongodb "mongosh cfg.members[0].host="mongodb-replica-0.mongodb:27017""
+kubectl exec mongodb-replica-0 -n mongodb "mongosh rs.reconfig(cfg)"
+kubectl exec mongodb-replica-0 -n mongodb "mongosh rs.add("mongodb-replica-1.mongodb:27017")"
+# kubectl exec mongodb-replica-0 -n mongodb "mongosh rs.add("mongodb-replica-2.mongodb:27017")"
+kubectl exec mongodb-replica-0 -n mongodb "mongosh rs.status()"
 
 
 kubectl apply -f /home/$USER/temp/3-server/

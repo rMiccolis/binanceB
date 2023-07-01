@@ -4,7 +4,7 @@ metadata:
   name: mongodb
   namespace: mongodb
 spec:
-  ClusterIp: None
+  clusterIP: None
   selector:
     app: mongodb
   ports:

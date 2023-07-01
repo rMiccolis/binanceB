@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
-  namespace: binance-b
+  namespace: mongodb
   labels:
     app: mongodb
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: mongodb
@@ -15,15 +15,19 @@ spec:
       labels:
         app: mongodb
     spec:
+      terminationGracePeriodSeconds: 30
+      serviceAccount: mongo-account
+      command: ["/bin/sh"]
+      args: ["-c", "mongod --replSet=rs0 --bind_ip_all"]
       containers:
       - name: mongodb
         image: mongo
         resources:
           requests:
-            memory: 256Mi
+            memory: 1000Mi
             cpu: 200m
           limits:
-            memory: 256Mi
+            memory: 1500Mi
             cpu: 200m
         ports:
         - containerPort: 27017
@@ -38,3 +42,15 @@ spec:
            secretKeyRef:
              name: mongodb-secret
              key: mongo-root-password
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      volumeClaimTemplates:
+      - metadata:
+          name: mongo-data
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 3Gi

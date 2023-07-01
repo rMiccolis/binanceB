@@ -31,6 +31,9 @@ kubectl apply -f /home/$USER/temp/1-namespaces/
 kubectl apply -f /home/$USER/temp/2-mongodb/
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait
+# when all mongodb replicas are created, let's setup the replicaset
+
+
 kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/
 

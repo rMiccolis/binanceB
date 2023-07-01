@@ -12,3 +12,4 @@ data:
   ACCESS_TOKEN_LIFETIME: '$server_access_token_lifetime'
   REFRESH_TOKEN_LIFETIME: '$server_refresh_token_lifetime'
   SERVER_PORT: '3000'
+  mongodb_db_name: binanceB

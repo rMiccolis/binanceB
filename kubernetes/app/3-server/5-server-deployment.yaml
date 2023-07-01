@@ -42,7 +42,7 @@ spec:
         - name: MONGODB_DB_NAME
           valueFrom:
            configMapKeyRef:
-             name: mongodb-configmap
+             name: server-configmap
              key: mongodb_db_name
         - name: MONGODB_URI
           value: $(MONGODB_SERVICE_HOST)

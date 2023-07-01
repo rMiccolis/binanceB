@@ -46,7 +46,7 @@ done
 kubectl exec mongodb-replica-0 -n mongodb 'mongosh rs.initiate({ \
     _id: "rs0",\
       version: 1,\
-      members: [ $members ] \
+      members: [ ${members[@]} ] \
 })'
 
 kubectl exec mongodb-replica-0 -n mongodb 'mongosh rs.status()'

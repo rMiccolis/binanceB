@@ -1,11 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: mongodb
+  name: mongodb-replica
   namespace: mongodb
-  labels:
-    app: mongodb
 spec:
+  serviceName: mongodb
   replicas: 3
   selector:
     matchLabels:
@@ -14,24 +13,25 @@ spec:
     metadata:
       labels:
         app: mongodb
+        selector: mongodb
     spec:
       terminationGracePeriodSeconds: 30
       serviceAccount: mongo-account
-      command: ["/bin/sh"]
-      args: ["-c", "mongod --replSet=rs0 --bind_ip_all"]
       containers:
       - name: mongodb
         image: mongo
+        command: ["/bin/sh"]
+        args: ["-c", "mongod --replSet=rs0 --bind_ip_all"]
         resources:
           requests:
-            memory: 1000Mi
+            memory: 256Mi
             cpu: 200m
           limits:
-            memory: 1500Mi
+            memory: 256Mi
             cpu: 200m
         ports:
         - containerPort: 27017
-        env: 
+        env:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
            secretKeyRef:
@@ -45,12 +45,12 @@ spec:
         volumeMounts:
         - name: mongo-data
           mountPath: /data/db
-      volumeClaimTemplates:
-      - metadata:
-          name: mongo-data
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 3Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 3Gi

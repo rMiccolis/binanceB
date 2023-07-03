@@ -43,13 +43,11 @@ for i in $(seq $mongo_replica_count); do
     fi
     members+=($member_str)
 done
-kubectl exec mongodb-replica-0 -n mongodb -- 'mongosh rs.initiate({ \
-    _id: "rs0",\
-      version: 1,\
-      members: [ ${members[@]} ] \
-})'
+kubectl exec -n mongodb mongodb-replica-0 -- mongosh rs.initiate({ _id: "rs0",version: 1,members: [ ${members[@]} ] })
 
-kubectl exec mongodb-replica-0 -n mongodb 'mongosh rs.status()'
+echo -n "${LBLUE}EXECUTED: mongosh rs.initiate({ _id: "rs0",version: 1,members: [ ${members[@]} ] })${WHITE}"
+
+kubectl exec -n mongodb mongodb-replica-0 'mongosh rs.status()'
 
 kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/

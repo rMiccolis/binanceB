@@ -37,17 +37,18 @@ mongo_replica_count=3
 for i in $(seq $mongo_replica_count); do
     replica_index="$(($i-1))"
     if [ "$i" != "$mongo_replica_count" ]; then
-        member_str='{ _id: $replica_index, host : "mongodb-replica-$replica_index.mongodb:27017" },'
+        member_str="{ _id: $replica_index, host : '"mongodb-replica-$replica_index.mongodb:27017"' },"
     else
-        member_str='{ _id: $replica_index, host : "mongodb-replica-$replica_index.mongodb:27017" }'
+        member_str="{ _id: $replica_index, host : '"mongodb-replica-$replica_index.mongodb:27017"' }"
     fi
     members+=($member_str)
 done
-kubectl exec -n mongodb mongodb-replica-0 -- mongosh rs.initiate({ _id: "rs0",version: 1,members: [ ${members[@]} ] })
+initiate_command="rs.initiate({ _id: 'rs0',version: 1,members: [ ${members[@]} ] })"
+kubectl exec -it -n mongodb mongodb-replica-0 -- mongosh '$initiate_command'
 
-echo -n "${LBLUE}EXECUTED: mongosh rs.initiate({ _id: "rs0",version: 1,members: [ ${members[@]} ] })${WHITE}"
+echo -n "${LBLUE}EXECUTED: mongosh '$initiate_command' ${WHITE}"
 
-kubectl exec -n mongodb mongodb-replica-0 'mongosh rs.status()'
+kubectl exec -n mongodb mongodb-replica-0 mongosh 'rs.status()'
 
 kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/

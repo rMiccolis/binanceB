@@ -19,7 +19,7 @@ export mongo_root_password=$(echo -n $(yq '.mongo_root_password' $config_file_pa
 mkdir /home/$USER/temp
 cp -R $repository_root_dir/binanceB/kubernetes/app/* /home/$USER/temp
 envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/3-mongodb-secrets.yaml | sudo tee /home/$USER/temp/2-mongodb/3-mongodb-secrets.yaml > /dev/null
-envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/6-mongodb-statefullset.yaml | sudo tee /home/$USER/temp/2-mongodb/6-mongodb-statefullset.yaml > /dev/null
+envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/6-mongodb-statefulset.yaml | sudo tee /home/$USER/temp/2-mongodb/6-mongodb-statefulset.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml | sudo tee /home/$USER/temp/3-server/3-server-secrets.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml | sudo tee /home/$USER/temp/3-server/4-server-configmap.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/5-server-deployment.yaml | sudo tee /home/$USER/temp/3-server/5-server-deployment.yaml > /dev/null
@@ -30,7 +30,7 @@ kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeo
 wait
 kubectl apply -f /home/$USER/temp/1-namespaces/
 kubectl apply -f /home/$USER/temp/2-mongodb/
-kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
+kubectl wait --for=condition=Ready --all-namespaces --timeout=3000s statefulset/mongodb-replica &
 wait
 # when all mongodb replicas are created, let's setup the replicaset
 members=()

@@ -5,7 +5,7 @@ metadata:
   namespace: mongodb
 spec:
   serviceName: mongodb
-  replicas: 3
+  replicas: $mongodb_replica_count
   selector:
     matchLabels:
       app: mongodb

@@ -19,6 +19,7 @@ export mongo_root_password=$(echo -n $(yq '.mongo_root_password' $config_file_pa
 mkdir /home/$USER/temp
 cp -R $repository_root_dir/binanceB/kubernetes/app/* /home/$USER/temp
 envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/3-mongodb-secrets.yaml | sudo tee /home/$USER/temp/2-mongodb/3-mongodb-secrets.yaml > /dev/null
+envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/6-mongodb-statefullset.yaml | sudo tee /home/$USER/temp/2-mongodb/6-mongodb-statefullset.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/3-server-secrets.yaml | sudo tee /home/$USER/temp/3-server/3-server-secrets.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/4-server-configmap.yaml | sudo tee /home/$USER/temp/3-server/4-server-configmap.yaml > /dev/null
 envsubst < $repository_root_dir/binanceB/kubernetes/app/3-server/5-server-deployment.yaml | sudo tee /home/$USER/temp/3-server/5-server-deployment.yaml > /dev/null
@@ -33,9 +34,9 @@ kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeo
 wait
 # when all mongodb replicas are created, let's setup the replicaset
 members=()
-for i in $(seq $mongo_replica_count); do
+for i in $(seq $mongodb_replica_count); do
     replica_index="$(($i-1))"
-    if [ "$i" != "$mongo_replica_count" ]; then
+    if [ "$i" != "$mongodb_replica_count" ]; then
         member_str="{ _id: $replica_index, host : '"mongodb-replica-$replica_index.mongodb:27017"' },"
     else
         member_str="{ _id: $replica_index, host : '"mongodb-replica-$replica_index.mongodb:27017"' }"

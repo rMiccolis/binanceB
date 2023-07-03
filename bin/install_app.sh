@@ -33,7 +33,6 @@ kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeo
 wait
 # when all mongodb replicas are created, let's setup the replicaset
 members=()
-mongo_replica_count=3
 for i in $(seq $mongo_replica_count); do
     replica_index="$(($i-1))"
     if [ "$i" != "$mongo_replica_count" ]; then

@@ -30,8 +30,16 @@ kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeo
 wait
 kubectl apply -f /home/$USER/temp/1-namespaces/
 kubectl apply -f /home/$USER/temp/2-mongodb/
-kubectl wait -n mongodb pods --selector app=mongodb --for condition=Ready --timeout=3000s  &
-wait
+
+# let's wait for mongodb stateful set to be ready
+exit_loop=""
+ready_sts_condition="$mongodb_replica_count/$mongodb_replica_count"
+while [ "$exit_loop" != "$ready_sts_condition"] do
+sleep 10
+exit_loop=$(kubectl get sts -n mongodb | awk 'NR==2{print $2}')
+echo "StatefulSet pod ready: $exit_loop"
+done
+
 # when all mongodb replicas are created, let's setup the replicaset
 members=()
 for i in $(seq $mongodb_replica_count); do

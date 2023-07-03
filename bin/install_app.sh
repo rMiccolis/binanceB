@@ -30,7 +30,7 @@ kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeo
 wait
 kubectl apply -f /home/$USER/temp/1-namespaces/
 kubectl apply -f /home/$USER/temp/2-mongodb/
-kubectl wait --for=condition=Ready --all-namespaces --timeout=3000s statefulset/mongodb-replica &
+kubectl wait -n mongodb pods --selector app=mongodb --for condition=Ready --timeout=3000s  &
 wait
 # when all mongodb replicas are created, let's setup the replicaset
 members=()

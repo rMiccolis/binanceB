@@ -52,11 +52,11 @@ for i in $(seq $mongodb_replica_count); do
     members+=($member_str)
 done
 initiate_command="rs.initiate({ _id: 'rs0',version: 1,members: [ ${members[@]} ] })"
-kubectl exec -it -n mongodb mongodb-replica-0 -- mongosh '$initiate_command'
+kubectl exec -n mongodb mongodb-replica-0 -- mongosh --eval "$initiate_command"
 
-echo -n "${LBLUE}EXECUTED: mongosh '$initiate_command' ${WHITE}"
+echo -e "${LBLUE}EXECUTED: kubectl exec -n mongodb mongodb-replica-0 -- mongosh --eval '$initiate_command' ${WHITE}"
 
-kubectl exec -n mongodb mongodb-replica-0 mongosh 'rs.status()'
+kubectl exec -n mongodb mongodb-replica-0 -- mongosh --eval "rs.status()"
 
 kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/

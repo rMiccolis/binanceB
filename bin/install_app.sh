@@ -34,7 +34,7 @@ kubectl apply -f /home/$USER/temp/2-mongodb/
 # let's wait for mongodb stateful set to be ready
 exit_loop=""
 ready_sts_condition="$mongodb_replica_count/$mongodb_replica_count"
-while [ "$exit_loop" != "$ready_sts_condition"]; do
+while [ "$exit_loop" != "$ready_sts_condition" ]; do
     sleep 10
     exit_loop=$(kubectl get sts -n mongodb | awk 'NR==2{print $2}')
     echo "StatefulSet pod ready: $exit_loop"

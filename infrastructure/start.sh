@@ -1,5 +1,7 @@
 #!/bin/bash
 
+start_time="$(date -u +%s)"
+
 # list of hosts IP that will join the cluster
 hosts=()
 ############### IMPORTANT ###############
@@ -78,6 +80,8 @@ echo -e "${LGREEN}Starting phase 10 / 10 ===> Applying configuration file and de
 ./binanceB/bin/install_app.sh
 echo -e "${LGREEN}Phase 10 / 10 ===> Operation Done!${WHITE}"
 
+end_time="$(date -u +%s)"
+echo -e "${LGREEN}Elapsed time:'$(($end_time-$start_time))'${WHITE}"
 
 echo -e "${LGREEN}Waiting for the Application to get started...${WHITE}"
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &

@@ -15,6 +15,10 @@ spec:
       labels:
         app: mongodb
     spec:
+      volumes:
+      - name: mongodb-storage
+        persistentVolumeClaim:
+          claimName: mongodb-pvc
       containers:
       - name: mongodb
         image: mongo

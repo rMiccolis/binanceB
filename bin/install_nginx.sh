@@ -44,6 +44,6 @@ EOF
 
 kubectl create namespace ingress-nginx
 helm install --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml > /dev/null 2>&1
-# helm install --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx
-
+# --set tcp.27017="mongodb/mongodb:27017" to expose port 27017 with nginx
+#                  namespace/service_name:port
 echo -e "${LBLUE}Nginx successfully installed with Helm!${WHITE}"

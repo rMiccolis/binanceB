@@ -8,6 +8,8 @@ externalIPs="$master_host_ip"
 
 # externalIPs: [$master_host_ip $control_plane_hosts_string]
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
+tcp:
+  27017: "mongodb/mongodb:27017"
 controller:
   service:
     externalTrafficPolicy: Local
@@ -42,7 +44,7 @@ cat << 'EOF' | tee -a nginx_helm_config.yaml > /dev/null 2>&1
 EOF
 
 kubectl create namespace ingress-nginx
-helm install --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml --set tcp.27017="mongodb/mongodb:27017" > /dev/null 2>&1
+helm install --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml > /dev/null 2>&1
 # to expose port 27017 with nginx
 # --set tcp.PORT="namespace/service_name:PORT"
 # --set tcp.27017="mongodb/mongodb:27017"

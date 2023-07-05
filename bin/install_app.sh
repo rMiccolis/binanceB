@@ -70,6 +70,10 @@ kubectl apply -f /home/$USER/temp/2-mongodb/1-mongodb-service.yaml
 kubectl apply -f /home/$USER/temp/2-mongodb/6-mongodb-deployment.yaml
 fi
 
+
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
+wait
+
 kubectl apply -f /home/$USER/temp/3-server/
 kubectl apply -f /home/$USER/temp/4-client/
 

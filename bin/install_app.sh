@@ -29,18 +29,24 @@ echo -e "${LBLUE}Starting Application...${WHITE}"
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
 wait
 kubectl apply -f /home/$USER/temp/1-namespaces/
-kubectl apply -f /home/$USER/temp/2-mongodb/
+kubectl apply -f /home/$USER/temp/2-mongodb/0-mongodb-namespace.yaml
+kubectl apply -f /home/$USER/temp/2-mongodb/2-mongodb-rbac.yaml
+kubectl apply -f /home/$USER/temp/2-mongodb/3-mongodb-secrets.yaml
+kubectl apply -f /home/$USER/temp/2-mongodb/4-mongodb-pv.yaml
+kubectl apply -f /home/$USER/temp/2-mongodb/5-mongodb-pvc.yaml
 
-# let's wait for mongodb stateful set to be ready
-exit_loop=""
-ready_sts_condition="$mongodb_replica_count/$mongodb_replica_count"
-while [ "$exit_loop" != "$ready_sts_condition" ]; do
-    sleep 10
-    exit_loop=$(kubectl get sts -n mongodb | awk 'NR==2{print $2}')
-    echo "StatefulSet pod ready: $exit_loop"
-done
-
+# create statefulset if mongodb replicas are more than 1
 if [ "$mongodb_replica_count" != "1" ]; then
+    kubectl apply -f /home/$USER/temp/2-mongodb/1-mongodb-headless_service.yaml
+    kubectl apply -f /home/$USER/temp/2-mongodb/6-mongodb-statefulset.yaml
+    # let's wait for mongodb stateful set to be ready
+    exit_loop=""
+    ready_sts_condition="$mongodb_replica_count/$mongodb_replica_count"
+    while [ "$exit_loop" != "$ready_sts_condition" ]; do
+        sleep 10
+        exit_loop=$(kubectl get sts -n mongodb | awk 'NR==2{print $2}')
+        echo "StatefulSet pod ready: $exit_loop"
+    done
     echo -e "${LBLUE}Configuring Mongodb statefulset...${WHITE}"
     # when all mongodb replicas are created, let's setup the replicaset
     members=()
@@ -59,6 +65,9 @@ if [ "$mongodb_replica_count" != "1" ]; then
     echo -e "${LBLUE}EXECUTED: kubectl exec -n mongodb mongodb-replica-0 -- mongosh --eval '$initiate_command' ${WHITE}"
 
     kubectl exec -n mongodb mongodb-replica-0 -- mongosh --eval "rs.status()"
+else
+kubectl apply -f /home/$USER/temp/2-mongodb/1-mongodb-service.yaml
+kubectl apply -f /home/$USER/temp/2-mongodb/6-mongodb-deployment.yaml
 fi
 
 kubectl apply -f /home/$USER/temp/3-server/

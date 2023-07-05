@@ -10,4 +10,3 @@ spec:
   storageClassName: manual
   hostPath:
     path: "/mnt/data"
-

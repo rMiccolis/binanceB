@@ -9,6 +9,7 @@ externalIPs="$master_host_ip"
 # externalIPs: [$master_host_ip $control_plane_hosts_string]
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 controller:
+  containerPort: {"http":80,"https":443,"mongodb":27017}
   service:
     externalTrafficPolicy: Local
   affinity:

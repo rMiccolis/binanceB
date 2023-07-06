@@ -18,7 +18,7 @@ export mongo_root_password=$(echo -n $(yq '.mongo_root_password' $config_file_pa
 
 cluster_ip=$master_host_ip
 if [ "$environment" == "production" ]; then
-cluster_ip=$(yq '.cluster_public_ip' $config_file_path)
+cluster_ip=$cluster_public_ip
 fi
 
 export cluster_ip=$cluster_ip

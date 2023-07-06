@@ -14,7 +14,7 @@ echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"
 environment=$(yq '.environment' $config_file_path)
 cluster_ip=$master_host_ip
 if [ "$environment" == "production" ]; then
-cluster_ip=$(yq '.cluster_public_ip' $config_file_path)
+cluster_ip=$cluster_public_ip
 fi
 
 # before building images we have to set a .env file to pass client its environment variables

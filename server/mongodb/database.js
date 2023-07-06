@@ -22,6 +22,9 @@ async function connectToMongo(db_host="", db_port="", db_username = "", db_passw
 
 async function loadDefaultData(params) {
     let fileNames = fs.readdirSync("./mongodb/data");
+    let process = db.dynamicModel("process");
+    db_already_seeded = await process.aggregate([{ $match: { name: "database_seed" } }]);
+    if (db_already_seeded.length > 0) return
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
         let fileContent = JSON.parse(fs.readFileSync(`./mongodb/data/${name}.json`, "utf8"));
@@ -41,6 +44,8 @@ async function loadDefaultData(params) {
             });
         }
     }
+    let seed_process = new process({ name: "database_seed", status: 1 });
+    await seed_process.save();
 }
 
 function dynamicSchema(connection, collectionName, schema) {

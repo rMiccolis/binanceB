@@ -72,7 +72,6 @@ app.use("/api/wallet", walletApi);
 let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    console.log("try it out on", `http://localhost:${port}`);
     console.log("list of ENV variables:\n", process.env);
 });
 

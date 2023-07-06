@@ -5,6 +5,7 @@ async function connectToMongo(db_host="", db_port="", db_username = "", db_passw
     let connectionString = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}`
     console.log(`Trying to connect to mongoDB ${connectionString}...`);
     let connection = await mongoose.createConnection(connectionString).asPromise();
+    connection.useDb(process.env.MONGODB_DB_NAME)
     connection.addListener("disconnected", function () {
         console.log("Unable to connect to mongoDB! Retrying in 5 seconds...");
         setTimeout(() => {

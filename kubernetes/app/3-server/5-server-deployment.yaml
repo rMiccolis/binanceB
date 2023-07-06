@@ -46,7 +46,7 @@ spec:
              key: mongodb_db_name
         - name: MONGODB_URI
           # value: $(MONGODB_SERVICE_HOST)
-          value: $$cluster_ip
+          value: $cluster_ip
         - name: MONGODB_PORT
           # value: $(MONGODB_SERVICE_PORT)
           value: "27017"

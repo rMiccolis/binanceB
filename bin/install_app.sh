@@ -78,13 +78,13 @@ kubectl apply -f /home/$USER/temp/2-mongodb/5-mongodb-pvc.yaml
 kubectl apply -f /home/$USER/temp/2-mongodb/1-mongodb-service.yaml
 kubectl apply -f /home/$USER/temp/2-mongodb/6-mongodb-deployment.yaml
 
-# let's wait for mongodb stateful set to be ready
+# let's wait for mongodb deployment / stateful set to be ready
 exit_loop=""
 ready_deployment_condition="$mongodb_replica_count/$mongodb_replica_count"
 while [ "$exit_loop" != "$ready_deployment_condition" ]; do
     sleep 10
     exit_loop=$(kubectl get deployment  -n mongodb mongodb | awk 'NR==2{print $2}')
-    echo "StatefulSet pod ready: $exit_loop"
+    echo "Deployment / stateful pod ready: $exit_loop"
 done
 
 kubectl apply -f /home/$USER/temp/3-server/

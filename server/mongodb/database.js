@@ -22,7 +22,7 @@ async function connectToMongo(db_host="", db_port="", db_username = "", db_passw
 
 async function loadDefaultData(params) {
     let fileNames = fs.readdirSync("./mongodb/data");
-    let process = db.dynamicModel("process");
+    let process = dynamicModel("process");
     db_already_seeded = await process.aggregate([{ $match: { name: "database_seed" } }]);
     if (db_already_seeded.length > 0) return
     for (const fileName of fileNames) {

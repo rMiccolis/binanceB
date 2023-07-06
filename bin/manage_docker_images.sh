@@ -32,6 +32,7 @@ git checkout .
 git pull origin $github_branch_name
 cd ..
 chmod -R u+x binanceB
+cd $repository_root_dir/binanceB/
 fi
 
 export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)

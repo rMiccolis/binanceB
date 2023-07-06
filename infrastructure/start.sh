@@ -83,7 +83,7 @@ echo -e "${LGREEN}Phase 10 / 10 ===> Operation Done!${WHITE}"
 end_time="$(date -u +%s)"
 elapsed_time=$(($end_time-$start_time))
 elapsed_time=$(($elapsed_time/60))
-echo -e "${LGREEN}Elapsed time:'$(($end_time-$start_time))' minutes ${WHITE}"
+echo -e "${LGREEN}Elapsed time:'$(($elapsed_time))' minutes ${WHITE}"
 
 echo -e "${LGREEN}Waiting for the Application to get started...${WHITE}"
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=1800s &
@@ -95,4 +95,4 @@ echo -e "${LGREEN}Check it out at http://$cluster_dns_name/${WHITE}"
 end_time="$(date -u +%s)"
 elapsed_time=$(($end_time-$start_time))
 elapsed_time=$(($elapsed_time/60))
-echo -e "${LGREEN}Elapsed time:'$(($end_time-$start_time))' minutes ${WHITE}"
+echo -e "${LGREEN}Elapsed time:'$(($elapsed_time))' minutes ${WHITE}"

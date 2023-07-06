@@ -45,9 +45,11 @@ spec:
              name: server-configmap
              key: mongodb_db_name
         - name: MONGODB_URI
-          value: $(MONGODB_SERVICE_HOST)
+          # value: $(MONGODB_SERVICE_HOST)
+          value: $$cluster_ip
         - name: MONGODB_PORT
-          value: $(MONGODB_SERVICE_PORT)
+          # value: $(MONGODB_SERVICE_PORT)
+          value: "27017"
         - name: SERVER_PORT
           value: '3000'
         - name: NODE_ENV

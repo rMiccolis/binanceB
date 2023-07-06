@@ -18,7 +18,12 @@ done
 reload_images=0
 
 if [ -z ${repository_root_dir+x} ]; then repository_root_dir="/home/$USER"; fi
-if [ -z "$config_file_path_" ]; then config_file_path=$config_file_path_; reload_images=1; fi
+if ! [ -z "$config_file_path_" ]; then 
+config_file_path=$config_file_path_
+reload_images=1
+fi
+
+echo "$config_file_path $config_file_path_"
 
 ###############################################################################
 # Build docker images from server and client applications

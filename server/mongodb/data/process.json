@@ -2,6 +2,7 @@
   "_id": {
     "$oid": "633811f96002331686a883bf"
   },
+  "name": "bot",
   "type": "bot",
   "status": 0,
   "started_at": "",

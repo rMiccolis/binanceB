@@ -5,7 +5,7 @@ async function connectToMongo(db_host="", db_port="", db_username = "", db_passw
     let connectionString = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}`
     console.log(`Trying to connect to mongoDB ${connectionString}...`);
     let connection = await mongoose.createConnection(connectionString).asPromise();
-    connection.useDb(process.env.MONGODB_DB_NAME)
+    connection = await connection.useDb(process.env.MONGODB_DB_NAME)
     connection.addListener("disconnected", function () {
         console.log("Unable to connect to mongoDB! Retrying in 5 seconds...");
         setTimeout(() => {
@@ -23,7 +23,7 @@ async function connectToMongo(db_host="", db_port="", db_username = "", db_passw
 async function loadDefaultData(params) {
     let fileNames = fs.readdirSync("./mongodb/data");
     let process = dynamicModel("process");
-    db_already_seeded = await process.aggregate([{ $match: { name: "database_seed" } }]);
+    db_already_seeded = await process.aggregate([{ $match: { name: "initialized_db" } }]);
     if (db_already_seeded.length > 0) return
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
@@ -44,7 +44,7 @@ async function loadDefaultData(params) {
             });
         }
     }
-    let seed_process = new process({ name: "database_seed", status: 1 });
+    let seed_process = new process({ name: "initialized_db", type: "database_seed", status: 1 });
     await seed_process.save();
 }
 

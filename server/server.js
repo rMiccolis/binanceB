@@ -40,9 +40,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
     req.locals = {};
-    console.log(req.headers);
-    console.log(req.ip);
-    console.log(req.ips);
+    console.log(req.headers['x-forwarded-for']);
     next();
 });
 
@@ -72,7 +70,7 @@ app.use("/api/wallet", walletApi);
 let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    console.log("list of ENV variables:\n", process.env);
+    if (process.env.NODE_ENV== 'production') console.log("list of ENV variables:\n", process.env);
 });
 
 db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD, process.env.MONGODB_DB_NAME, "app")

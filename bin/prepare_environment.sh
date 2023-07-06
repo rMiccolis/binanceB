@@ -25,6 +25,7 @@ echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 # list of hosts IP that will join the cluster
 hosts=($(yq '.hosts[]' $config_file_path))
 
+export environment=$(yq '.environment' $config_file_path)
 export cluster_public_ip=$(yq '.cluster_public_ip' $config_file_path)
 export cluster_dns_name=$(yq '.cluster_dns_name' $config_file_path)
 export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)

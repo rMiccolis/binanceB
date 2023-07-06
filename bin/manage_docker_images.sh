@@ -11,7 +11,6 @@ cd $repository_root_dir/binanceB/
 
 # Set environment variable VITE_SERVER_URI
 echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"
-environment=$(yq '.environment' $config_file_path)
 cluster_ip=$master_host_ip
 if [ "$environment" == "production" ]; then
 cluster_ip=$cluster_public_ip

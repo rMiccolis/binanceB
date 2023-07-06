@@ -15,20 +15,23 @@ while getopts ":c:s:p:" opt; do
   esac
 done
 
+###############################################################################
+# Build docker images from server and client applications
+# cd into project root directory
+cd $repository_root_dir/binanceB/
+
 reload_images=0
 
 if [ -z ${repository_root_dir+x} ]; then repository_root_dir="/home/$USER"; fi
 if ! [ -z "$config_file_path_" ]; then 
 config_file_path=$config_file_path_
 reload_images=1
+export github_branch_name=$(yq '.github_branch_name' $config_file_path)
+git checkout .
+git pull origin $github_branch_name
+cd ..
+chmod -R u+x binanceB
 fi
-
-echo "$config_file_path $config_file_path_"
-
-###############################################################################
-# Build docker images from server and client applications
-# cd into project root directory
-cd $repository_root_dir/binanceB/
 
 export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)
 export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)

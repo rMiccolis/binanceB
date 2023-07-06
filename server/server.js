@@ -70,7 +70,7 @@ app.use("/api/wallet", walletApi);
 let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    if (process.env.NODE_ENV== 'production') console.log("list of ENV variables:\n", process.env);
+    if (process.env.NODE_ENVv != 'production') console.log("list of ENV variables:\n", process.env);
 });
 
 db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD, process.env.MONGODB_DB_NAME)

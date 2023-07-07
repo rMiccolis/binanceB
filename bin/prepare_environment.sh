@@ -23,8 +23,9 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 
 # list of hosts IP that will join the cluster
-hosts=($(yq '.hosts[]' $config_file_path))
-
+export master_host_ip=$master_host_ip
+export master_host_name=$master_host_name
+export hosts=($(yq '.hosts[]' $config_file_path))
 export environment=$(yq '.environment' $config_file_path)
 export cluster_public_ip=$(yq '.cluster_public_ip' $config_file_path)
 export cluster_dns_name=$(yq '.cluster_dns_name' $config_file_path)
@@ -32,11 +33,46 @@ export docker_server_repository_name=$(yq '.docker_server_repository_name' $conf
 export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)
 export github_branch_name=$(yq '.github_branch_name' $config_file_path)
 export docker_username=$(yq '.docker_username' $config_file_path)
-export docker_password=$(yq '.docker_password' $config_file_path)
 export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)
 export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)
 export skip_docker_build=$(yq '.skip_docker_build' $config_file_path)
 export mongodb_replica_count=$(yq '.mongodb_replica_count' $config_file_path)
+export docker_password=$(yq '.docker_password' $config_file_path)
+
+# export variables at login
+cat << EOF | tee -a /home/$USER/.profile > /dev/null
+export master_host_ip=$master_host_ip
+export master_host_name=$master_host_name
+export hosts=$hosts
+export environment=$environment
+export cluster_public_ip=$cluster_public_ip
+export cluster_dns_name=$cluster_dns_name
+export docker_server_repository_name=$docker_server_repository_name
+export docker_client_repository_name=$docker_client_repository_name
+export github_branch_name=$github_branch_name
+export docker_username=$docker_username
+export docker_server_repository_name=$docker_server_repository_name
+export docker_client_repository_name=$docker_client_repository_name
+export skip_docker_build=$skip_docker_build
+export mongodb_replica_count=$mongodb_replica_count
+export docker_password=$docker_password
+export BLACK="\033[0;30m"
+export DARK_GREY="\033[1;30m"
+export RED="\033[0;31m"
+export LRED="\033[1;31m"
+export GREEN="\033[0;32m"
+export LGREEN="\033[1;32m"
+export ORANGE="\033[0;33m"
+export YELLOW="\033[1;33m"
+export BLUE="\033[0;34m"
+export LBLUE="\033[1;34m"
+export PURPLE="\033[0;35m"
+export LPURPLE="\033[1;35m"
+export CYAN="\033[0;36m"
+export LCYAN="\033[1;36m"
+export LGRAY="\033[0;37m"
+export WHITE="\033[1;37m"
+EOF
 
 echo -e "${LBLUE}Adding worker nodes to the hosts file...${WHITE}"
 #exporting host list as a string (so it can be exported as variable and read by other scripts)

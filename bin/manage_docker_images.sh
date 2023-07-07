@@ -26,21 +26,14 @@ reload_images=0
 
 if ! [ -z "$config_file_path_" ]; then 
 config_file_path=$config_file_path_
+source /home/$USER/.profile
 reload_images=1
-export github_branch_name=$(yq '.github_branch_name' $config_file_path)
 git checkout .
 git pull origin $github_branch_name
 cd ..
 chmod -R u+x binanceB
 cd $repository_root_dir/binanceB/
 fi
-
-export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)
-export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)
-export cluster_public_ip=$(yq '.cluster_public_ip' $config_file_path)
-export docker_username=$(yq '.docker_username' $config_file_path)
-export environment=$(yq '.environment' $config_file_path)
-eval master_host_ip="$(hostname -i)"
 
 # if [ $skip_docker_build != true ]; then
 # return

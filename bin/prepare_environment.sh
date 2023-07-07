@@ -43,7 +43,7 @@ export docker_password=$(yq '.docker_password' $config_file_path)
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
-export hosts=$hosts
+export hosts=${hosts[@]}
 export environment=$environment
 export cluster_public_ip=$cluster_public_ip
 export cluster_dns_name=$cluster_dns_name

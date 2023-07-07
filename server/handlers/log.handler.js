@@ -10,7 +10,7 @@ let logError = (message) => {
 
 let logDebug = (message) => {
   //blue message
-  console.log(`\x1b[34m${JSON.stringify(message, null, 4)} \x1b[37m`)
+  console.log(`\x1b[1;34m${JSON.stringify(message, null, 4)} \x1b[37m`)
 }
 
 let logSuccess = (message) => {

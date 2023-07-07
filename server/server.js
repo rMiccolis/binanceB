@@ -25,7 +25,7 @@ const app = express();
 console.logDebug = logHandler.logDebug;
 console.logWarning = logHandler.logWarning;
 console.logError = logHandler.logError;
-console.logInfo = logHandler.logInfo;
+console.logSuccess = logHandler.logSuccess;
 
 const corsOptions = { origin: true, credentials: true };
 

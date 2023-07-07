@@ -24,7 +24,7 @@ async function loadDefaultData(params) {
     let process = dynamicModel("process");
     db_already_seeded = await process.aggregate([{ $match: { name: "initialized_db" } }]);
     if (db_already_seeded.length > 0) {
-        console.logInfo("Database already seeded!");
+        console.logDebug("Database already seeded!");
     }
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];

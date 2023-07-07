@@ -8,19 +8,19 @@ let logError = (message) => {
   console.log(`\x1b[31m${JSON.stringify(message, null, 4)} \x1b[37m`)
 }
 
-let logInfo = (message) => {
-  //green message
-  console.log(`\x1b[32m${JSON.stringify(message, null, 4)} \x1b[37m`)
-}
-
 let logDebug = (message) => {
   //blue message
   console.log(`\x1b[34m${JSON.stringify(message, null, 4)} \x1b[37m`)
 }
 
+let logSuccess = (message) => {
+  //green message
+  console.log(`\x1b[32m${JSON.stringify(message, null, 4)} \x1b[37m`)
+}
+
 module.exports = {
   logWarning,
   logError,
-  logInfo,
+  logSuccess,
   logDebug,
 }

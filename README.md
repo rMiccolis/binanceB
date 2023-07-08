@@ -126,5 +126,5 @@ EOF
 **Run ./infrastructure/start.sh script on the master remote host:**
 
 ```bash
-./infrastructure/start.sh -u docker_username -p docker_password -c "/home/m1/main_config.yaml"
+./infrastructure/start.sh -u docker_username -p docker_access_token -c "/home/m1/main_config.yaml"
 ```

@@ -23,8 +23,6 @@ while getopts ":c:s:p:" opt; do
     ;;
     s) server="$OPTARG"
     ;;
-    p) config_file_path_="$OPTARG"
-    ;;
     \?) usage
         exit
     ;;
@@ -41,9 +39,7 @@ cd $repository_root_dir/binanceB/
 
 reload_images=0
 
-if [ "$config_file_path_" != "null" ]; then
 echo -e "${LBLUE}Pulling code...${WHITE}"
-config_file_path=$config_file_path_
 source /home/$USER/.profile
 reload_images=1
 git checkout .
@@ -51,7 +47,7 @@ git pull origin $github_branch_name
 cd ..
 chmod -R u+x binanceB
 cd $repository_root_dir/binanceB/
-fi
+
 
 # if either client and server are not passed as argument set them to 1 (meaning we build both)
 if [ -z "$client" ] && [ -z "$server" ]; then client=1; server=1; fi

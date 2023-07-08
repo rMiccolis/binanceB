@@ -82,6 +82,22 @@ if (!$vm_adapter) {
     New-VMSwitch -Name "VM" -NetAdapterName "Ethernet" | Out-Null
 }
 
+# Loop for each host and create its own virtual machine
+for ($j=0;$j -lt $all_hosts.Length; $j++) {
+    # Read USERNAME@IP and split based on @
+    $host_info=$all_hosts[$j].split("@")
+    # Save host username
+    $host_user=$host_info[0]
+    # Save host ip
+    $host_ip=$host_info[1]
+    $existing_vm=Get-VM -Name $host_user -ErrorAction SilentlyContinue
+    if ($existing_vm) {
+        Stop-VM -Name $host_user -ErrorAction SilentlyContinue
+        Remove-VMHardDiskDrive -VMName $host_user -ControllerType SCSI -ControllerNumber 0 -ControllerLocation 0
+        Remove-VM -Name $host_user -Force
+    }
+}
+
 # if $vm_store_path exists then remove it and generate it from scatch
 if (Test-Path -Path $vm_store_path) {
     Remove-Item -LiteralPath $vm_store_path -Recurse

@@ -39,8 +39,8 @@ cd $repository_root_dir/binanceB/
 
 reload_images=0
 
-if ! [ -z "$config_file_path_" ]; then
-echo "Pulling code..."
+if [ -z "$config_file_path_" ]; then
+echo -e "${LBLUE}Pulling code...${WHITE}"
 config_file_path=$config_file_path_
 source /home/$USER/.profile
 reload_images=1
@@ -64,7 +64,7 @@ cluster_ip=$cluster_public_ip
 fi
 # before building images we have to set a .env file to pass client its environment variables
 echo -e "${LBLUE}Setting Server IP for client environment...${WHITE}"
-cat << EOF | sudo tee $repository_root_dir/binanceB/client/.env.production > /dev/null
+cat << EOF | tee $repository_root_dir/binanceB/client/.env.production > /dev/null
 VITE_SERVER_URI="http://$cluster_ip/server/"
 EOF
 

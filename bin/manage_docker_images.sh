@@ -15,8 +15,6 @@ usage(){
   exit
 }
 
-config_file_path_="null"
-
 while getopts ":c:s:p:" opt; do
   case $opt in
     c) client="$OPTARG"

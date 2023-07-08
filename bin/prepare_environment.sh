@@ -35,7 +35,6 @@ export github_branch_name=$(yq '.github_branch_name' $config_file_path)
 export docker_username=$(yq '.docker_username' $config_file_path)
 export docker_server_repository_name=$(yq '.docker_server_repository_name' $config_file_path)
 export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)
-export skip_docker_build=$(yq '.skip_docker_build' $config_file_path)
 export mongodb_replica_count=$(yq '.mongodb_replica_count' $config_file_path)
 export docker_password=$(yq '.docker_password' $config_file_path)
 #exporting host list as a string (so it can be exported as variable and read by other scripts)
@@ -57,7 +56,6 @@ export github_branch_name=$github_branch_name
 export docker_username=$docker_username
 export docker_server_repository_name=$docker_server_repository_name
 export docker_client_repository_name=$docker_client_repository_name
-export skip_docker_build=$skip_docker_build
 export mongodb_replica_count=$mongodb_replica_count
 export docker_password=$docker_password
 export BLACK="\033[0;30m"

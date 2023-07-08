@@ -2,7 +2,7 @@
 
 # usage info
 usage(){
-  echo " Run this script to build and deploy client and server images"
+  echo " Run this script to build and deploy client and server images when you need to apply changes to server or client code"
   echo ""
   echo "Usage:"
   echo "  $0 -s 1 -c 1 => will build both server and client"
@@ -49,10 +49,6 @@ cd ..
 chmod -R u+x binanceB
 cd $repository_root_dir/binanceB/
 fi
-
-# if [ $skip_docker_build != true ]; then
-# return
-# fi
 
 # if either client and server are not passed as argument set them to 1 (meaning we build both)
 if [ -z "$client" ] && [ -z "$server" ]; then client=1; server=1; fi

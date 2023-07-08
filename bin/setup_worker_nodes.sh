@@ -2,7 +2,7 @@
 
 # usage info
 usage(){
-  echo " Run this script to join a new node to the cluster"
+  echo " Run this script to join a new node to the cluster (control plane or worker)"
   echo ""
   echo "Usage:"
   echo "  $0 -h user_host@host_address"

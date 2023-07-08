@@ -26,6 +26,7 @@ After creating VM with a linux distro:
 - Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
 - Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
 - Open 80 and 27017 ports to let application and mongodb database to be reachable
+- Create a [docker access token](https://docs.docker.com/docker-hub/access-tokens/) (to be provided into main_config.yaml)
 - Create the client docker repository
 - Create the server docker repository
 

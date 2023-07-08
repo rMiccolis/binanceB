@@ -23,7 +23,7 @@ while getopts ":c:s:p:" opt; do
     ;;
     p) config_file_path_="$OPTARG"
     ;;
-    \?) echo "Invalid option -$OPTARG" >&2
+    \?) usage
         exit
     ;;
   esac

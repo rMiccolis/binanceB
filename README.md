@@ -36,7 +36,7 @@ TO LET THIS SCRIPT WORK, YOU **MUST**:
 
 - Download ADK - https://learn.microsoft.com/it-it/windows-hardware/get-started/adk-install. You only need to install the deployment tools once in the default location. Oscdimg is used to write the CIDATA image (containing meta-data and user-data files) for cloud init as a ISO 9660 image
 - Download qemu-img: http://www.cloudbase.it/qemu-img-windows/. Quemu is used to convert ubuntu cloud-image to a virtual hard drive to be used by virtual machines
-- **PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO (ex: [focal-server-cloudimg-amd64]https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img )**
+- **PICK A CLOUD-IMAGE ISO FOR YOUR LINUX DISTRO (ex: [focal-server-cloudimg-amd64 download link](https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img) )**
 - have the ssh key pairs of the host you're launching all the infrastructure from (used to access and setup all other hosts. The host is your host that has access to github repo and from which the script will be launched) at the default path C:\Users\USERNAME\\.ssh\ . This key must have access to github repository
 
 Launch generate_hyperv_vms.ps1:

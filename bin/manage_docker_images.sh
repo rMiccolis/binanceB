@@ -15,6 +15,8 @@ usage(){
   exit
 }
 
+config_file_path_="null"
+
 while getopts ":c:s:p:" opt; do
   case $opt in
     c) client="$OPTARG"
@@ -39,7 +41,7 @@ cd $repository_root_dir/binanceB/
 
 reload_images=0
 
-if [ -z "$config_file_path_" ]; then
+if [ "$config_file_path_" == "null" ]; then
 echo -e "${LBLUE}Pulling code...${WHITE}"
 config_file_path=$config_file_path_
 source /home/$USER/.profile

@@ -1,6 +1,20 @@
 #!/bin/bash
 
-# pass 1 if you want to build client or server. EX: "./manage_docker_images -s 1" will build just server
+# usage info
+usage(){
+  echo " Run this script to build and deploy client and server images"
+  echo ""
+  echo "Usage:"
+  echo "  $0 -s 1 -c 1 => will build both server and client"
+  echo ""
+  echo "  $0 -s 1 => will build just server"
+  echo ""
+  echo "Options:"
+  echo "  pass 1 if you want to build client or server. If no arguments are provided, then both client and server will be built"
+  echo ""
+  exit
+}
+
 while getopts ":c:s:p:" opt; do
   case $opt in
     c) client="$OPTARG"
@@ -15,6 +29,7 @@ while getopts ":c:s:p:" opt; do
   esac
 done
 
+# if $repository_root_dir is not set, then set its path
 if [ -z ${repository_root_dir+x} ]; then repository_root_dir="/home/$USER"; fi
 
 ###############################################################################

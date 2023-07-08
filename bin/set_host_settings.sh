@@ -1,20 +1,6 @@
 #!/bin/bash
 
 ###############################################################################
-# remote=0
-# while getopts ":r:" opt; do
-#   case $opt in
-#     r) remote="$OPTARG"
-#     ;;
-#   esac
-# done
-
-# if [ "$remote" -eq "1" ]; then
-# echo -e "${CYAN}Adding master host ip to /etc/hosts${WHITE}"
-# cat << EOF | sudo tee -a /etc/hosts > /dev/null
-# $master_host_ip $master_host_name
-# EOF
-# fi
 
 sudo apt-get upgrade -y -q > /dev/null 2>&1
 
@@ -50,10 +36,4 @@ echo -e "${LBLUE}Installing yq library on $(whoami) to read and parse YAML files
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
 fi
 
-# Verify that the br_netfilter, overlay modules are loaded by running below instructions:
-# lsmod | grep br_netfilter
-# lsmod | grep overlay
-
-# Verify that the net.bridge.bridge-nf-call-iptables, net.bridge.bridge-nf-call-ip6tables, net.ipv4.ip_forward system variables are set to 1 in your sysctl config by running below instruction:
-# sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
 ###############################################################################

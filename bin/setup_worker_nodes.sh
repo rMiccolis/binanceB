@@ -1,11 +1,39 @@
 #!/bin/bash
 
+# usage info
+usage(){
+  echo " Run this script to join a new node to the cluster"
+  echo ""
+  echo "Usage:"
+  echo "  $0 -h user_host@host_address"
+  echo ""
+  echo "Options:"
+  echo "  -h argument : set a host name and ip to be configured and added to the cluster, repeat it multiple times to add multiple hosts"
+  echo ""
+  echo "  if no arguments are provided, then a list of nodes coming from 'main_config.yaml' will be added to the cluster"
+  echo ""
+  echo "  Example: if you want to add a control plane node, its user name must start with 'm' ==> m1@192.168.1.200"
+  echo ""
+  echo "  Example: if you want to add a worker node, its user name must start with 'w' ==> w1@192.168.1.201"
+  exit
+}
+
+while getopts ":h:" opt; do
+  case $opt in
+    h) host_list+=("$OPTARG")
+    ;;
+    \?) usage
+        exit
+    ;;
+  esac
+done
+
 ###############################################################################
 # export the cluster join command to be executed on worker host
 token=$(kubeadm token generate)
 certkeyout=$(sudo kubeadm init phase upload-certs --upload-certs)
 #copy the contents of certkeyout variable into an array and now a[1] contains the certificate key
-readarray -td ':' a <<<"$certkeyout";declare -p a
+readarray -td ':' a <<<"$certkeyout";declare -p a > /dev/null
 certkey=${a[1]}
 
 export join_control_plane="sudo $(sudo kubeadm token create $token --print-join-command --certificate-key $certkey) --control-plane --cri-socket=unix:///var/run/cri-dockerd.sock"

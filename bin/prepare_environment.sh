@@ -38,12 +38,16 @@ export docker_client_repository_name=$(yq '.docker_client_repository_name' $conf
 export skip_docker_build=$(yq '.skip_docker_build' $config_file_path)
 export mongodb_replica_count=$(yq '.mongodb_replica_count' $config_file_path)
 export docker_password=$(yq '.docker_password' $config_file_path)
+#exporting host list as a string (so it can be exported as variable and read by other scripts)
+export host_list=$(yq '.hosts[]' $config_file_path)
+
 
 # export variables at login
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
 export hosts=${hosts[@]}
+export host_list=$host_list
 export environment=$environment
 export cluster_public_ip=$cluster_public_ip
 export cluster_dns_name=$cluster_dns_name
@@ -74,9 +78,8 @@ export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
 EOF
 
+
 echo -e "${LBLUE}Adding worker nodes to the hosts file...${WHITE}"
-#exporting host list as a string (so it can be exported as variable and read by other scripts)
-export host_list=$(yq '.hosts[]' $config_file_path)
 printable_hosts=()
 control_plane_hosts_string=""
 for h in "${hosts[@]}"; do

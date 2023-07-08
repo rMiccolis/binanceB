@@ -2,18 +2,34 @@
 
 start_time="$(date -u +%s)"
 
-# list of hosts IP that will join the cluster
-hosts=()
+# usage info
+usage(){
+  echo " Run this script to configure all the nodes provided from main_config.yaml and to build and start all the application."
+  echo " This script manages the control plane(s) and worker nodes: creates and adds them to the cluster"
+  echo ""
+  echo "Usage:"
+  echo "  $0 -c '/path/to/the/main_config.yaml' => see the main_config.example.yaml in the root directory for an example"
+  echo ""
+  echo "Options:"
+  echo "  -c argument : the path to the main_config.yaml file"
+  echo ""
+  echo "  if no arguments are provided, then script exits"
+  echo ""
+  exit
+}
+
 ############### IMPORTANT ###############
 while getopts ":c:" opt; do
   case $opt in
     c) config_file_path="$OPTARG"
     ;;
-    \?) echo "Invalid option -$OPTARG" >&2
+    \?) usage
         exit
     ;;
   esac
 done
+
+if [ -z "$config_file_path" ]; then usage; exit; fi
 
 # export colors to highlight output text in console
 . ./binanceB/bin/export_colors.sh # executed this way: . ./filename to let exported variables into the script to be added to (this) main process

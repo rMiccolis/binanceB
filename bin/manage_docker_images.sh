@@ -41,7 +41,7 @@ cd $repository_root_dir/binanceB/
 
 reload_images=0
 
-if [ "$config_file_path_" == "null" ]; then
+if [ "$config_file_path_" != "null" ]; then
 echo -e "${LBLUE}Pulling code...${WHITE}"
 config_file_path=$config_file_path_
 source /home/$USER/.profile

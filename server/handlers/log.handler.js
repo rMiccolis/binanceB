@@ -1,21 +1,21 @@
-let logWarning = (message) => {
+let logWarning = (...strings) => {
   //yellow message
-  console.log(`\x1b[33m${JSON.stringify(message, null, 4)} \x1b[37m`)
+  console.log(`\x1b[33m${strings} \x1b[37m`)
 }
 
-let logError = (message) => {
+let logError = (...strings) => {
   //red message
-  console.log(`\x1b[31m${JSON.stringify(message, null, 4)} \x1b[37m`)
+  console.log(`\x1b[31m${strings} \x1b[37m`)
 }
 
-let logDebug = (message) => {
+let logDebug = (...strings) => {
   //blue message
-  console.log(`\x1b[1;34m${JSON.stringify(message, null, 4)} \x1b[37m`)
+  console.log(`\x1b[1;34m${strings} \x1b[37m`)
 }
 
-let logSuccess = (message) => {
+let logSuccess = (...strings) => {
   //green message
-  console.log(`\x1b[32m${JSON.stringify(message, null, 4)} \x1b[37m`)
+  console.log(`\x1b[32m${strings} \x1b[37m`)
 }
 
 module.exports = {

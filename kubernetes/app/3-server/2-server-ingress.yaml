@@ -4,7 +4,7 @@ metadata:
   name: server-ingress
   namespace: binance-b
   annotations:
-    nginx.ingress.kubernetes.io/upstream-hash-by: "$remote_addr"
+    nginx.ingress.kubernetes.io/upstream-hash-by: $remote_addr
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   ingressClassName: nginx

@@ -82,6 +82,6 @@ sudo docker push $docker_username/$docker_server_repository_name:latest
 fi
 
 if [ "$reload_images" == "1" ]; then 
-kubectl -n binance-b scale --replicas=0 deployment server; kubectl -n binance-b scale --replicas=1 deployment server
+kubectl -n binance-b scale --replicas=0 deployment server; kubectl -n binance-b scale --replicas=2 deployment server
 kubectl -n binance-b scale --replicas=0 deployment client; kubectl -n binance-b scale --replicas=1 deployment client
 fi

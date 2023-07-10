@@ -17,6 +17,7 @@ docker_access_token: 'your_docker_access_token' # used to build and push docker 
 docker_server_repository_name: 'binanceb_nodejs_server' # used to push docker server image from repository and pull by kubernetes
 docker_client_repository_name: 'binanceb_vuejs_client' # used to push docker client image from repository and pull by kubernetes
 # application config parameters:
+server_replica_count: '2'
 server_access_token_secret: 'server_access_token_secret'
 server_refresh_token_secret: 'server_refresh_token_secret'
 server_access_token_lifetime: '50'

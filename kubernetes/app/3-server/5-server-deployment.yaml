@@ -6,7 +6,7 @@ metadata:
   labels:
     app: server
 spec:
-  replicas: 2
+  replicas: $server_replica_count
   selector:
     matchLabels:
       app: server

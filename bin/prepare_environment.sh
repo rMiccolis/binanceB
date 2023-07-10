@@ -37,6 +37,7 @@ export docker_server_repository_name=$(yq '.docker_server_repository_name' $conf
 export docker_client_repository_name=$(yq '.docker_client_repository_name' $config_file_path)
 export mongodb_replica_count=$(yq '.mongodb_replica_count' $config_file_path)
 export docker_access_token=$(yq '.docker_access_token' $config_file_path)
+export server_replica_count=$(yq '.server_replica_count' $config_file_path)
 #exporting host list as a string (so it can be exported as variable and read by other scripts)
 export host_list="$(yq '.hosts[]' $config_file_path)"
 
@@ -57,6 +58,7 @@ export docker_username=$docker_username
 export docker_server_repository_name=$docker_server_repository_name
 export docker_client_repository_name=$docker_client_repository_name
 export mongodb_replica_count=$mongodb_replica_count
+export server_replica_count=$server_replica_count
 export docker_access_token=$docker_access_token
 export BLACK="\033[0;30m"
 export DARK_GREY="\033[1;30m"

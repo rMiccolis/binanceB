@@ -4,7 +4,7 @@ metadata:
   name: server-ingress
   namespace: binance-b
   annotations:
-    # kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$x-forwarded-for"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   ingressClassName: nginx

@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-var cors = require("cors");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const testApi = require("./api/test");
@@ -13,6 +13,7 @@ const authApi = require("./api/auth.api");
 const logHandler = require("./handlers/log.handler");
 const utilsApi = require("./api/utils.api");
 const generalRouter = require("./api/general.api");
+const os = require("os");
 
 // Initialize global session variable
 global.globalDBConnection = {};
@@ -40,7 +41,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
     req.locals = {};
-    console.log(req.headers['x-forwarded-for']);
+    console.logDebug("Server hostname:", os.hostname());
+    console.logDebug("Client IP address:", req.headers['x-forwarded-for']);
     next();
 });
 

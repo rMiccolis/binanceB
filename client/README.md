@@ -2,7 +2,7 @@
 
 ## .env file variables example
 
-VITE_SERVER_URI=192.168.1.200/server/
+VITE_SERVER_URI=http://localhost:3000/ (remember to put the trailing '/')
 
 ## Info
 

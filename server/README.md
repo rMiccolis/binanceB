@@ -21,3 +21,16 @@ ACCESS_TOKEN_SECRET=jwttestaccess
 REFRESH_TOKEN_SECRET=jwttestrefresh
 ACCESS_TOKEN_LIFETIME=50 (minutes)
 REFRESH_TOKEN_LIFETIME=50 (minutes)
+
+
+## Project Setup
+
+```sh
+npm install
+```
+
+### Run server for Development
+
+```sh
+nodemon server.js
+```

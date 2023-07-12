@@ -1,4 +1,10 @@
-# client
+# Client
+
+## .env file variables example
+
+VITE_SERVER_URI=192.168.1.200/server/
+
+## Info
 
 This template should help get you started developing with Vue 3 in Vite.
 

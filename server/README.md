@@ -1,12 +1,23 @@
-# binance
+# Server
 
-.env file variables example:
+## .env file variables example
+
+MONGODB_USERNAME=admin
+MONGODB_PASSWORD=admin
+MONGODB_DB_NAME=binanceB
+MONGODB_URI=localhost
+MONGODB_PORT=27017
+
+SERVER_PORT=3000
+NODE_ENV=develop
+
 TESTNET_BASE_URL=https://testnet.binance.vision/
-BINANCE_BASE_URL=https://api.binance.com
+TESTNET_WEBSOCKET_BASE_URL=wss://testnet.binance.vision:9443
 
-MONGODB_URI=mongodb://localhost:27017/binanceDB?readPreference=primary&appname=MongoDB
+BINANCE_BASE_URL=https://api.binance.com
+BINANCE_WEBSOCKET_BASE_URL=wss://stream.binance.com:9443
 
 ACCESS_TOKEN_SECRET=jwttestaccess
 REFRESH_TOKEN_SECRET=jwttestrefresh
-ACCESS_TOKEN_LIFETIME=10  (minutes)
-REFRESH_TOKEN_LIFETIME=25 (minutes)
+ACCESS_TOKEN_LIFETIME=50 (minutes)
+REFRESH_TOKEN_LIFETIME=50 (minutes)

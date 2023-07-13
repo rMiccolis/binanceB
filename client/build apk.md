@@ -12,4 +12,4 @@ npm install @capacitor/android @capacitor/ios
 1. cancella se esiste la cartella android
 2. modificare file capacitor.config.json: "webDir": "dist"
 3. crea la build: npm run build
-4. crea la cartella android da importare in android studio: npx cap add android
+4. crea la cartella android da importare in android studio => npx cap add android

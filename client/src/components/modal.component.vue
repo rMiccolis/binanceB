@@ -2,13 +2,13 @@
   <v-row justify="center">
     <v-dialog v-model="modalState" :persistent="persistent" :max-width="'80vw'">
       <v-toolbar dark color="blue" class="text-center">
-        <v-row no-gutters align="center" :justify="'end'">
-          <v-col cols="1">
+        <v-row no-gutters align="center" :justify="'end'" class="ml-2">
+          <!-- <v-spacer></v-spacer> -->
+          <v-col cols="1" :align-self="'end'">
             <v-btn icon dark @click="toggleModal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-col>
-          <!-- <v-spacer></v-spacer> -->
           <v-col cols="10">
             
               <h3><slot name="header"></slot></h3>

@@ -3,7 +3,7 @@
   "appName": "binanceB",
   "webDir": "dist",
   "server": {
-    "url": "http://2.44.128.35",
+    "url": "http://${SERVER_IP_ADDRESS}",
     "cleartext": true
   },
   "plugins": {

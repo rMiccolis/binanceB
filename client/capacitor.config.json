@@ -1,5 +1,14 @@
 {
   "appId": "com.binanceB.app",
   "appName": "binanceB",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "url": "http://2.44.128.35",
+    "cleartext": true
+  },
+  "plugins": {
+    "CapacitorCookies": {
+      "enabled": true
+    }
+  }
 }

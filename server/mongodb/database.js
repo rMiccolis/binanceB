@@ -26,7 +26,10 @@ async function loadDefaultData(params) {
     db_already_seeded = await process.aggregate([{ $match: { name: "initialized_db" } }]);
     if (db_already_seeded.length > 0) {
         console.logDebug("Database already seeded!");
+        return
     }
+    let seed_process = new process({ name: "initialized_db", type: "database_seed", status: 1 });
+    await seed_process.save();
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
         let fileContent = JSON.parse(fs.readFileSync(`./mongodb/data/${name}.json`, "utf8"));
@@ -46,8 +49,7 @@ async function loadDefaultData(params) {
             });
         }
     }
-    let seed_process = new process({ name: "initialized_db", type: "database_seed", status: 1 });
-    await seed_process.save();
+    
 }
 
 function dynamicSchema(connection, collectionName, schema) {

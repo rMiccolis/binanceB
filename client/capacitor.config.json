@@ -1,9 +1,5 @@
 {
   "appId": "com.binanceB.app",
   "appName": "binanceB",
-  "webDir": "dist",
-  "bundledWebRuntime": false,
-  "server": {
-    "androidScheme": "https"
-  }
+  "webDir": "dist"
 }

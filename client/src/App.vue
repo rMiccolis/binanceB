@@ -17,6 +17,18 @@
 
       <v-divider class="mb-1"></v-divider>
       <div v-if="mainStore.isUserloggedIn">
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link
+                :to="{ name: 'home'}"
+                >Home</router-link
+              ></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title
@@ -68,14 +80,14 @@
               :to="{ name: 'login'}"
               >Login</router-link
             >
-            <a v-else @click="router.go()">Login</a>
+            <a v-else @click="toggleDrawer()">Login</a>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn @click="logout()" block variant="outlined" color="red">
+          <v-btn @click="logout()" block variant="outlined" color="red" :disabled="!mainStore.isUserloggedIn">
             Logout
           </v-btn>
         </div>
@@ -118,12 +130,10 @@
 </template>
 
 <script setup>
-import { watch, ref, onMounted, onBeforeUnmount } from "vue";
+import { watch, ref, onMounted, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useMainStore } from "./store/useMainStore";
 import axios from "axios";
-import ModalComponent from "./components/modal.component.vue";
-import LoginComponent from "./components/login.component.vue";
 import FooterMenuComponent from "./components/footerMenu.component.vue";
 
 const router = useRouter();
@@ -170,7 +180,7 @@ const toUserPage = () => {
     console.log("goto account");
     router.push({ name: "account" });
   } else {
-    console.log("goto login");
+    console.log("goto login", mainStore.userId);
     if (route.name != "login") {
       router.push({ name: "login" });
     } else {
@@ -191,36 +201,9 @@ const logout = async () => {
   }, 500);
 };
 
-const isLoggedIn = async function () {
-  let response = await axios.get(`${baseURL}auth/isLoggedIn`, {
-    withCredentials: true,
-  });
-
-  if (response.data.isLoggedIn === true) {
-    mainStore.setLoggedIn({
-      loggedIn: true,
-      sessioInfo: response.data.sessionInfo,
-    });
-  } else {
-    mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
-  }
-};
-
 onMounted(async () => {
-  // await isLoggedIn();
-  mainStore.isLoggedIn();
-  let test = import.meta.env
-  console.log(baseURL, 'process env SERVER_URI');
-  console.log(test, 'import meta env');
-  console.log(process.env, 'process env');
-  let response = await axios.post(
-    `${baseURL}test/test`,
-    {
-      prova: "prova",
-      prova2: "prova2",
-    }
-  );
-  console.log(response.data);
+  let environment_vars = import.meta.env
+  console.log(environment_vars, 'import meta env');
 });
 
 watch(
@@ -259,8 +242,15 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value;
 };
 
-onBeforeUnmount(() => {
-  router.push({ name: "login" });
+onBeforeMount(async () => {
+  console.log("fhjfffffffffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+  const mainStore = useMainStore();
+  const logged = await mainStore.isLoggedIn();
+  if (!logged) {
+      console.log("sending this", logged);
+      router.push({ name: "login" });
+  }
+  
 })
 </script>
 

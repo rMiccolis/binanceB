@@ -62,7 +62,6 @@ export const useMainStore = defineStore("mainStore", () => {
         if (isUserloggedIn.value === true && Date.now() < session?.value.exp) {
             return true;
         } else if (session.value == null) {
-            console.log("qui", session.value);
             let response = await axios.get(`${baseURL}auth/isLoggedIn`, {
                 withCredentials: true,
             });
@@ -70,7 +69,7 @@ export const useMainStore = defineStore("mainStore", () => {
             if (response.data.isLoggedIn === true) {
                 setLoggedIn({
                     loggedIn: true,
-                    sessioInfo: response.data.sessionInfo,
+                    sessionInfo: response.data.sessionInfo,
                 });
                 return true;
             } else {

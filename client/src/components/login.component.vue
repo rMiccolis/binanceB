@@ -1,6 +1,13 @@
 <template>
   <div>
-    <v-tabs fixed-tabs centered stacked slider-color="blue" class="mb-5 pt-0 mt-0" color="blue">
+    <v-tabs
+      fixed-tabs
+      centered
+      stacked
+      slider-color="blue"
+      class="mb-5 pt-0 mt-0"
+      color="blue"
+    >
       <v-tab value="signin" @click="selectTab('signin')">
         <v-icon size="small">mdi-key</v-icon>
         <small>Sign in!</small>
@@ -33,7 +40,7 @@
       hint="For testing, Password is 'aa'"
       :error="error('psw')"
       :type="show ? 'text' : 'password'"
-      @click:append-inner="show = !show"
+      @click:append-inner="showHideLabel"
       clearable
     ></v-text-field>
 
@@ -88,6 +95,17 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <v-alert v-if="alert?.display"
+          :color="alert.type"
+          class="rounded-shaped"
+          density="compact"
+          :icon="`$${alert.type}`"
+          :text="alert.message"
+        ></v-alert>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -107,23 +125,38 @@ let selectedTab = ref("signin");
 let action = ref("Sign In");
 let confirmPassword = ref("");
 let formError = ref(true);
+const alert = ref(null)
+
+const props = defineProps({
+  displayAlert: { type: Object, default: null, required: false },
+});
+
+const showHideLabel = () => {
+  show.value = !show.value
+}
 
 let error = (type) => {
   let error = true;
 
-  if (type == "confirmPassword" && password.value == confirmPassword.value && password.value.length >= 8) {
+  if (
+    type == "confirmPassword" &&
+    password.value == confirmPassword.value &&
+    password.value?.length >= 8
+  ) {
     error = false;
-  }
-  else if (type == "psw" && (password.value == 'aa' || password.value.length >= 8)) {
+  } else if (
+    type == "psw" &&
+    (password.value == "aa" || password.value?.length >= 8)
+  ) {
     error = false;
-  }
-  else if (type == "userId" && (userId.value == 'aa' || userId.value.length > 3)) {
+  } else if (
+    type == "userId" &&
+    (userId.value == "aa" || userId.value?.length > 3)
+  ) {
     error = false;
-  }
-  else if (type == "pubApyKey" && publicApiKey.value.length > 0) {
+  } else if (type == "pubApyKey" && publicApiKey.value?.length > 0) {
     error = false;
-  }
-  else if (type == "privApyKey" && privateApiKey.value.length > 0) {
+  } else if (type == "privApyKey" && privateApiKey.value?.length > 0) {
     error = false;
   }
   formError.value = error;
@@ -139,45 +172,33 @@ const selectTab = (tabClicked) => {
   confirmPassword.value = "";
   publicApiKey.value = "";
   privateApiKey.value = "";
-
 };
 
 let signin = async () => {
-  let response = await axios.post(
-    `${baseURL}auth/signin`,
-    {
-      userId: userId.value.toLowerCase(),
-      password: password.value,
-    },
-    { withCredentials: true }
-  );
-
-  if (response.data.error == false) {
-    emit("loggedIn", {
-      loggedIn: true,
-      sessionInfo: response.data.sessionInfo,
-    });
-  } else {
-    emit("loggedIn", { loggedIn: false, sessionInfo: null });
-  }
+  emit("action", {
+    type: "signin",
+    userId: userId.value.toLowerCase(),
+    password: password.value,
+  });
 };
 
 let signup = async () => {
-  let response = await axios.post(
-    `${baseURL}auth/signup`,
-    {
-      userId: userId.value.toLowerCase(),
-      password: password.value,
-      publicApiKey: publicApiKey.value,
-      privateApiKey: privateApiKey.value,
-    },
-    { withCredentials: true }
-  );
-
-  if (response.data.error === false) {
-    selectTab("signin");
-  }
+  emit("action", {
+    type: "signup",
+    userId: userId.value.toLowerCase(),
+    password: password.value,
+    publicApiKey: publicApiKey.value,
+    privateApiKey: privateApiKey.value,
+  });
 };
+
+watch(() => props.displayAlert, (value) => {
+  alert.value = props.displayAlert
+  setTimeout(() => {
+    alert.value.display = false
+  }, 5000);
+})
+
 </script>
 
 <style>

@@ -1,9 +1,9 @@
 {
-  "appId": "com.binanceB.app",
+  "appId": "com.example.app",
   "appName": "binanceB",
   "webDir": "dist",
   "server": {
-    "url": "http://${SERVER_IP_ADDRESS}",
+    "url": "http://2.32.16.202",
     "cleartext": true
   },
   "plugins": {

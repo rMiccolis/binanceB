@@ -10,7 +10,6 @@
             </v-btn>
           </v-col>
           <v-col cols="10">
-            
               <h3><slot name="header"></slot></h3>
           </v-col>
           <v-col></v-col>

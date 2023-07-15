@@ -1,27 +1,13 @@
 <template>
   <div>
     <!-- <v-row class="pb-4" justify="center"><h1>Login Page</h1></v-row> -->
-    <v-row>
+    <v-row class="text-center">
       <v-col>
-        <modal-component
-          v-if="loginModal === true"
-          :name="'login'"
-          :open="loginModal"
-          :persistent="true"
-          :scrollable="true"
-          @toggle="toggleModal"
-        >
-          <template v-slot:header>
-            <!-- <h3>{{loginHeader}}</h3> -->
-            {{ loginHeader }}
-          </template>
-          <template v-slot:body>
-            <login-component
-              @changeHeader="changeHeader"
-              @loggedIn="useSetLoggedIn"
-            ></login-component>
-          </template>
-        </modal-component>
+        <!-- <h3>{{ loginHeader }}</h3> -->
+        <login-component
+            :displayAlert="loginAlert"
+            @action="manageAccess"
+          ></login-component>
       </v-col>
     </v-row>
   </div>
@@ -32,7 +18,6 @@ import { watch, ref, onMounted } from "vue";
 import { useMainStore } from "../store/useMainStore";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
-import ModalComponent from "../components/modal.component.vue";
 import LoginComponent from "../components/login.component.vue";
 
 const router = useRouter();
@@ -40,45 +25,68 @@ const route = useRoute();
 const baseURL = import.meta.env.VITE_SERVER_URI;
 const mainStore = useMainStore();
 const loginModal = ref(false);
-const loginHeader = ref("Sign in");
+// const loginHeader = ref("Access Page");
+let loginAlert = ref(null);
 
-const changeHeader = (title) => {
-  loginHeader.value = title;
-};
+// const changeHeader = (title) => {
+//   loginHeader.value = title;
+// };
 
-const useSetLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
-  console.log("toggle modal");
-  mainStore.setLoggedIn({ loggedIn, sessionInfo });
-};
+const manageAccess = async (action) => {
+  if (action.type === "signin") {
+    let response = await axios.post(
+      `${baseURL}auth/signin`,
+      {
+        userId: action.userId.toLowerCase(),
+        password: action.password,
+      },
+      { withCredentials: true }
+    );
 
-const toggleModal = function (modalInfo) {
-  // if (modalInfo.value == false && mainStore.isUserloggedIn == false) return;
-  console.log("toggle modal");
-  if (modalInfo.name && modalInfo.value) {
-    loginModal.value = modalInfo.value;
-  } else {
-    loginModal.value = !loginModal.value;
+    if (response.data.error == false) {
+      console.log("calling setLoggedIn");
+      mainStore.setLoggedIn({
+        loggedIn: true,
+        sessionInfo: response.data.sessionInfo,
+      });
+      loginAlert.value = {
+        display: true,
+        type: "success",
+        message: "Successfully signed in!",
+      };
+      router.push({ name: "home" })
+    } else {
+      mainStore.setLoggedIn({ loggedIn: false, sessionInfo: null });
+      loginAlert.value = {
+        display: true,
+        type: "error",
+        message: "Username or Password are not correct!",
+      };
+    }
+  } else if (action.type === "signup") {
+    let response = await axios.post(
+      `${baseURL}auth/signup`,
+      {
+        userId: action.userId.toLowerCase(),
+        password: action.password,
+        publicApiKey: action.publicApiKey,
+        privateApiKey: action.privateApiKey,
+      },
+      { withCredentials: true }
+    );
   }
 };
-
-onMounted(() => {
-  if (mainStore.isUserloggedIn === true) {
-    console.log("loginView: LOGGED");
-    loginModal.value = false;
-  } else {
-    console.log("loginView: not logged");
-    loginModal.value = true;
-  }
-});
 
 watch(
   () => mainStore.isUserloggedIn,
   (value) => {
-      if (!value) {
-        loginModal.value = true;
-      } else {
+    if (!value) {
+      loginModal.value = true;
+    } else {
+      setTimeout(() => {
         loginModal.value = false;
-      }
+      }, 1000);
+    }
   }
 );
 </script>

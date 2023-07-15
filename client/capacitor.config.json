@@ -3,7 +3,7 @@
   "appName": "binanceB",
   "webDir": "dist",
   "server": {
-    "url": "http://2.32.16.202",
+    "url": "http://${cluster_public_ip}",
     "cleartext": true
   },
   "plugins": {

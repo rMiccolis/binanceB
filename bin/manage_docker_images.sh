@@ -64,6 +64,8 @@ cat << EOF | tee $repository_root_dir/binanceB/client/.env.production > /dev/nul
 VITE_SERVER_URI="http://$cluster_ip/server/"
 EOF
 
+envsubst < $repository_root_dir/binanceB/client/capacitor.config.json | tee $repository_root_dir/binanceB/client/capacitor.config.json > /dev/null
+
 # Start building docker client image
 echo -e "${LBLUE}Building client docker image...${WHITE}"
 sudo docker build -t $docker_username/$docker_client_repository_name -f ./client/client.dockerfile ./client/

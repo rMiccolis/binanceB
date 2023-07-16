@@ -1,83 +1,57 @@
 <template>
   <v-app :theme="darkTheme">
     <v-navigation-drawer v-model="drawer" app temporary>
-      <v-list-item @click="toUserPage()">
-        <v-list-item-avatar>
-          <i class="bi bi-person" style="font-size: 10"></i>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title class="ml-5"
-            ><span class="text-capitalize">{{
-              mainStore.userId
-            }}</span></v-list-item-title
-          >
-        </v-list-item-content>
+      <v-list-item @click="changePage('account')">
+        <v-row>
+          <v-col cols="1">
+            <v-list-item-avatar>
+              <i class="bi bi-person" style="font-size: 10"></i>
+            </v-list-item-avatar>
+          </v-col>
+          <v-col cols="auto">
+            <v-list-item-content>
+              <span class="text-capitalize font-weight-bold">{{ mainStore.userId }}</span>
+            </v-list-item-content>
+          </v-col>
+        </v-row>
       </v-list-item>
 
       <v-divider class="mb-1"></v-divider>
       <div v-if="mainStore.isUserloggedIn">
-
-        <v-list-item>
+        <v-list-item @click="changePage('home')">
           <v-list-item-content>
-            <v-list-item-title
-              ><router-link
-                :to="{ name: 'home'}"
-                >Home</router-link
-              ></v-list-item-title
-            >
+            <span class="text-capitalize font-weight-bold">home</span>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="changePage('statistics')">
           <v-list-item-content>
-            <v-list-item-title
-              ><router-link
-                :to="{ name: 'statistics'}"
-                >Statistics</router-link
-              ></v-list-item-title
-            >
+            <span class="text-capitalize font-weight-bold">statistics</span>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="changePage('wallet')">
           <v-list-item-content>
-            <v-list-item-title
-              ><router-link :to="{ name: 'wallet'}"
-                >Wallet</router-link
-              ></v-list-item-title
-            >
+            <span class="text-capitalize font-weight-bold">wallet</span>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="changePage('staking')">
           <v-list-item-content>
-            <v-list-item-title
-              ><router-link
-                :to="{ name: 'staking'}"
-                >Staking</router-link
-              ></v-list-item-title
-            >
+            <span class="text-capitalize font-weight-bold">staking</span>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item @click="changePage('settings')">
           <v-list-item-content>
-            <v-list-item-title
-              ><router-link
-                :to="{ name: 'settings'}"
-                >Settings</router-link
-              ></v-list-item-title
-            >
+            <span class="text-capitalize font-weight-bold">settings</span>
           </v-list-item-content>
         </v-list-item>
       </div>
       <v-list-item v-else>
         <v-list-item-content>
           <v-list-item-title
-            ><router-link
-              v-if="route.name != 'login'"
-              :to="{ name: 'login'}"
+            ><router-link v-if="route.name != 'login'" :to="{ name: 'login' }"
               >Login</router-link
             >
             <a v-else @click="toggleDrawer()">Login</a>
@@ -87,7 +61,13 @@
 
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn @click="logout()" block variant="outlined" color="red" :disabled="!mainStore.isUserloggedIn">
+          <v-btn
+            @click="logout()"
+            block
+            variant="outlined"
+            color="red"
+            :disabled="!mainStore.isUserloggedIn"
+          >
             Logout
           </v-btn>
         </div>
@@ -115,7 +95,7 @@
 
     <v-main app class="b-app-min-height">
       <v-container app>
-        <router-view ></router-view>
+        <router-view></router-view>
       </v-container>
     </v-main>
 
@@ -175,17 +155,11 @@ const menu = ref([
   },
 ]);
 
-const toUserPage = () => {
-  if (mainStore.userId != null) {
-    console.log("goto account");
-    router.push({ name: "account" });
+const changePage = (pageName = "home", params = null) => {
+  if (mainStore.isUserloggedIn === true) {
+    router.push({ name: pageName });
   } else {
-    console.log("goto login", mainStore.userId);
-    if (route.name != "login") {
-      router.push({ name: "login" });
-    } else {
-      router.go();
-    }
+    router.push({ name: "login" });
   }
 };
 
@@ -196,28 +170,28 @@ const logout = async () => {
   });
   toggleDrawer();
 
-  setTimeout(() => {
-    mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
+  setTimeout(async () => {
+    await mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
     router.push({ name: "login" });
   }, 500);
 };
 
 onMounted(async () => {
-  let environment_vars = import.meta.env
-  console.log(environment_vars, 'import meta env');
+  let environment_vars = import.meta.env;
+  console.log(environment_vars, "import meta env");
 });
 
 watch(
   () => darkTheme.value,
   (value) => {
     if (value == "dark") {
-      console.log("is dark");
+      // console.log("is dark");
       whiteBlackColor.value = "rgba(20, 23, 23, 0.678)";
       whiteBlackToolbar.value = "rgba(20, 23, 23, 0.678)";
       whiteBlackFooter.value = "rgb(20, 23, 23)";
       root.value.style.setProperty("--a-color", "white");
     } else {
-      console.log("is light");
+      // console.log("is light");
       // whiteBlackColor.value = "rgb(255,255,255)";
       whiteBlackColor.value = "rgba(220,220,220, 0.6)";
       whiteBlackToolbar.value = "rgba(190,190,190, 0.2)";
@@ -244,19 +218,15 @@ const toggleDrawer = () => {
 };
 
 onBeforeMount(async () => {
-  console.log("fhjfffffffffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   const mainStore = useMainStore();
   const logged = await mainStore.isLoggedIn();
   if (!logged) {
-      console.log("sending this", logged);
-      router.push({ name: "login" });
+    router.push({ name: "login" });
   }
-  
-})
+});
 </script>
 
 <style>
-
 .a {
   color: rgba(20, 19, 19, 0.678);
 }

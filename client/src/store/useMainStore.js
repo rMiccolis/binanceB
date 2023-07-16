@@ -12,7 +12,7 @@ export const useMainStore = defineStore("mainStore", () => {
     const userId = ref(null);
     const session = ref(null);
 
-    const setLoggedIn = ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
+    const setLoggedIn = async ({ loggedIn: loggedIn, sessionInfo: sessionInfo }) => {
         if (session.refreshTimeoutId) {
             clearTimeout(session.refreshTimeoutId);
         }
@@ -21,10 +21,10 @@ export const useMainStore = defineStore("mainStore", () => {
             isUserloggedIn.value = true;
             userId.value = sessionInfo.userId;
             let expiryDate = session.value.exp - 10000 - session.value.iat;
-            console.log("issued at:", new Date(session.value.iat).toLocaleString());
-            console.log("expires at:", new Date(session.value.exp).toLocaleString());
+            // console.log("issued at:", new Date(session.value.iat).toLocaleString());
+            // console.log("expires at:", new Date(session.value.exp).toLocaleString());
 
-            let refreshTimeoutId = setTimeout(async () => {
+            let refreshTimeoutId = setInterval(async () => {
                 console.log("you have finished your session time!");
                 console.log("trying to refresh token...");
                 //TODO TRY TO REFRESH TOKEN
@@ -32,15 +32,19 @@ export const useMainStore = defineStore("mainStore", () => {
                     withCredentials: true,
                 });
                 if (response.data.error === false) {
+                    console.log(response.data);
                     isUserloggedIn.value = true;
                     session.value = response.data.sessionInfo;
-                    userId.value = sessionInfo.userId;
+                    userId.value = response.data.sessionInfo.userId;
                     console.log("Token refreshed, session is still valid!");
                 } else {
                     isUserloggedIn.value = false;
                     session.value = null;
                     userId.value = null;
                     console.log("Token NOT refreshed, session is not valid!");
+                    router.push({
+                        name: "login",
+                    });
                 }
             }, expiryDate);
 
@@ -67,7 +71,7 @@ export const useMainStore = defineStore("mainStore", () => {
             });
 
             if (response.data.isLoggedIn === true) {
-                setLoggedIn({
+                await setLoggedIn({
                     loggedIn: true,
                     sessionInfo: response.data.sessionInfo,
                 });
@@ -86,5 +90,5 @@ export const useMainStore = defineStore("mainStore", () => {
         }
     };
 
-    return { isUserloggedIn, session, setLoggedIn, isLoggedIn };
+    return { isUserloggedIn, userId, session, setLoggedIn, isLoggedIn };
 });

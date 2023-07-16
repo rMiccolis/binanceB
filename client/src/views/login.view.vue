@@ -44,8 +44,8 @@ const manageAccess = async (action) => {
     );
 
     if (response.data.error == false) {
-      console.log("calling setLoggedIn");
-      mainStore.setLoggedIn({
+      // console.log("calling setLoggedIn");
+      await mainStore.setLoggedIn({
         loggedIn: true,
         sessionInfo: response.data.sessionInfo,
       });
@@ -56,7 +56,7 @@ const manageAccess = async (action) => {
       };
       router.push({ name: "home" })
     } else {
-      mainStore.setLoggedIn({ loggedIn: false, sessionInfo: null });
+      await mainStore.setLoggedIn({ loggedIn: false, sessionInfo: null });
       loginAlert.value = {
         display: true,
         type: "error",

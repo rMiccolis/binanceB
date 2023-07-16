@@ -92,7 +92,7 @@ let detailShown = ref({});
 
 let toggleModal = (key) => {
   detailShown.value = props.detailData[key];
-  console.log(detailShown);
+  // console.log(detailShown);
   openModal.value = true;
 };
 </script>

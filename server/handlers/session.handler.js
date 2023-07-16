@@ -22,7 +22,7 @@ const revokeTokens = async (req, res, userId = null) => {
     });
 };
 
-const setTokens = async (tokenData, req, res, onlyAccess = false) => {
+const setTokens = async (tokenData, req, res, onlyAccessToken = false) => {
     let currentTime = Date.now();
 
     // set tokens expire time
@@ -35,7 +35,7 @@ const setTokens = async (tokenData, req, res, onlyAccess = false) => {
         algorithm: "HS256",
         expiresIn: access_token_expiry,
     });
-    if (onlyAccess === false) {
+    if (onlyAccessToken === false) {
         const refresh_token = jwt.sign(tokenData, process.env.REFRESH_TOKEN_SECRET, {
             algorithm: "HS256",
             expiresIn: refresh_token_expiry,
@@ -97,16 +97,27 @@ const refresh = async (req, res) => {
     let users = db.dynamicModel("users");
     try {
         //controlla se access_token valido e non scaduto
-        let oldAccess = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
-        let userId = oldAccess.userId;
-        //controlla se access_token valido e non scaduto
         let oldRefresh = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
+        let userId = oldRefresh.userId;
+        //controlla se access_token valido e non scaduto
         let user = await users.aggregate([{ $match: { userId: userId } }]);
+        user = user.length > 0 ? user[0] : {}
+        let dbUserRefreshToken = jwt.verify(user?.refresh_token, process.env.REFRESH_TOKEN_SECRET)
 
-        if (oldRefresh == user.refresh_token) {
+        areEqualRefresh = true
+
+        for (const key in oldRefresh) {
+            if (dbUserRefreshToken[key] != oldRefresh[key]) {
+                areEqualRefresh = false       
+                break         
+            }
+        }
+
+        if (areEqualRefresh) {
             // create new access_token
             let tokenData = { userId: userId };
-            const access_token = setTokens(tokenData, req, res, true);
+            const access_token = await setTokens(tokenData, req, res);
+            console.log(access_token);
             res.json({
                 error: false,
                 userId: userId,

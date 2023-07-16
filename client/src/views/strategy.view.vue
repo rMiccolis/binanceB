@@ -32,7 +32,7 @@ onMounted(async () => {
   let res = await axios.get(
     "https://cryptoflash-icons-api.herokuapp.com/svg/icon/eth"
   );
-  console.log(res);
+  // console.log(res);
   icon.value = res.data;
 });
 </script>

@@ -117,7 +117,6 @@ const refresh = async (req, res) => {
             // create new access_token
             let tokenData = { userId: userId };
             const access_token = await setTokens(tokenData, req, res);
-            console.log(access_token);
             res.json({
                 error: false,
                 userId: userId,

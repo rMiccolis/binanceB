@@ -32,7 +32,6 @@ export const useMainStore = defineStore("mainStore", () => {
                     withCredentials: true,
                 });
                 if (response.data.error === false) {
-                    console.log(response.data);
                     isUserloggedIn.value = true;
                     session.value = response.data.sessionInfo;
                     userId.value = response.data.sessionInfo.userId;

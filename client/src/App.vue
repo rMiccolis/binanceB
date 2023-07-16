@@ -198,6 +198,7 @@ const logout = async () => {
 
   setTimeout(() => {
     mainStore.setLoggedIn({ loggedIn: false, sessioInfo: null });
+    router.push({ name: "login" });
   }, 500);
 };
 

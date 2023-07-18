@@ -39,6 +39,7 @@ const manageAccess = async (action) => {
       {
         userId: action.userId.toLowerCase(),
         password: action.password,
+        rememberme: action.rememberme
       },
       { withCredentials: true }
     );

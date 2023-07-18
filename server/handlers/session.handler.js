@@ -25,8 +25,15 @@ const revokeTokens = async (req, res, userId = null) => {
 const setTokens = async (tokenData, req, res, onlyAccessToken = false) => {
     let currentTime = Date.now();
 
+    refresh_lifetime = parseInt(process.env.REFRESH_TOKEN_LIFETIME)
+
+    // if we have to remember user, set refresh_token expiry to 1 year
+    if (tokenData.rememberme === true) {
+        refresh_lifetime = 525600
+    }
+
     // set tokens expire time
-    const refresh_token_expiry =  parseInt(process.env.REFRESH_TOKEN_LIFETIME) * 60 * 1000;
+    let refresh_token_expiry =  refresh_lifetime * 60 * 1000;
     const access_token_expiry = parseInt(process.env.ACCESS_TOKEN_LIFETIME) * 60 * 1000;
 
     // create json web token
@@ -98,6 +105,7 @@ const refresh = async (req, res) => {
     try {
         //controlla se access_token valido e non scaduto
         let oldRefresh = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
+        let verifiedAccessToken = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
         let userId = oldRefresh.userId;
         //controlla se access_token valido e non scaduto
         let user = await users.aggregate([{ $match: { userId: userId } }]);
@@ -106,6 +114,7 @@ const refresh = async (req, res) => {
 
         areEqualRefresh = true
 
+        // check if received refresh_token is equal to the one stored in db
         for (const key in oldRefresh) {
             if (dbUserRefreshToken[key] != oldRefresh[key]) {
                 areEqualRefresh = false       
@@ -115,8 +124,8 @@ const refresh = async (req, res) => {
 
         if (areEqualRefresh) {
             // create new access_token
-            let tokenData = { userId: userId };
-            const access_token = await setTokens(tokenData, req, res);
+            let tokenData = { userId: userId, rememberme: verifiedAccessToken.rememberme };
+            const access_token = await setTokens(tokenData, req, res, true);
             res.json({
                 error: false,
                 userId: userId,
@@ -157,7 +166,7 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req, res) => {
-    let { userId, password } = req.body;
+    let { userId, password, rememberme } = req.body;
     let users = db.dynamicModel("users");
 
     let userFound = await users.aggregate([{ $match: { userId: userId } }]);
@@ -166,7 +175,7 @@ const signin = async (req, res) => {
     userFound = userFound[0];
 
     //create json web token
-    let tokenData = { userId: userId };
+    let tokenData = { userId: userId, rememberme: rememberme};
 
     let hash = crypto.pbkdf2Sync(password, userFound.salt, 1000, 64, `sha512`).toString(`hex`);
 
@@ -218,6 +227,8 @@ const logout = async (req, res) => {
         res.status(403).json({ error: true, code: "MISSING_TOKEN" });
     }
 };
+
+const isTokenExpired = (token) => {}
 
 module.exports = {
     setBinanceConnection,

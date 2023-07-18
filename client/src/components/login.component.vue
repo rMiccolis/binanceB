@@ -1,24 +1,5 @@
 <template>
   <div>
-    <v-tabs
-      fixed-tabs
-      centered
-      stacked
-      slider-color="blue"
-      class="mb-5 pt-0 mt-0"
-      color="blue"
-    >
-      <v-tab value="signin" @click="selectTab('signin')">
-        <v-icon size="small">mdi-key</v-icon>
-        <small>Sign in!</small>
-      </v-tab>
-
-      <v-tab value="signup" @click="selectTab('signup')">
-        <v-icon size="small">mdi-exit-to-app</v-icon>
-        <small>Sign up!</small>
-      </v-tab>
-    </v-tabs>
-
     <v-text-field
       v-model="userId"
       shaped
@@ -82,8 +63,16 @@
       clearable
     ></v-text-field>
 
-    <v-row class="mb-5" justify="center">
-      <v-col class="text-center">
+    <v-row>
+      <v-col cols="12" v-if="selectedTab == 'signin'">
+          <v-checkbox
+            class="d-inline-flex text-center"
+            color="blue"
+            v-model="rememberme"
+            :label="'Remember me'"
+          ></v-checkbox>
+      </v-col>
+      <v-col cols="12">
         <v-btn
           block
           variant="outlined"
@@ -95,15 +84,23 @@
         </v-btn>
       </v-col>
     </v-row>
+
     <v-row>
       <v-col>
-        <v-alert v-if="alert?.display"
+        <v-alert
+          v-if="alert?.display"
           :color="alert.type"
           class="rounded-shaped"
           density="compact"
           :icon="`$${alert.type}`"
           :text="alert.message"
         ></v-alert>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+          <p v-if="selectedTab == 'signin'" @click="selectTab('signup')" class="text-center text-caption text-blue">Not registered? Sign up!</p>
+          <p v-else @click="selectTab('signin')" class="text-center text-caption text-blue">Already registered? Sign in!</p>
       </v-col>
     </v-row>
   </div>
@@ -125,15 +122,16 @@ let selectedTab = ref("signin");
 let action = ref("Sign In");
 let confirmPassword = ref("");
 let formError = ref(true);
-const alert = ref(null)
+const alert = ref(null);
+let rememberme = ref(false);
 
 const props = defineProps({
   displayAlert: { type: Object, default: null, required: false },
 });
 
 const showHideLabel = () => {
-  show.value = !show.value
-}
+  show.value = !show.value;
+};
 
 let error = (type) => {
   let error = true;
@@ -164,6 +162,7 @@ let error = (type) => {
 };
 
 const selectTab = (tabClicked) => {
+  // alert.value.display = false;
   selectedTab.value = tabClicked;
   action.value = selectedTab.value == "signin" ? "Sign In" : "Sign Up";
   emit("changeHeader", action.value + "!");
@@ -179,6 +178,7 @@ let signin = async () => {
     type: "signin",
     userId: userId.value.toLowerCase(),
     password: password.value,
+    rememberme: rememberme.value,
   });
 };
 
@@ -192,13 +192,15 @@ let signup = async () => {
   });
 };
 
-watch(() => props.displayAlert, (value) => {
-  alert.value = props.displayAlert
-  setTimeout(() => {
-    alert.value.display = false
-  }, 5000);
-})
-
+watch(
+  () => props.displayAlert,
+  (value) => {
+    alert.value = props.displayAlert;
+    setTimeout(() => {
+      alert.value.display = false;
+    }, 5000);
+  }
+);
 </script>
 
 <style>

@@ -94,7 +94,7 @@
     </v-toolbar>
 
     <v-main app class="b-app-min-height">
-      <v-container app>
+      <v-container app class="pt-2">
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -115,6 +115,7 @@ import { useRouter, useRoute } from "vue-router";
 import { useMainStore } from "./store/useMainStore";
 import axios from "axios";
 import FooterMenuComponent from "./components/footerMenu.component.vue";
+import css from "./assets/base.css"
 
 const router = useRouter();
 const route = useRoute();
@@ -189,13 +190,16 @@ watch(
       whiteBlackColor.value = "rgba(20, 23, 23, 0.678)";
       whiteBlackToolbar.value = "rgba(20, 23, 23, 0.678)";
       whiteBlackFooter.value = "rgb(20, 23, 23)";
+      whiteBlackFooter.value = "rgb(20, 23, 23)";
       root.value.style.setProperty("--a-color", "white");
+      root.value.style.setProperty("--bg-app-icon", "black");
     } else {
       // console.log("is light");
       // whiteBlackColor.value = "rgb(255,255,255)";
       whiteBlackColor.value = "rgba(220,220,220, 0.6)";
       whiteBlackToolbar.value = "rgba(190,190,190, 0.2)";
       whiteBlackFooter.value = "white";
+      root.value.style.setProperty("--bg-app-icon", "white");
       root.value.style.setProperty("--a-color", "black");
     }
   }

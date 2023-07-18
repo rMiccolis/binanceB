@@ -1,108 +1,139 @@
 <template>
   <div>
-    <v-text-field
-      v-model="userId"
-      shaped
-      :error="error('userId')"
-      prepend-inner-icon="mdi-account"
-      label="Account Name"
-      hint="For testing, User ID is 'aa'"
-      color="blue"
-      clearable
-    ></v-text-field>
-    <!-- @update:model-value="a" -->
+    <v-card color="rgb(18,18,18)">
+      <div class="img-container">
+        <v-img
+          class="bg-dark-icon icon-center mb-2"
+          width="50%"
+          src="binanceB_icon.png"
+          cover
+        >
+        </v-img>
+        <h1 class="centered-icon-text">BinanceB</h1>
+    </div>
+      <v-text-field
+        v-model="userId"
+        shaped
+        :error="error('userId')"
+        prepend-inner-icon="mdi-account"
+        label="Account Name"
+        hint="For testing, User ID is 'aa'"
+        color="blue"
+        clearable
+      ></v-text-field>
+      <!-- @update:model-value="a" -->
 
-    <v-text-field
-      v-model="password"
-      shaped
-      prepend-inner-icon="mdi-key"
-      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
-      label="Password"
-      hint="For testing, Password is 'aa'"
-      :error="error('psw')"
-      :type="show ? 'text' : 'password'"
-      @click:append-inner="showHideLabel"
-      clearable
-    ></v-text-field>
+      <v-text-field
+        v-model="password"
+        shaped
+        prepend-inner-icon="mdi-key"
+        :append-inner-icon="
+          show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'
+        "
+        label="Password"
+        hint="For testing, Password is 'aa'"
+        :error="error('psw')"
+        :type="show ? 'text' : 'password'"
+        @click:append-inner="showHideLabel"
+        clearable
+      ></v-text-field>
 
-    <v-text-field
-      v-if="selectedTab == 'signup'"
-      v-model="confirmPassword"
-      shaped
-      prepend-inner-icon="mdi-key"
-      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
-      label="Confirm Password"
-      hint="For testing, Password is 'aa'"
-      :error="error('confirmPassword')"
-      :type="show ? 'text' : 'password'"
-      @click:append-inner="show = !show"
-      clearable
-    ></v-text-field>
+      <v-text-field
+        v-if="selectedTab == 'signup'"
+        v-model="confirmPassword"
+        shaped
+        prepend-inner-icon="mdi-key"
+        :append-inner-icon="
+          show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'
+        "
+        label="Confirm Password"
+        hint="For testing, Password is 'aa'"
+        :error="error('confirmPassword')"
+        :type="show ? 'text' : 'password'"
+        @click:append-inner="show = !show"
+        clearable
+      ></v-text-field>
 
-    <v-text-field
-      v-if="selectedTab == 'signup'"
-      v-model="publicApiKey"
-      shaped
-      prepend-inner-icon="mdi-key"
-      label="Public API_KEY"
-      :error="error('pubApyKey')"
-      @click:append-inner="show = !show"
-      clearable
-    ></v-text-field>
+      <v-text-field
+        v-if="selectedTab == 'signup'"
+        v-model="publicApiKey"
+        shaped
+        prepend-inner-icon="mdi-key"
+        label="Public API_KEY"
+        :error="error('pubApyKey')"
+        @click:append-inner="show = !show"
+        clearable
+      ></v-text-field>
 
-    <v-text-field
-      v-if="selectedTab == 'signup'"
-      v-model="privateApiKey"
-      shaped
-      prepend-inner-icon="mdi-key"
-      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
-      label="Private API_KEY"
-      :error="error('privApyKey')"
-      :type="show ? 'text' : 'password'"
-      @click:append-inner="show = !show"
-      clearable
-    ></v-text-field>
+      <v-text-field
+        v-if="selectedTab == 'signup'"
+        v-model="privateApiKey"
+        shaped
+        prepend-inner-icon="mdi-key"
+        :append-inner-icon="
+          show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'
+        "
+        label="Private API_KEY"
+        :error="error('privApyKey')"
+        :type="show ? 'text' : 'password'"
+        @click:append-inner="show = !show"
+        clearable
+      ></v-text-field>
 
-    <v-row>
-      <v-col cols="12" v-if="selectedTab == 'signin'">
+      <v-row>
+        <v-col cols="12" v-if="selectedTab == 'signin'">
           <v-checkbox
             class="d-inline-flex text-center"
             color="blue"
             v-model="rememberme"
             :label="'Remember me'"
           ></v-checkbox>
-      </v-col>
-      <v-col cols="12">
-        <v-btn
-          block
-          variant="outlined"
-          :color="formError === true ? 'rgb(207,102,121)' : 'blue'"
-          :disabled="formError"
-          @click="selectedTab == 'signin' ? signin() : signup()"
-        >
-          {{ action }}!
-        </v-btn>
-      </v-col>
-    </v-row>
+        </v-col>
 
-    <v-row>
-      <v-col>
-        <v-alert
-          v-if="alert?.display"
-          :color="alert.type"
-          class="rounded-shaped"
-          density="compact"
-          :icon="`$${alert.type}`"
-          :text="alert.message"
-        ></v-alert>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-          <p v-if="selectedTab == 'signin'" @click="selectTab('signup')" class="text-center text-caption text-blue">Not registered? Sign up!</p>
-          <p v-else @click="selectTab('signin')" class="text-center text-caption text-blue">Already registered? Sign in!</p>
-      </v-col>
-    </v-row>
+        <v-col cols="12">
+          <v-btn
+            block
+            variant="outlined"
+            :color="formError === true ? 'rgb(207,102,121)' : 'blue'"
+            :disabled="formError"
+            @click="selectedTab == 'signin' ? signin() : signup()"
+          >
+            {{ action }}!
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <v-alert
+            v-if="alert?.display"
+            :color="alert.type"
+            class="rounded-shaped"
+            density="compact"
+            :icon="`$${alert.type}`"
+            :text="alert.message"
+          ></v-alert>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <p
+            v-if="selectedTab == 'signin'"
+            @click="selectTab('signup')"
+            class="text-center text-caption text-blue"
+          >
+            Not registered? Sign up!
+          </p>
+          <p
+            v-else
+            @click="selectTab('signin')"
+            class="text-center text-caption text-blue"
+          >
+            Already registered? Sign in!
+          </p>
+        </v-col>
+      </v-row>
+    </v-card>
   </div>
 </template>
 
@@ -207,4 +238,30 @@ watch(
 .b-pointer {
   cursor: pointer;
 }
+.bg-dark-icon {
+  background-color: var(--bg-app-icon);
+  color: var(--bg-app-icon);
+}
+
+.icon-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img-container {
+  position: relative;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.551);
+}
+
+/* Centered text */
+.centered-icon-text {
+  /* position: absolute; */
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  font-family: fantasy;
+}
+
 </style>

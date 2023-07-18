@@ -103,7 +103,7 @@
       User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
     </v-footer> -->
-    <v-bottom-navigation app :bg-color="footerBGColor" class="mt-1">
+    <v-bottom-navigation v-if="mainStore.isUserloggedIn === true" app :bg-color="footerBGColor" class="mt-1">
       <footer-menu-component :menuItems="menu"></footer-menu-component>
     </v-bottom-navigation>
   </v-app>

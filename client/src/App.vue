@@ -73,7 +73,7 @@
         </div>
       </template>
     </v-navigation-drawer>
-    <v-toolbar elevation="2" :color="whiteBlackToolbar">
+    <v-toolbar elevation="2" :color="toolbarBGColor">
       <v-row align="center" justify="space-between">
         <v-col class="text-left">
           <v-btn color="blue" @click.stop="toggleDrawer()">
@@ -103,7 +103,7 @@
       User: <span class="text-blue ms-1 me-2">Bob617 </span> Bot state:
       <span class="text-success ms-1"> Running!</span>
     </v-footer> -->
-    <v-bottom-navigation app :bg-color="whiteBlackFooter" class="mt-1">
+    <v-bottom-navigation app :bg-color="footerBGColor" class="mt-1">
       <footer-menu-component :menuItems="menu"></footer-menu-component>
     </v-bottom-navigation>
   </v-app>
@@ -124,9 +124,9 @@ const drawer = ref(false);
 const mainStore = useMainStore();
 const darkTheme = ref("dark");
 // const whiteBlackColor = ref("rgb(18,18,18)");
-const whiteBlackColor = ref("rgba(20, 23, 23, 0.678)");
-const whiteBlackToolbar = ref("rgba(20, 23, 23, 0.678)");
-const whiteBlackFooter = ref("rgba(0, 23, 23,");
+// const whiteBlackColor = ref("rgba(20, 23, 23, 0.678)");
+const toolbarBGColor = ref("rgba(20, 20, 20, 0.678)");
+const footerBGColor = ref("rgba(20, 20, 20, 0.98)");
 const themeColor = ref("blue");
 const themeIcon = ref("bi bi-brightness-high");
 const root = ref(document.querySelector(":root"));
@@ -187,20 +187,21 @@ watch(
   (value) => {
     if (value == "dark") {
       // console.log("is dark");
-      whiteBlackColor.value = "rgba(20, 23, 23, 0.678)";
-      whiteBlackToolbar.value = "rgba(20, 23, 23, 0.678)";
-      whiteBlackFooter.value = "rgb(20, 23, 23)";
-      whiteBlackFooter.value = "rgb(20, 23, 23)";
+      // whiteBlackColor.value = "rgba(200, 203, 230, 0.678)";
+      toolbarBGColor.value = "rgba(20, 20, 20, 0.678)";
+      footerBGColor.value = "rgba(20, 20, 20, 0.678)";
       root.value.style.setProperty("--a-color", "white");
       root.value.style.setProperty("--bg-app-icon", "black");
+      root.value.style.setProperty("--app-icon-text-color", "grey");
     } else {
       // console.log("is light");
       // whiteBlackColor.value = "rgb(255,255,255)";
-      whiteBlackColor.value = "rgba(220,220,220, 0.6)";
-      whiteBlackToolbar.value = "rgba(190,190,190, 0.2)";
-      whiteBlackFooter.value = "white";
-      root.value.style.setProperty("--bg-app-icon", "white");
+      // whiteBlackColor.value = "rgba(220,220,220, 0.6)";
+      toolbarBGColor.value = "rgba(220,220,220, 0.3)";
+      footerBGColor.value = "rgba(255, 255, 255, 0.85)";
       root.value.style.setProperty("--a-color", "black");
+      root.value.style.setProperty("--bg-app-icon", "white");
+      root.value.style.setProperty("--app-icon-text-color", "rgb(236, 102, 40)");
     }
   }
 );

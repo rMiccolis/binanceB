@@ -8,7 +8,7 @@
       :key="index"
     >
       <!-- <v-col class="p-10"> -->
-      <v-btn class="mt-2 mb-2" width="100%" height="fit-content" size="x-small" @click="menu.action(menu)">
+      <v-btn class="mt-2 mb-2 btn-hover" width="100%" height="fit-content" size="x-small" @click="menu.action(menu)">
         <v-icon x-large class="b-icon-size">{{menu.icon}}</v-icon>
         <span class="b-text-newline">{{ menu.name }}</span>
       </v-btn>
@@ -40,6 +40,10 @@ const props = defineProps({
 .b-text-newline {
   white-space: pre-wrap !important;
   font-size: 0.7em;
+}
+
+.btn-hover:hover {
+  background-color: rgba(8, 133, 235, 0.102);
 }
 
 .b-menu-item {

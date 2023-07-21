@@ -43,13 +43,13 @@ const props = defineProps({
 }
 
 .btn-hover:hover {
-  background-color: rgba(8, 133, 235, 0.102);
+  background-color: var(--icon-hover-color);
 }
 
 .b-menu-item {
   display: inline;
   width: 25%;
-  color: rgb(0, 162, 255);
+  color: var(--bottom-nav-buttons-color);
   /* border-right: 1px solid rgba(0, 162, 255, 0.245); */
   /* border-top: 1px solid rgba(0, 162, 255, 0.475); */
   }

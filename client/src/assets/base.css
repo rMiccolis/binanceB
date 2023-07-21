@@ -3,6 +3,10 @@
   --a-color: white;
   --bg-app-icon: rgb(18,18,18);
   --app-icon-text-color: grey;
+  --icon-hover-color: rgba(8, 133, 235, 0.102);
+  --bottom-nav-buttons-color: rgb(0, 162, 255);
+
+
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;
   --vt-c-white-mute: #f2f2f2;

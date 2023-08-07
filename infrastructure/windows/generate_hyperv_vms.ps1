@@ -285,7 +285,7 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
             # You just have to paste the command and then enter
             Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
         } else {
-            echo "$master_host_name@$master_host_ip => $cloud_init_status"
+            echo "$master_host_name@$master_host_ip => cloud-init $cloud_init_status"
         }
     }
 }

@@ -4,13 +4,14 @@ Cloud-like application, with educational purposes, for cryptocurrency trading se
 This project is intended for educational purposes and to learn something new about IaC (Infrastructure as Code) and cloud development, for this reason some choices may result unusual because the project tries to simulate the cloud behavior but on bare metal. This choice is made to handle costs, given that the development of this project could take many months and picking a real cloud provider could be very expensive.\
 Because of this, the projects offers a PowerShell script that creates linux (ubuntu cloud image) VMs (with hyper-v as hypervisor) on the fly and configures them using cloud-init.\
 
-There 2 main scripts that create and configure all the infrastructure and both need a configuration yaml file (main_config.yaml) to be executed (an example is found at /main_config.example.yaml)
+There 2 main scripts that create and configure all the infrastructure and both need a configuration yaml file (main_config.yaml) to be executed (an example is found at main_config.example.yaml)
 
 **Script Description:**
 
-- **/infrastructure/windows/generate_hyperv_vms.ps1:** This is the script that manages the generation and configuration of ubuntu virtual machines. The script makes use of cloud-init in order to give the initial configuration to VMs. At the end of the script, it opens a cmd instance and copies to clipboard the command to be pasted in in order to start the start.sh script.
-- **/infrastructure/start.sh**: This script is excecuted on the main VM and performs all the tasks to create a kubernetes cluster and install the client-server application on it.
-- **/bin/manage_docker_images.sh**: This script is usefull when an update of server or client (or both) docker image is needed.
+- **infrastructure/windows/generate_hyperv_vms.ps1:** This is the script that manages the generation and configuration of ubuntu virtual machines. The script makes use of cloud-init in order to give the initial configuration to VMs. At the end of the script, it opens a cmd instance and copies to clipboard the command to be pasted in in order to start the start.sh script.
+- **infrastructure/start.sh**: This script is excecuted on the main VM and performs all the tasks to create a kubernetes cluster and install the client-server application on it.
+- **bin/manage_docker_images.sh**: This script is usefull when an update of server or client (or both) docker image is needed.
+- **bin/setup_worker_nodes.sh:** This script is usefull to join a new node to the cluster (control plane or worker)
 
 ## INSTRUCTION TO RUN THE INFRASTRUCTURE SETUP
 
@@ -20,7 +21,7 @@ There 2 main scripts that create and configure all the infrastructure and both n
 
 - Ubuntu version: focal-server-cloudimg-amd64
 - Kernel version: Linux 5.4.0-148-generic
-- Docker version: /23.0.5
+- Docker version: 23.0.5
 - Cri-dockerd version: 0.3.2
 - Kubernetes version 1.27.2
 

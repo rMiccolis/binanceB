@@ -1,27 +1,11 @@
 # Server
 
+**This is the API server which let client application to login and query for user account information as well as wallet status (owned or staked crypto) on the Binance exchange.**
+**This is the core application that connects to kubernetes cluster API and is able to launch a JOB (a continuous process that can be stopped by user) responsible for trading on a crypto pair (EX: $BTC / $USDT) to gain profits.**
+
 ## .env file variables example
 
-MONGODB_USERNAME=admin
-MONGODB_PASSWORD=admin
-MONGODB_DB_NAME=binanceB
-MONGODB_URI=localhost
-MONGODB_PORT=27017
-
-SERVER_PORT=3000
-NODE_ENV=develop
-
-TESTNET_BASE_URL=https://testnet.binance.vision/
-TESTNET_WEBSOCKET_BASE_URL=wss://testnet.binance.vision:9443
-
-BINANCE_BASE_URL=https://api.binance.com
-BINANCE_WEBSOCKET_BASE_URL=wss://stream.binance.com:9443
-
-ACCESS_TOKEN_SECRET=jwttestaccess
-REFRESH_TOKEN_SECRET=jwttestrefresh
-ACCESS_TOKEN_LIFETIME=50 (minutes)
-REFRESH_TOKEN_LIFETIME=50 (minutes)
-
+Find an example of .env variables at /server/server.env.example
 
 ## Project Setup
 

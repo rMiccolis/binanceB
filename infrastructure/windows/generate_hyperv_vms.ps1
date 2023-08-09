@@ -52,6 +52,13 @@ $vm_store_path = $config.vm_store_path
 # Read the path where to find cloud-image of your linux distro
 $imagePath = $config.os_image_path
 
+# Read VMs resources
+$vm_cpu_count = [int]$config.vm_cpu_count
+$vm_min_ram = (Invoke-Expression $config.vm_min_ram)
+$vm_max_ram = (Invoke-Expression $config.vm_max_ram)
+
+echo $vm_cpu_count $vm_min_ram $vm_max_ram
+
 # Read the github branch name where to pull the code from
 $github_branch_name = $config.github_branch_name
 
@@ -242,9 +249,9 @@ runcmd:
     # Create New Virtual Machine
     New-VM -Name $VMName -Generation 2 -VHDPath $vhdx -Path "$vm_store_path\$VMName" -SwitchName $virtualSwitchName
     # Set the RAM
-    Set-VMMemory $VMName -DynamicMemoryEnabled $True -MinimumBytes 512MB -StartupBytes 2GB -MaximumBytes 4GB
+    Set-VMMemory $VMName -DynamicMemoryEnabled $True -MinimumBytes $vm_min_ram -StartupBytes $vm_min_ram -MaximumBytes $vm_max_ram
     # Set number of CPUs
-    Set-VMProcessor $VMName -Count 2
+    Set-VMProcessor $VMName -Count $vm_cpu_count
     # Add DVD Drive to Virtual Machine with the metadata files for cloud-init
     Add-VMDvdDrive -VMName $VMName -Path $metaDataIso
     # Set the created 'VM' network adapter

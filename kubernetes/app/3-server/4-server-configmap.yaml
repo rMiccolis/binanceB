@@ -4,6 +4,7 @@ metadata:
   name: server-configmap
   namespace: binance-b
 data:
+  IMAGE-NAME: $docker_username/${docker_server_repository_name}_job
   NODE_ENV: develop
   TESTNET_BASE_URL: https://testnet.binance.vision/
   TESTNET_WEBSOCKET_BASE_URL: wss://testnet.binance.vision:9443
@@ -12,4 +13,4 @@ data:
   ACCESS_TOKEN_LIFETIME: '$server_access_token_lifetime'
   REFRESH_TOKEN_LIFETIME: '$server_refresh_token_lifetime'
   SERVER_PORT: '3000'
-  mongodb_db_name: binanceB
+  MONGODB_DB_NAME: binanceB

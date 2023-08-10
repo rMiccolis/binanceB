@@ -33,17 +33,17 @@ spec:
           valueFrom:
            secretKeyRef:
              name: server-secret
-             key: mongo-root-username
+             key: MONGO-ROOT-USERNAME
         - name: MONGODB_PASSWORD
           valueFrom:
            secretKeyRef:
              name: server-secret
-             key: mongo-root-password
+             key: MONGO-ROOT-PASSWORD
         - name: MONGODB_DB_NAME
           valueFrom:
            configMapKeyRef:
              name: server-configmap
-             key: mongodb_db_name
+             key: MONGODB_DB_NAME
         - name: MONGODB_URI
           # value: $(MONGODB_SERVICE_HOST)
           value: $cluster_ip

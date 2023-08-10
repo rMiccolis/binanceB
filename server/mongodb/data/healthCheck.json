@@ -1,3 +1,8 @@
-[{
-    "health": "Ok"
-}]
+[
+    {
+        "_id": {
+            "$oid": "64d4f887052f8def0c2d0c6a"
+        },
+        "health": "Ok"
+    }
+]

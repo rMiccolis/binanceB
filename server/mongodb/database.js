@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
 
-async function connectToMongo(db_host="", db_port="", db_username = "", db_password = "", db_name = "") {
-    let connectionString = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_name}?authSource=admin`
-    let printConnectionString = `mongodb://${db_username}:********@${db_host}:${db_port}/${db_name}?authSource=admin`
+async function connectToMongo(db_host = "", db_port = "", db_username = "", db_password = "", db_name = "") {
+    let connectionString = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_name}?authSource=admin`;
+    let printConnectionString = `mongodb://${db_username}:********@${db_host}:${db_port}/${db_name}?authSource=admin`;
     console.log(`Trying to connect to mongoDB ${printConnectionString} ...`);
     let connection = await mongoose.createConnection(connectionString).asPromise();
     connection.addListener("disconnected", function () {
@@ -26,9 +26,16 @@ async function loadDefaultData(params) {
     db_already_seeded = await process.aggregate([{ $match: { name: "initialized_db" } }]);
     if (db_already_seeded.length > 0) {
         console.logDebug("Database already seeded!");
-        return
+        return;
     }
-    let seed_process = new process({ name: "initialized_db", type: "database_seed", status: 1 });
+    let seed_process = new process({
+        _id: {
+            $oid: "64d4f883052f8def0c2d0c67",
+        },
+        name: "initialized_db",
+        type: "database_seed",
+        status: 1,
+    });
     await seed_process.save();
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
@@ -38,7 +45,7 @@ async function loadDefaultData(params) {
         let count = await collection.count();
         if (count === 0) {
             for (const obj of fileContent) {
-                if (obj['_id']?.["$oid"]) {
+                if (obj["_id"]?.["$oid"]) {
                     let id = obj["_id"]["$oid"];
                     obj["_id"] = mongoose.Types.ObjectId(id);
                 }
@@ -49,7 +56,6 @@ async function loadDefaultData(params) {
             });
         }
     }
-    
 }
 
 function dynamicSchema(connection, collectionName, schema) {

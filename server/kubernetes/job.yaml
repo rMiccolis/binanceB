@@ -6,6 +6,7 @@ metadata:
 spec:
   ttlSecondsAfterFinished: 3600
   parallelism: 5
+  backoffLimit: 4
   template:
     spec:
       containers:
@@ -19,4 +20,3 @@ spec:
                 key: JOB_IMAGE_NAME
         command: ["node", "./src/engine/botActivity.js"]
       restartPolicy: Never
-  backoffLimit: 4

@@ -91,15 +91,67 @@ db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env
 
 const k8s = require('@kubernetes/client-node');
 
-const kc = new k8s.KubeConfig();
-kc.loadFromCluster();
-
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-
 const main = async () => {
     try {
-        const podsRes = await k8sApi.listNamespacedPod('binance-b', pretty="true");
-        console.log(podsRes.body.items[0].metadata);
+
+        const namespace = 'binance-b';
+
+        const kc = new k8s.KubeConfig();
+        kc.loadFromCluster();
+
+        const batchV1Api = kc.makeApiClient(k8s.BatchV1Api);
+        const jobName = 'bot';
+
+        // create spec.template.spec.containers.env.valueFrom.configMapKeyRef
+        const configMapKeyRef = new k8s.V1ConfigMapKeySelector()
+        configMapKeyRef.name = 'server-configmap'
+        configMapKeyRef.key = 'JOB_IMAGE_NAME'
+
+        // create spec.template.spec.containers.env.valueFrom
+        const valueFrom = new k8s.V1EnvVarSource()
+        valueFrom.configMapKeyRef = configMapKeyRef
+
+        // create spec.template.spec.containers.env
+        const env = new k8s.V1EnvVar()
+        env.name = 'JOB_IMAGE_NAME'
+        env.valueFrom = valueFrom
+
+        // create spec.template.spec.containers.container
+        const pod_spec_container = new k8s.V1Container()
+        pod_spec_container.name = 'bot'
+        pod_spec_container.image = process.env.JOB_IMAGE_NAME
+        pod_spec_container.env = [env]
+        pod_spec_container.command = ["node", "./src/engine/botActivity.js"]
+
+        // create spec.template.spec
+        const template_spec = new k8s.V1PodSpec()
+        template_spec.containers = [pod_spec_container]
+        template_spec.restartPolicy = "never"
+
+        // create spec.template.spec
+        const job_spec_template_spec = new k8s.V1PodTemplateSpec()
+        job_spec_template_spec.spec = template_spec
+
+        // create job.spec
+        const job_spec = new k8s.V1JobSpec();
+        job_spec.ttlSecondsAfterFinished = 3600
+        job_spec.parallelism = 2
+        job_spec.backoffLimit = 4
+        job_spec.template = job_spec_template_spec
+
+        // create job.metadata
+        const metadata = new k8s.V1ObjectMeta();
+        metadata.name = jobName;
+        metadata.namespace = "binance-b"
+
+        // create job
+        const job = new k8s.V1Job();
+        job.apiVersion = 'batch/v1';
+        job.kind = 'Job';
+        job.metadata = metadata;
+        job.spec = job_spec
+        const createJobRes = await batchV1Api.createNamespacedJob(namespace, job);
+        console.log(createJobRes.body);
     } catch (err) {
         console.error(err);
     }

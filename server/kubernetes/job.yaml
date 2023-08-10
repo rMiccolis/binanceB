@@ -4,6 +4,7 @@ metadata:
   name: bot
   namespace: binance-b
 spec:
+  ttlSecondsAfterFinished: 3600
   parallelism: 5
   template:
     spec:

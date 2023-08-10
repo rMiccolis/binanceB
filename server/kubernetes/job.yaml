@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bot
+  namespace: binance-b
+spec:
+  template:
+    spec:
+      containers:
+      - name: bot
+        image: rmiccolis/binanceb_nodejs_server_job
+        env:
+          - name: JOB_IMAGE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: server-configmap
+                key: JOB_IMAGE_NAME
+        command: ["node", "./src/engine/botActivity.js"]
+      restartPolicy: Never
+  backoffLimit: 4

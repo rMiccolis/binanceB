@@ -4,6 +4,7 @@ metadata:
   name: bot
   namespace: binance-b
 spec:
+  parallelism: 5
   template:
     spec:
       containers:

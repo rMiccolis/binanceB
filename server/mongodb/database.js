@@ -40,6 +40,7 @@ async function loadDefaultData(params) {
         await seed_process.save();
     } catch (error) {
         console.logDebug("Database already seeded!");
+        console.logError(error)
     }
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];

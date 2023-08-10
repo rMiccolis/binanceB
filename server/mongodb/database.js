@@ -36,7 +36,11 @@ async function loadDefaultData(params) {
         type: "database_seed",
         status: 1,
     });
-    await seed_process.save();
+    try {
+        await seed_process.save();
+    } catch (error) {
+        console.logDebug("Database already seeded!");
+    }
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
         let fileContent = JSON.parse(fs.readFileSync(`./mongodb/data/${name}.json`, "utf8"));

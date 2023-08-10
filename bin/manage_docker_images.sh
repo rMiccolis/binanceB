@@ -78,9 +78,14 @@ echo -e "${LBLUE}Building server docker image...${WHITE}"
 # Start building docker server image
 sudo docker build -t $docker_username/$docker_server_repository_name -f ./server/server.dockerfile ./server/
 
+echo -e "${LBLUE}Building docker image for kubernetes jobs to be launched...${WHITE}"
+# Start building docker image for kubernetes jobs to be launched
+sudo docker build -t $docker_username/${docker_server_repository_name}_JOB -f ./server/job.dockerfile ./server/
+
 echo -e "${LBLUE}Pushing docker image to dockerhub...${WHITE}"
 # Push generated server docker image to docker hub
 sudo docker push $docker_username/$docker_server_repository_name:latest
+sudo docker push $docker_username/${docker_server_repository_name}_JOB:latest
 fi
 
 if [ "$reload_images" == "1" ]; then 

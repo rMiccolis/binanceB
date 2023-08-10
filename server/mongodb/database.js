@@ -22,26 +22,7 @@ async function connectToMongo(db_host = "", db_port = "", db_username = "", db_p
 
 async function loadDefaultData(params) {
     let fileNames = fs.readdirSync("./mongodb/data");
-    let process = dynamicModel("process");
-    db_already_seeded = await process.aggregate([{ $match: { name: "initialized_db" } }]);
-    if (db_already_seeded.length > 0) {
-        console.logDebug("Database already seeded!");
-        return;
-    }
-    let seed_process = new process({
-        _id: {
-            $oid: "64d4f883052f8def0c2d0c67",
-        },
-        name: "initialized_db",
-        type: "database_seed",
-        status: 1,
-    });
-    try {
-        await seed_process.save();
-    } catch (error) {
-        console.logDebug("Database already seeded!");
-        console.logError(error)
-    }
+
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
         let fileContent = JSON.parse(fs.readFileSync(`./mongodb/data/${name}.json`, "utf8"));
@@ -56,7 +37,7 @@ async function loadDefaultData(params) {
                 }
             }
             collection.insertMany(fileContent, function (error, docs) {
-                if (error) console.log(error);
+                if (error) console.logWarning(error);
                 else console.log(`${docs.length} documents inserted into`, name);
             });
         }

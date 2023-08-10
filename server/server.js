@@ -89,4 +89,22 @@ db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env
         process.exit(1);
     });
 
+const k8s = require('@kubernetes/client-node');
+
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+
+const main = async () => {
+    try {
+        const podsRes = await k8sApi.listNamespacedPod('default');
+        console.log(podsRes.body);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+main();
+
 // app.addListener();

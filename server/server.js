@@ -92,7 +92,7 @@ db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env
 const k8s = require('@kubernetes/client-node');
 
 const kc = new k8s.KubeConfig();
-kc.loadFromDefault();
+kc.loadFromCluster();
 
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 

@@ -11,6 +11,7 @@ const main = async () => {
         console.log("questi sono i pod attivi:")
         const podsRes = await k8sApi.listNamespacedPod('binance-b', pretty="true");
         console.log(podsRes.body.items[0].metadata);
+        console.log(process.env);
     } catch (err) {
         console.error(err);
     }

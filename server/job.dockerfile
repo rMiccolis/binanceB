@@ -10,4 +10,4 @@ COPY package.json /app/
 # installing the dependencies into the container
 RUN npm install
 #copying the source code of Application into the container dir
-COPY ./src/engine/ /app
+COPY . /app

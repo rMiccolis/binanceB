@@ -7,10 +7,10 @@ const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
 const main = async () => {
     try {
-        console.log("heyyyyyy il job è in running!")
-        console.log("questi sono i pod attivi:")
+        console.log("This was a test and the job is running!")
+        console.log(":")
         const podsRes = await k8sApi.listNamespacedPod('binance-b', pretty="true");
-        console.log(podsRes.body.items[0].metadata);
+        console.log(podsRes.body.items.map(el => el.metadata.name));
         console.log(process.env);
     } catch (err) {
         console.error(err);

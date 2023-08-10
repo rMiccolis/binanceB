@@ -39,6 +39,11 @@ spec:
            secretKeyRef:
              name: server-secret
              key: MONGO-ROOT-PASSWORD
+        - name: JOB_IMAGE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: server-configmap
+              key: JOB_IMAGE_NAME
         - name: MONGODB_DB_NAME
           valueFrom:
            configMapKeyRef:

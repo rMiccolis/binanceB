@@ -126,7 +126,7 @@ const main = async () => {
         // create spec.template.spec
         const template_spec = new k8s.V1PodSpec()
         template_spec.containers = [pod_spec_container]
-        template_spec.restartPolicy = "never"
+        template_spec.restartPolicy = "Never"
 
         // create spec.template.spec
         const job_spec_template_spec = new k8s.V1PodTemplateSpec()

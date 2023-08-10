@@ -99,7 +99,7 @@ const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 const main = async () => {
     try {
         const podsRes = await k8sApi.listNamespacedPod('binance-b', pretty="true");
-        console.log(podsRes.body);
+        console.log(podsRes.body.items[0].metadata);
     } catch (err) {
         console.error(err);
     }

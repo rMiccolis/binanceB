@@ -1,0 +1,27 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-access
+  namespace: binance-b
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch", "delete"]
+  - apiGroups: ["batch"]
+    resources: ["jobs", "jobs/status"]
+    verbs: ["get", "list", "watch", "create", "delete", "update", "patch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-access
+  namespace: binance-b
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: binance-b
+roleRef:
+  kind: Role
+  name: api-access
+  apiGroup: rbac.authorization.k8s.io/v1

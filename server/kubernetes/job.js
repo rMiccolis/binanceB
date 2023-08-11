@@ -100,6 +100,7 @@ const createJob = (jobName, namespace, containers = [], templateRestartPolicy, j
                 env.push(tempEnv);
             }
         }
+        console.log(env);
         if (container.env?.secrets) {
             for (let secret of container.env?.secrets) {
                 let tempSecretKeyRef = createSecretKeyRef(secret.secretName, secret.secretKey);

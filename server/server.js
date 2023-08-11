@@ -15,7 +15,7 @@ const utilsApi = require("./api/utils.api");
 const generalRouter = require("./api/general.api");
 const os = require("os");
 const k8s = require('@kubernetes/client-node');
-import { v6 as uuidv6 } from 'uuid';
+const {v4 : uuidv4} = require('uuid')
 
 
 // Initialize global session variable
@@ -75,7 +75,7 @@ app.use("/api/wallet", walletApi);
 let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    if (process.env.NODE_ENV != 'production') console.log("list of ENV variables:\n", process.env);
+    // if (process.env.NODE_ENV != 'production') console.log("list of ENV variables:\n", process.env);
 });
 
 db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD, process.env.MONGODB_DB_NAME)
@@ -92,7 +92,7 @@ db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env
         process.exit(1);
     });
 
-const main = async () => {
+const startJobK8s = async () => {
     try {
 
         const namespace = 'binance-b';
@@ -101,8 +101,10 @@ const main = async () => {
         kc.loadFromCluster();
 
         const batchV1Api = kc.makeApiClient(k8s.BatchV1Api);
-        job_uuid = uuidv6()
-        const jobName = `bot-${job_uuid}`;
+        let job_uuid = uuidv4().split('-').slice(-2).join('-')
+        let hostname = process.env.HOSTNAME.split('-').slice(1)
+        const jobName = `bot-${hostname}-${job_uuid}`;
+        console.log(job_uuid, jobName);
 
         // create spec.template.spec.containers.env.valueFrom.configMapKeyRef
         const configMapKeyRef = new k8s.V1ConfigMapKeySelector()
@@ -159,6 +161,6 @@ const main = async () => {
     }
 };
 
-main();
+startJobK8s();
 
 // app.addListener();

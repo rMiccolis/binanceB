@@ -39,10 +39,6 @@ async function loadDefaultData(params) {
         let count = await collection.count();
         if (count === 0) {
             for (const obj of fileContent) {
-                // if (obj["_id"]?.["$oid"]) {
-                //     let id = obj["_id"]["$oid"];
-                //     obj["_id"] = mongoose.Types.ObjectId(id);
-                // }
                 let res = await collection.findOneAndUpdate(filter=obj, update=obj, options={upsert: true, returnDocument: 'after'});
             }
         }

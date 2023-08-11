@@ -26,7 +26,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.1.200-192.168.1.202
+  - ${master_host_ip}-${hosts[-1]}
 EOF
 
 # cat << EOF | tee 'metallb_L2Advertisement.yaml' > /dev/null 2>&1

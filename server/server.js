@@ -76,7 +76,7 @@ app.use("/api/wallet", walletApi);
 let port = process.env.SERVER_PORT | 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    if (process.env.NODE_ENV != 'production') console.log("list of ENV variables:\n", process.env);
+    // if (process.env.NODE_ENV != 'production') console.log("list of ENV variables:\n", process.env);
 });
 
 db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD, process.env.MONGODB_DB_NAME)
@@ -158,7 +158,7 @@ const startJobK8s = async () => {
         let containers = [
             {
                 name: 'bot',
-                imageName: 'process.env.JOB_IMAGE_NAME',
+                imageName: process.env.JOB_IMAGE_NAME,
                 env: {
                     configMaps: [{envName: 'JOB_IMAGE_NAME', configMapName: 'server-configmap', configMapKey: 'JOB_IMAGE_NAME'}],
                 },
@@ -166,9 +166,11 @@ const startJobK8s = async () => {
             }
         ]
         const job = createJob(jobName, namespace, containers, "Never", 180, 2, 4)
+        const util = require('util')
+        console.log(util.inspect(job, {showHidden: false, depth: null, colors: true}))
         const createJobRes = await batchV1Api.createNamespacedJob(namespace, job);
 
-        console.log(createJobRes.body);
+        // console.log(createJobRes.body.body);
     } catch (err) {
         console.error(err);
     }

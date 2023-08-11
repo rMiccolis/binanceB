@@ -32,7 +32,7 @@ const createPod = (name, imageName, env = null, command = null) => {
     const pod_spec_container = new k8s.V1Container();
     pod_spec_container.name = name;
     pod_spec_container.image = imageName;
-    if (env) pod_spec_container.env = [env];
+    if (env) pod_spec_container.env = env;
     if (command) pod_spec_container.command = command;
     return pod_spec_container;
 };

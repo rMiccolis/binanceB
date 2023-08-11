@@ -1,4 +1,5 @@
 const k8s = require("@kubernetes/client-node");
+const util = require('util')
 
 const createConfigMapKeyRef = (configMapName, configMapKey) => {
     const configMapKeyRef = new k8s.V1ConfigMapKeySelector();
@@ -127,6 +128,8 @@ const createJob = (jobName, namespace, containers = [], templateRestartPolicy, j
 
     // create the job Object
     let job = createJobObject(metadata, jobSpec);
+
+    // console.log(util.inspect(job, {showHidden: false, depth: null, colors: true}))
 
     return job;
 };

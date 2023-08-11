@@ -10,7 +10,7 @@ const main = async () => {
         console.log("This was a test and the job is running!")
         console.log("these are the running pods:")
         const podsRes = await k8sApi.listNamespacedPod('binance-b', pretty="true");
-        console.log(podsRes.body.items.map(el => el.metadata.name));
+        console.log((podsRes.body.items.map(el => el.metadata.name)).join());
         console.log(process.env);
     } catch (err) {
         console.error(err);

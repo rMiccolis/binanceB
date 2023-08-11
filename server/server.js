@@ -93,68 +93,30 @@ db.connectToMongo(process.env.MONGODB_URI, process.env.MONGODB_PORT, process.env
         process.exit(1);
     });
 
+/**
+ * This is a test function to create a namespaced job that simply lists all pods in the same namespace (./src/engine/botActivity.js) with parallelism 2
+ *
+ */
 const startJobK8s = async () => {
     try {
 
         const namespace = 'binance-b';
 
+        // create job name
         let job_uuid = uuidv4().split('-').slice(3).join('-')
         let hostname = process.env.HOSTNAME.split('-').slice(2).join('-')
         const jobName = `bot-${hostname}-${job_uuid}`;
 
-        // // create spec.template.spec.containers.env.valueFrom.configMapKeyRef
-        // const configMapKeyRef = new k8s.V1ConfigMapKeySelector()
-        // configMapKeyRef.name = 'server-configmap'
-        // configMapKeyRef.key = 'JOB_IMAGE_NAME'
-
-        // // create spec.template.spec.containers.env.valueFrom
-        // const valueFrom = new k8s.V1EnvVarSource()
-        // valueFrom.configMapKeyRef = configMapKeyRef
-
-        // // create spec.template.spec.containers.env
-        // const env = new k8s.V1EnvVar()
-        // env.name = 'JOB_IMAGE_NAME'
-        // env.valueFrom = valueFrom
-
-        // // create spec.template.spec.containers.pod
-        // const pod_spec_container = new k8s.V1Container()
-        // pod_spec_container.name = 'bot'
-        // pod_spec_container.image = process.env.JOB_IMAGE_NAME
-        // pod_spec_container.env = [env]
-        // pod_spec_container.command = ["node", "./src/engine/botActivity.js"]
-
-        // // create spec.template.containers
-        // const template_spec = new k8s.V1PodSpec()
-        // template_spec.containers = [pod_spec_container]
-        // template_spec.restartPolicy = "Never"
-
-        // // create job.spec.template
-        // const job_spec_template_spec = new k8s.V1PodTemplateSpec()
-        // job_spec_template_spec.spec = template_spec
-
-        // // create job.spec
-        // const job_spec = new k8s.V1JobSpec();
-        // job_spec.ttlSecondsAfterFinished = 180
-        // job_spec.parallelism = 2
-        // job_spec.backoffLimit = 4
-        // job_spec.template = job_spec_template_spec
-
-        // // create job.metadata
-        // const metadata = new k8s.V1ObjectMeta();
-        // metadata.name = jobName;
-        // metadata.namespace = "binance-b"
-
-        // // create job
-        // const job = new k8s.V1Job();
-        // job.apiVersion = 'batch/v1';
-        // job.kind = 'Job';
-        // job.metadata = metadata;
-        // job.spec = job_spec
-
-        // api call to kubernetes to create job
+        // init k8s object configuration
         const kc = new k8s.KubeConfig();
+
+        // loadFromCluster to load configuration when the process launching 'kc.loadFromCluster();' is inside the cluster (from a pod like in this case)
         kc.loadFromCluster();
+
+        // create BatchV1Api object
         const batchV1Api = kc.makeApiClient(k8s.BatchV1Api);
+
+        // create containers list
         let containers = [
             {
                 name: 'bot',
@@ -165,9 +127,11 @@ const startJobK8s = async () => {
                 command: ["node", "./src/engine/botActivity.js"]
             }
         ]
+
+        // create the job object
         const job = createJob(jobName, namespace, containers, "Never", 180, 2, 4)
-        const util = require('util')
-        console.log(util.inspect(job, {showHidden: false, depth: null, colors: true}))
+        
+        // api call to kubernetes to create job
         const createJobRes = await batchV1Api.createNamespacedJob(namespace, job);
 
         console.log(createJobRes.body);

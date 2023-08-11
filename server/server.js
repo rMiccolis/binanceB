@@ -101,7 +101,7 @@ const startJobK8s = async () => {
         kc.loadFromCluster();
 
         const batchV1Api = kc.makeApiClient(k8s.BatchV1Api);
-        let job_uuid = uuidv4().split('-').slice(2).join('-')
+        let job_uuid = uuidv4().split('-').slice(3).join('-')
         let hostname = process.env.HOSTNAME.split('-').slice(2).join('-')
         const jobName = `bot-${hostname}-${job_uuid}`;
         console.log(job_uuid, `------- ${hostname} -------`, jobName);

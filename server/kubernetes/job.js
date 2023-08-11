@@ -92,13 +92,13 @@ const createJob = (jobName, namespace, containers=[], templateRestartPolicy, job
     for (let container of containers) {
         // create env stage
         let env = []
-        for (let config of container.configMaps) {
+        for (let config of container.env?.configMaps) {
             let tempConfigMapKeyRef = createConfigMapKeyRef(config.name, config.key)
             let tempEnvValueFrom = createEnvValueFrom(tempConfigMapKeyRef)
             let tempEnv = createEnvVar(config.envName, tempEnvValueFrom)
             env.push(tempEnv)
         }
-        for (let secret of container.secrets) {
+        for (let secret of container.env?.secrets) {
             let tempSecretKeyRef = createSecretKeyRef(secret.name, secret.key)
             let tempEnvValueFrom = createEnvValueFrom(null, tempSecretKeyRef)
             let tempEnv = createEnvVar(secret.envName, tempEnvValueFrom)

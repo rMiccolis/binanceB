@@ -18,6 +18,17 @@ echo -e "${LBLUE}METAL LB successfully installed with Helm!${WHITE}"
 
 echo -e "${LBLUE}Applying configuration to METAL LB...${WHITE}"
 
+cat << EOF | tee 'metallb_ipaddresspool.yaml' > /dev/null 2>&1
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: first-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - ${master_host_ip}/32
+EOF
+
 temp_host_list=(${hosts[@]})
 addresses=()
 for h in "${hosts[@]}"; do
@@ -29,17 +40,6 @@ cat << EOF | tee -a 'metallb_ipaddresspool.yaml' > /dev/null 2>&1
   - ${host_ip}/32
 EOF
 done
-
-cat << EOF | tee 'metallb_ipaddresspool.yaml' > /dev/null 2>&1
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: first-pool
-  namespace: metallb-system
-spec:
-  addresses:
-  - ${master_host_ip}/32
-EOF
 
 # cat << EOF | tee 'metallb_L2Advertisement.yaml' > /dev/null 2>&1
 # apiVersion: metallb.io/v1beta1

@@ -98,9 +98,10 @@ const createJob = (jobName, namespace, containers = [], templateRestartPolicy, j
                 let tempEnvValueFrom = createEnvValueFrom(tempConfigMapKeyRef);
                 let tempEnv = createEnvVar(config.envName, tempEnvValueFrom);
                 env.push(tempEnv);
+                console.log(tempConfigMapKeyRef);
+                console.log(tempEnvValueFrom);
             }
         }
-        console.log(env);
         if (container.env?.secrets) {
             for (let secret of container.env?.secrets) {
                 let tempSecretKeyRef = createSecretKeyRef(secret.secretName, secret.secretKey);

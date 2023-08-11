@@ -170,9 +170,9 @@ const startJobK8s = async () => {
         console.log(util.inspect(job, {showHidden: false, depth: null, colors: true}))
         const createJobRes = await batchV1Api.createNamespacedJob(namespace, job);
 
-        // console.log(createJobRes.body.body);
+        console.log(createJobRes.body);
     } catch (err) {
-        console.error(err);
+        console.error(err.body || err);
     }
 };
 

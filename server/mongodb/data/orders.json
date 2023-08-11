@@ -1,14 +1,8 @@
 [{
-  "_id": {
-    "$oid": "62f54a12f3bd083bacfffd58"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810280,
   "orderListId": -1,
   "clientOrderId": "wdX9H4AGC7bSW0aakDNSnG",
-  "transactTime": {
-    "$numberLong": "1660242451223"
-  },
   "price": "317.07000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -21,16 +15,10 @@
   "userId": "test",
   "sellPrice": "321.19"
 },{
-  "_id": {
-    "$oid": "62f54a13f3bd083bacfffd5a"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810282,
   "orderListId": -1,
   "clientOrderId": "vw4Tf8oxP7QC8AC5zLTZYb",
-  "transactTime": {
-    "$numberLong": "1660242451522"
-  },
   "price": "323.57000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -43,16 +31,10 @@
   "userId": "test",
   "sellPrice": "327.78"
 },{
-  "_id": {
-    "$oid": "62f54a13f3bd083bacfffd5c"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810283,
   "orderListId": -1,
   "clientOrderId": "Qa6EuCh80CMdXX6CcHgwbF",
-  "transactTime": {
-    "$numberLong": "1660242451828"
-  },
   "price": "322.76000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -65,16 +47,10 @@
   "userId": "test",
   "sellPrice": "326.96"
 },{
-  "_id": {
-    "$oid": "62f54a13f3bd083bacfffd5e"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810284,
   "orderListId": -1,
   "clientOrderId": "XNNbsSQOMYbcr9VBcNn0vK",
-  "transactTime": {
-    "$numberLong": "1660242452125"
-  },
   "price": "321.95000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -87,16 +63,10 @@
   "userId": "test",
   "sellPrice": "326.14"
 },{
-  "_id": {
-    "$oid": "62f54a13f3bd083bacfffd60"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810285,
   "orderListId": -1,
   "clientOrderId": "0OU6s2myi5ewOAHIVnHyC7",
-  "transactTime": {
-    "$numberLong": "1660242452426"
-  },
   "price": "321.30000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -109,16 +79,10 @@
   "userId": "test",
   "sellPrice": "325.48"
 },{
-  "_id": {
-    "$oid": "62f54a14f3bd083bacfffd62"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810287,
   "orderListId": -1,
   "clientOrderId": "Ewtjy5B0Oa8V3uhDhn1lrh",
-  "transactTime": {
-    "$numberLong": "1660242453170"
-  },
   "price": "320.65000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -131,16 +95,10 @@
   "userId": "test",
   "sellPrice": "324.82"
 },{
-  "_id": {
-    "$oid": "62f54a15f3bd083bacfffd64"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810289,
   "orderListId": -1,
   "clientOrderId": "PXEs5wT7VXRIzkfLMxP5yM",
-  "transactTime": {
-    "$numberLong": "1660242453471"
-  },
   "price": "320.00000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -153,16 +111,10 @@
   "userId": "test",
   "sellPrice": "324.16"
 },{
-  "_id": {
-    "$oid": "62f54a15f3bd083bacfffd66"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810292,
   "orderListId": -1,
   "clientOrderId": "7BBfdIAMZ6nbykhJBuYPp1",
-  "transactTime": {
-    "$numberLong": "1660242453765"
-  },
   "price": "319.35000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -175,16 +127,10 @@
   "userId": "test",
   "sellPrice": "323.50"
 },{
-  "_id": {
-    "$oid": "62f54a15f3bd083bacfffd68"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810293,
   "orderListId": -1,
   "clientOrderId": "kOK52RzD8wzFjwbLEX5eZB",
-  "transactTime": {
-    "$numberLong": "1660242454062"
-  },
   "price": "318.70000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -197,16 +143,10 @@
   "userId": "test",
   "sellPrice": "322.84"
 },{
-  "_id": {
-    "$oid": "62f54a15f3bd083bacfffd6a"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810294,
   "orderListId": -1,
   "clientOrderId": "RxqqC0Ax7ZHAYzKk8CSFiE",
-  "transactTime": {
-    "$numberLong": "1660242454375"
-  },
   "price": "318.05000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -219,16 +159,10 @@
   "userId": "test",
   "sellPrice": "322.18"
 },{
-  "_id": {
-    "$oid": "62f54a16f3bd083bacfffd6c"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810298,
   "orderListId": -1,
   "clientOrderId": "f9jqo8fuZWHAOZMqQFvBAi",
-  "transactTime": {
-    "$numberLong": "1660242454675"
-  },
   "price": "317.40000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -241,16 +175,10 @@
   "userId": "test",
   "sellPrice": "321.53"
 },{
-  "_id": {
-    "$oid": "62f54a16f3bd083bacfffd6e"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810299,
   "orderListId": -1,
   "clientOrderId": "IddhDUGQLCrrfYUQgIAoiR",
-  "transactTime": {
-    "$numberLong": "1660242454973"
-  },
   "price": "316.74000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -263,16 +191,10 @@
   "userId": "test",
   "sellPrice": "320.86"
 },{
-  "_id": {
-    "$oid": "62f54a16f3bd083bacfffd70"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810300,
   "orderListId": -1,
   "clientOrderId": "lVWx4N5pfbySsrBm0T9pza",
-  "transactTime": {
-    "$numberLong": "1660242455271"
-  },
   "price": "316.09000000",
   "origQty": "0.09000000",
   "executedQty": "0.00000000",
@@ -285,16 +207,10 @@
   "userId": "test",
   "sellPrice": "320.20"
 },{
-  "_id": {
-    "$oid": "62f54a17f3bd083bacfffd72"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810302,
   "orderListId": -1,
   "clientOrderId": "6CeELsutN8YNHHRoyCXs6w",
-  "transactTime": {
-    "$numberLong": "1660242455566"
-  },
   "price": "315.44000000",
   "origQty": "0.10000000",
   "executedQty": "0.00000000",
@@ -307,16 +223,10 @@
   "userId": "test",
   "sellPrice": "319.54"
 },{
-  "_id": {
-    "$oid": "62f54a17f3bd083bacfffd74"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810303,
   "orderListId": -1,
   "clientOrderId": "JNYrtPtbHsZNjN9y9YVt1L",
-  "transactTime": {
-    "$numberLong": "1660242455859"
-  },
   "price": "313.82000000",
   "origQty": "0.10000000",
   "executedQty": "0.00000000",
@@ -329,16 +239,10 @@
   "userId": "test",
   "sellPrice": "317.90"
 },{
-  "_id": {
-    "$oid": "62f54a17f3bd083bacfffd76"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810304,
   "orderListId": -1,
   "clientOrderId": "dSBE1v09tkERy8IlW6SkhK",
-  "transactTime": {
-    "$numberLong": "1660242456170"
-  },
   "price": "312.19000000",
   "origQty": "0.10000000",
   "executedQty": "0.00000000",
@@ -351,16 +255,10 @@
   "userId": "test",
   "sellPrice": "316.25"
 },{
-  "_id": {
-    "$oid": "62f54a17f3bd083bacfffd78"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810306,
   "orderListId": -1,
   "clientOrderId": "yNtoGywM7piKsPzULxODtA",
-  "transactTime": {
-    "$numberLong": "1660242456464"
-  },
   "price": "308.94000000",
   "origQty": "0.12000000",
   "executedQty": "0.00000000",
@@ -373,16 +271,10 @@
   "userId": "test",
   "sellPrice": "312.96"
 },{
-  "_id": {
-    "$oid": "62f54a18f3bd083bacfffd7a"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810308,
   "orderListId": -1,
   "clientOrderId": "OMD93FtpUXRxn0X9r6RQEJ",
-  "transactTime": {
-    "$numberLong": "1660242456763"
-  },
   "price": "304.06000000",
   "origQty": "0.12000000",
   "executedQty": "0.00000000",
@@ -395,16 +287,10 @@
   "userId": "test",
   "sellPrice": "308.01"
 },{
-  "_id": {
-    "$oid": "62f54a18f3bd083bacfffd7c"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810309,
   "orderListId": -1,
   "clientOrderId": "WCqH4uvxR9dei4T6r8gZnH",
-  "transactTime": {
-    "$numberLong": "1660242457301"
-  },
   "price": "300.81000000",
   "origQty": "0.12000000",
   "executedQty": "0.00000000",
@@ -417,16 +303,10 @@
   "userId": "test",
   "sellPrice": "304.72"
 },{
-  "_id": {
-    "$oid": "62f54a19f3bd083bacfffd7e"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810313,
   "orderListId": -1,
   "clientOrderId": "WjRJvme4OHW5nzY4Pu335o",
-  "transactTime": {
-    "$numberLong": "1660242457609"
-  },
   "price": "295.93000000",
   "origQty": "0.12000000",
   "executedQty": "0.00000000",
@@ -439,16 +319,10 @@
   "userId": "test",
   "sellPrice": "299.78"
 },{
-  "_id": {
-    "$oid": "62f54a19f3bd083bacfffd80"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810314,
   "orderListId": -1,
   "clientOrderId": "MD329A8RJcGEfyyh7tV6y4",
-  "transactTime": {
-    "$numberLong": "1660242457921"
-  },
   "price": "289.43000000",
   "origQty": "0.12000000",
   "executedQty": "0.00000000",
@@ -461,16 +335,10 @@
   "userId": "test",
   "sellPrice": "293.19"
 },{
-  "_id": {
-    "$oid": "62f54a19f3bd083bacfffd82"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810315,
   "orderListId": -1,
   "clientOrderId": "RaY1YYCkF4k3NIEllLKRfA",
-  "transactTime": {
-    "$numberLong": "1660242458218"
-  },
   "price": "282.92000000",
   "origQty": "0.13000000",
   "executedQty": "0.00000000",
@@ -483,16 +351,10 @@
   "userId": "test",
   "sellPrice": "286.60"
 },{
-  "_id": {
-    "$oid": "62f54a1af3bd083bacfffd84"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810319,
   "orderListId": -1,
   "clientOrderId": "vYHWMOWS87jTtZwbm4gRIK",
-  "transactTime": {
-    "$numberLong": "1660242458511"
-  },
   "price": "276.42000000",
   "origQty": "0.13000000",
   "executedQty": "0.00000000",
@@ -505,16 +367,10 @@
   "userId": "test",
   "sellPrice": "280.01"
 },{
-  "_id": {
-    "$oid": "62f54a1af3bd083bacfffd86"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810321,
   "orderListId": -1,
   "clientOrderId": "OIDwaKC5zQYthZOMChmHwm",
-  "transactTime": {
-    "$numberLong": "1660242458810"
-  },
   "price": "266.66000000",
   "origQty": "0.16000000",
   "executedQty": "0.00000000",
@@ -527,16 +383,10 @@
   "userId": "test",
   "sellPrice": "270.13"
 },{
-  "_id": {
-    "$oid": "62f54a1af3bd083bacfffd88"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810322,
   "orderListId": -1,
   "clientOrderId": "e3uq2CIpk1NiR4047Otwld",
-  "transactTime": {
-    "$numberLong": "1660242459106"
-  },
   "price": "256.91000000",
   "origQty": "0.16000000",
   "executedQty": "0.00000000",
@@ -549,16 +399,10 @@
   "userId": "test",
   "sellPrice": "260.25"
 },{
-  "_id": {
-    "$oid": "62f54a1af3bd083bacfffd8a"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810323,
   "orderListId": -1,
   "clientOrderId": "IxPL9LpxJDjj3vY7evDp9v",
-  "transactTime": {
-    "$numberLong": "1660242459398"
-  },
   "price": "247.15000000",
   "origQty": "0.24000000",
   "executedQty": "0.00000000",
@@ -571,16 +415,10 @@
   "userId": "test",
   "sellPrice": "250.36"
 },{
-  "_id": {
-    "$oid": "62f54a1bf3bd083bacfffd8c"
-  },
   "symbol": "BNBUSDT",
   "orderId": 810327,
   "orderListId": -1,
   "clientOrderId": "cZqBoi3zvLQcdMYg709GuL",
-  "transactTime": {
-    "$numberLong": "1660242459703"
-  },
   "price": "237.40000000",
   "origQty": "0.25000000",
   "executedQty": "0.00000000",

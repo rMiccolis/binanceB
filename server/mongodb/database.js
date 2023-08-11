@@ -2,8 +2,16 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 
 async function connectToMongo(db_host = "", db_port = "", db_username = "", db_password = "", db_name = "") {
-    let connectionString = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_name}?authSource=admin`;
-    let printConnectionString = `mongodb://${db_username}:********@${db_host}:${db_port}/${db_name}?authSource=admin`;
+    let connectionString = ""
+    let printConnectionString = ""
+    if (!db_username || !db_password) {
+        connectionString = `mongodb://${db_host}:${db_port}/${db_name}?authSource=admin`;
+        printConnectionString = `mongodb://${db_host}:${db_port}/${db_name}?authSource=admin`;
+    } else {
+        connectionString = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_name}?authSource=admin`;
+        printConnectionString = `mongodb://${db_username}:********@${db_host}:${db_port}/${db_name}?authSource=admin`;
+    }
+    console.log(connectionString);
     console.log(`Trying to connect to mongoDB ${printConnectionString} ...`);
     let connection = await mongoose.createConnection(connectionString).asPromise();
     connection.addListener("disconnected", function () {
@@ -31,15 +39,12 @@ async function loadDefaultData(params) {
         let count = await collection.count();
         if (count === 0) {
             for (const obj of fileContent) {
-                if (obj["_id"]?.["$oid"]) {
-                    let id = obj["_id"]["$oid"];
-                    obj["_id"] = mongoose.Types.ObjectId(id);
-                }
+                // if (obj["_id"]?.["$oid"]) {
+                //     let id = obj["_id"]["$oid"];
+                //     obj["_id"] = mongoose.Types.ObjectId(id);
+                // }
+                let res = await collection.findOneAndUpdate(filter=obj, update=obj, options={upsert: true, returnDocument: 'after'});
             }
-            collection.insertMany(fileContent, function (error, docs) {
-                if (error) console.logWarning(error);
-                else console.log(`${docs.length} documents inserted into`, name);
-            });
         }
     }
 }

@@ -1,14 +1,8 @@
 [{
-  "_id": {
-    "$oid": "6309072f592fd660dd8beb81"
-  },
   "userId": "aa",
   "password": "927a867f0cfa38f4fd8dc4df99a5682e296482ce9ded357821cb4e9b613ef19a02e29483303ecc0ffbfeafe49b1127430f67f0371ed0bdb0c07c173609d79bb6",
   "salt": "2dbd06851368f8610414a91645a49a1b",
   "API_KEY": "7AzxBmlgXgrWlZd8TndP4yLlfrFc6s0vFefXebfGNprVSIuoQhI7iZpnjDdPCS64",
   "API_SECRET": "CH5KciUXN4dxRhln8C43mVDBYeNaB3eRDUQIIAZu9qtwGBrHzhKdP4A9ntTBDhkr",
-  "last_update": {
-    "$numberLong": "1664455580354"
-  },
   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhYSIsImlhdCI6MTY2NDQ1NTU4MDM1MiwiZXhwIjoxNjY0NDU4NTgwMzUyfQ.RpEcHc0jEPYPV1PPDsyFie80Z4Fa8BQqCqpXxVqdZAk"
 }]

@@ -1,7 +1,4 @@
 [{
-  "_id": {
-    "$oid": "62d194d8f8536347040276cd"
-  },
   "couple": "BNBUSDT",
   "tradeQuantity": 30,
   "recallsNumber": 27,

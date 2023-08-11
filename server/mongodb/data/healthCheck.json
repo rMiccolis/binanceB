@@ -1,14 +1,8 @@
 [
     {
-        "_id": {
-            "$oid": "64d4f887052f8def0c2d0c6a"
-        },
         "health": "Ok"
     },
     {
-        "_id": {
-            "$oid": "64d4f883052f8def0c2d0c67"
-        },
         "name": "initialized_db",
         "type": "database_seed",
         "status": 1

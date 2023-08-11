@@ -18,6 +18,18 @@ echo -e "${LBLUE}METAL LB successfully installed with Helm!${WHITE}"
 
 echo -e "${LBLUE}Applying configuration to METAL LB...${WHITE}"
 
+temp_host_list=(${hosts[@]})
+addresses=()
+for h in "${hosts[@]}"; do
+# adding remote hosts to the hosts file
+host_string=()
+IFS='@' read -r -a host_string <<< "$h"
+host_ip=${host_string[1]}
+cat << EOF | tee -a 'metallb_ipaddresspool.yaml' > /dev/null 2>&1
+  - ${host_ip}/32
+EOF
+done
+
 cat << EOF | tee 'metallb_ipaddresspool.yaml' > /dev/null 2>&1
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -26,7 +38,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - ${master_host_ip}-${hosts[-1]}
+  - ${master_host_ip}/32
 EOF
 
 # cat << EOF | tee 'metallb_L2Advertisement.yaml' > /dev/null 2>&1

@@ -94,7 +94,7 @@ const createJob = (jobName, namespace, containers = [], templateRestartPolicy, j
         let env = [];
         if (container.env?.configMaps) {
             for (let config of container.env.configMaps) {
-                let tempConfigMapKeyRef = createConfigMapKeyRef(config.name, config.key);
+                let tempConfigMapKeyRef = createConfigMapKeyRef(config.configMapName, config.configMapKey);
                 let tempEnvValueFrom = createEnvValueFrom(tempConfigMapKeyRef);
                 let tempEnv = createEnvVar(config.envName, tempEnvValueFrom);
                 env.push(tempEnv);
@@ -102,7 +102,7 @@ const createJob = (jobName, namespace, containers = [], templateRestartPolicy, j
         }
         if (container.env?.secrets) {
             for (let secret of container.env?.secrets) {
-                let tempSecretKeyRef = createSecretKeyRef(secret.name, secret.key);
+                let tempSecretKeyRef = createSecretKeyRef(secret.secretName, secret.secretKey);
                 let tempEnvValueFrom = createEnvValueFrom(null, tempSecretKeyRef);
                 let tempEnv = createEnvVar(secret.envName, tempEnvValueFrom);
                 env.push(tempEnv);

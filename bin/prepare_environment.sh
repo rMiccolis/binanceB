@@ -6,7 +6,7 @@ echo -e "${LBLUE}Getting Master host info...${WHITE}"
 # ip_addr=()
 # ip_addr+=($(hostname -I))
 # export master_host_ip=${ip_addr[1]}
-export master_host_ip="10.10.1.0"
+export master_host_ip="10.10.1.1"
 export master_host_name=$(whoami)
 echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
 echo -e "${LBLUE}Setting Master host name ===> $master_host_name${WHITE}"

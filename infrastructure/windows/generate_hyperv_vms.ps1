@@ -115,6 +115,10 @@ New-Item -Path $vm_store_path -ItemType Directory
 $master_host_name = ""
 $master_host_ip = ""
 
+# Set the mac address of the VM. they will start from 00155D380130,00155D380131, ...
+$decimal_host = 3
+$unit_host = 1
+
 # Loop for each host and create its own virtual machine
 for ($i=0;$i -lt $all_hosts.Length; $i++) {
     
@@ -144,12 +148,13 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $VMName = $host_user
     # Set Virtual Switch Name
     $virtualSwitchName = 'VM'
-    # Set the mac address of the VM. they will start from 00155D380130,00155D380131, ...
-    $decimal_host = 3
+    
     if ($i -gt 9) {
         $decimal_host += 1
+        $unit_host = 1
     }
-    $mac_address = "00155D3801" + $decimal_host + $i
+    $mac_address = "00155D3801" + $decimal_host + $unit_host
+    $unit_host += 1
 
     # Virtual Machine data:
     $GuestOSName = $host_user

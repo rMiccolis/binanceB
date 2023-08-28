@@ -101,7 +101,6 @@ wait
 
 ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
 wait
-counter+=1
 fi
 
 done

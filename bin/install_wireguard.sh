@@ -91,9 +91,9 @@ AllowedIPs = ${host_ip_vpn}/32
 
 EOF
 
-ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/wireguard/"&
+ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/wireguard/" &
 wait
-ssh ${host_username}@$host_ip "sudo chmod -R 770 /etc/wireguard/"&
+ssh ${host_username}@$host_ip "sudo chmod -R 770 /etc/wireguard/" &
 wait
 
 scp -q /etc/wireguard/${host_username}_wg0.conf ${host_username}@$host_ip:/etc/wireguard/wg0.conf &

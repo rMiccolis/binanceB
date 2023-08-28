@@ -41,9 +41,10 @@ IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 
-wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
 if [ "${host_username}" == "m1" ]; then
+wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
+sudo chmod -R u+rw /etc/wireguard/
 master_host_ip=$host_ip
 master_host_ip_vpn="10.10.1.${counter}/16"
 master_host_name=$host_username
@@ -86,6 +87,9 @@ PublicKey = $(cat ${host_username}_publickey)
 AllowedIPs = 10.10.1.${counter}/32
 
 EOF
+
+ssh ${host_username}@$host_ip "sudo chmod -R u+rw /etc/wireguard/" &
+wait
 
 scp -q /etc/wireguard/${host_username}_wg0.conf $host_ip:/etc/wireguard/wg0.conf &
 wait

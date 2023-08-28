@@ -105,8 +105,8 @@ ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
 wait
 
 echo -e "${LBLUE}Adding peer $host_username to server Configuration ${WHITE}"
-wg set wg0 peer "$(cat ${host_username}_publickey)" allowed-ips ${host_ip_vpn}/32
-ip -4 route add ${host_ip_vpn}/32 dev wg0
+sudo wg set wg0 peer "$(cat ${host_username}_publickey)" allowed-ips ${host_ip_vpn}/32
+sudo ip -4 route add ${host_ip_vpn}/32 dev wg0
 fi
 
 done

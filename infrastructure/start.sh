@@ -43,6 +43,8 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
 . ./binanceB/bin/install_wireguard.sh -c "$config_file_path"
 
+cd /home/$USER/
+
 echo -e "${LGREEN}Starting phase 0 / 10: Reading data and preparing working environment:${WHITE}"
 export config_file_path=$config_file_path
 . ./binanceB/bin/prepare_environment.sh

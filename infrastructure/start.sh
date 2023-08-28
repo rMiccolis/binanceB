@@ -41,7 +41,7 @@ echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
 
 echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
-. ./binanceB/bin/install_wireguard.sh -c config_file_path
+. ./binanceB/bin/install_wireguard.sh -c "$config_file_path"
 
 echo -e "${LGREEN}Starting phase 0 / 10: Reading data and preparing working environment:${WHITE}"
 export config_file_path=$config_file_path

@@ -30,8 +30,8 @@ spec:
 EOF
 
 temp_host_list=(${hosts[@]})
-addresses=()
-for h in "${hosts[@]}"; do
+addresses=(${hosts[@]})
+for h in "${addresses[@]}"; do
 # adding remote hosts to the hosts file
 host_string=()
 IFS='@' read -r -a host_string <<< "$h"

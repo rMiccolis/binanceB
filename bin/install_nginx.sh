@@ -7,6 +7,9 @@ helm repo update > /dev/null 2>&1
 externalIPs="$master_host_ip"
 
 # externalIPs: [$master_host_ip $control_plane_hosts_string]
+
+#tcp:
+#  27017: "mongodb/mongodb:27017" => tcp_port_to_expose: namespace/service_name:service_port
 cat << EOF | tee nginx_helm_config.yaml > /dev/null 2>&1
 tcp:
   27017: "mongodb/mongodb:27017"
@@ -27,7 +30,7 @@ controller:
     effect: NoSchedule
   autoscaling:
     enabled: true
-    minReplicas: 2
+    minReplicas: 1
     maxReplicas: 3
     targetCPUUtilizationPercentage: 50
     targetMemoryUtilizationPercentage: 50

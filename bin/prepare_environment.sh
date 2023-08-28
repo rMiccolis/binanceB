@@ -8,7 +8,7 @@ echo -e "${LBLUE}Getting Master host info...${WHITE}"
 # export master_host_ip=${ip_addr[1]}
 master_host_vpn_ip=()
 IFS='@' read -r -a master_host_vpn_ip <<< "$(yq '.master_host' $config_file_path)"
-export master_host_ip=$master_host_vpn_ip[2]
+export master_host_ip=${master_host_vpn_ip[2]}
 export master_host_name=$(whoami)
 echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
 echo -e "${LBLUE}Setting Master host name ===> $master_host_name${WHITE}"

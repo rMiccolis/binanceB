@@ -44,8 +44,7 @@ host_ip=${host_string[1]}
 wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
 if [ "${host_username}" == "m1" ]; then
-chown root:${host_username} /etc/wireguard/
-sudo chmod -R 770 /etc/wireguard/
+
 master_host_ip=$host_ip
 master_host_ip_vpn="10.10.1.${counter}/16"
 master_host_name=$host_username
@@ -57,7 +56,10 @@ PrivateKey = $(cat ${host_username}_privatekey)
 
 EOF
 
-counter=1
+chown root:${host_username} /etc/wireguard/
+sudo chmod -R 770 /etc/wireguard/
+
+counter+=1
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -66,11 +68,6 @@ wait
 ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &
 wait
 ssh ${host_username}@$host_ip "umask 077" &
-wait
-
-ssh ${host_username}@$host_ip "chown root:${host_username} /etc/wireguard/"&
-wait
-ssh ${host_username}@$host_ip "sudo chmod -R 770 /etc/wireguard/"&
 wait
 
 sudo cat << EOF | sudo tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
@@ -94,10 +91,12 @@ AllowedIPs = 10.10.1.${counter}/32
 
 EOF
 
-ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/wireguard/" &
+ssh ${host_username}@$host_ip "chown root:${host_username} /etc/wireguard/"&
+wait
+ssh ${host_username}@$host_ip "sudo chmod -R 770 /etc/wireguard/"&
 wait
 
-scp -q /etc/wireguard/${host_username}_wg0.conf $host_ip:/etc/wireguard/wg0.conf &
+scp -q /etc/wireguard/${host_username}_wg0.conf ${host_username}@$host_ip:/etc/wireguard/wg0.conf &
 wait
 
 ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &

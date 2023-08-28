@@ -75,6 +75,9 @@ for h in ${host_list[@]}; do
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
   host_ip=${host_string[2]}
+
+  host_vpn_ssh_string=$host_username@$host_ip
+
   echo -e "${LPURPLE}------------------------------------------------${WHITE}"
   echo -e "${LPURPLE}Working on: $host_username@$host_ip${WHITE}"
 
@@ -83,27 +86,27 @@ for h in ${host_list[@]}; do
   wait
 
   # save host ip address
-  ssh $h "sudo hostnamectl set-hostname $host_username" &
+  ssh $host_vpn_ssh_string "sudo hostnamectl set-hostname $host_username" &
   wait
 
   # executing config_file.sh on the remote host
-  scp -q ~/config_file.sh $h:/home/$host_username/ &
+  scp -q ~/config_file.sh $host_vpn_ssh_string:/home/$host_username/ &
   wait
-  ssh $h "chmod u+x /home/$host_username/config_file.sh" &
+  ssh $host_vpn_ssh_string "chmod u+x /home/$host_username/config_file.sh" &
   wait
-  ssh $h ". /home/$host_username/config_file.sh" &
+  ssh $host_vpn_ssh_string ". /home/$host_username/config_file.sh" &
   wait
 
   # add github to the list of known_hosts addresses
   echo -e "${LBLUE}Adding github.com to known_hosts addresses list...${WHITE}"
-  ssh -q $h "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
+  ssh -q $host_vpn_ssh_string "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
   
   # add master to the list of known_hosts addresses
   echo -e "${LBLUE}Adding master to known_hosts addresses list...${WHITE}"
-  ssh -q $h "ssh-keyscan $master_host_ip >> ~/.ssh/known_hosts" &
+  ssh -q $host_vpn_ssh_string "ssh-keyscan $master_host_ip >> ~/.ssh/known_hosts" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -111,16 +114,16 @@ for h in ${host_list[@]}; do
   # clone github repository code 
   echo -e "${LBLUE}Cloning code repository...${WHITE}"
   # ssh -A $h "git clone --single-branch --branch $github_branch_name git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
-  scp -q -r /home/$master_host_name/binanceB $h:/home/$host_username/
+  scp -q -r /home/$master_host_name/binanceB $host_vpn_ssh_string:/home/$host_username/
   # wait
-  ssh $h "chmod -R u+x ./binanceB" &
+  ssh $host_vpn_ssh_string "chmod -R u+x ./binanceB" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
   
   # Setting host settings and dependencies
   echo -e "${LBLUE}Setting host settings and dependencies...${WHITE}"
-  ssh -t $h "/home/$host_username/binanceB/bin/set_host_settings.sh" &
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -128,7 +131,7 @@ for h in ${host_list[@]}; do
   # Installing Docker Engine
   echo -e "${LBLUE}Installing Docker Engine...${WHITE}"
   wait
-  ssh -t $h "/home/$host_username/binanceB/bin/install_docker.sh" &
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_docker.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -136,7 +139,7 @@ for h in ${host_list[@]}; do
   # Installing Cri-Docker (Container Runtime Interface)
   echo -e "${LBLUE}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
   wait
-  ssh -t $h "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -144,7 +147,7 @@ for h in ${host_list[@]}; do
   # Installing Kubernetes
   echo -e "${LBLUE}Installing Kubernetes${WHITE}"
   wait
-  ssh -t $h "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -153,17 +156,17 @@ for h in ${host_list[@]}; do
   echo -e "${LBLUE}Joining $host_username@$host_ip to the cluster${WHITE}"
   if [ "${host_username:0:1}" == "m" ]; then
     echo "Joining control-plane node to the cluster"
-    ssh -q $h "$join_control_plane" &
+    ssh -q $host_vpn_ssh_string "$join_control_plane" &
     wait
-    ssh -q $h "mkdir -p /home/$host_username/.kube" &
+    ssh -q $host_vpn_ssh_string "mkdir -p /home/$host_username/.kube" &
     wait
-    ssh -q $h "sudo cp -i /etc/kubernetes/admin.conf /home/$host_username/.kube/config" &
+    ssh -q $host_vpn_ssh_string "sudo cp -i /etc/kubernetes/admin.conf /home/$host_username/.kube/config" &
     wait
-    ssh -q $h "sudo chown $(id -u):$(id -g) /home/$host_username/.kube/config" &
+    ssh -q $host_vpn_ssh_string "sudo chown $(id -u):$(id -g) /home/$host_username/.kube/config" &
     wait
   else
     echo "Joining worker node to the cluster"
-    ssh -q $h "$join_worker" &
+    ssh -q $host_vpn_ssh_string "$join_worker" &
     wait
   fi
   wait

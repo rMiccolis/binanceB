@@ -55,7 +55,7 @@ PrivateKey = $(cat ${host_username}_privatekey)
 
 EOF
 
-$counter+=1
+counter=1
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -92,7 +92,7 @@ ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
 wait
 fi
 
-$counter+=1
+counter+=1
 done
 
 sudo wg-quick up wg0

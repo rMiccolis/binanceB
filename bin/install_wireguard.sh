@@ -53,6 +53,8 @@ ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 
 EOF
+
+$counter+=1
 else
 
 sudo cat << EOF | sudo tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
@@ -79,10 +81,11 @@ EOF
 scp -q /etc/wireguard/${host_username}_wg0.conf $host_ip:/etc/wireguard/wg0.conf &
 wait
 
-ssh $h "sudo wg-quick up wg0" &
+ssh $host_ip "sudo wg-quick up wg0" &
 wait
 fi
 
+$counter+=1
 done
 
 sudo wg-quick up wg0

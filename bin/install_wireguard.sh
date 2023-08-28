@@ -59,6 +59,8 @@ EOF
 counter=1
 else
 
+wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
+
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait
 

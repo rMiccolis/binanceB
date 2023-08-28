@@ -74,7 +74,7 @@ for h in ${host_list[@]}; do
   host_string=()
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
-  host_ip=${host_string[1]}
+  host_ip=${host_string[2]}
   echo -e "${LPURPLE}------------------------------------------------${WHITE}"
   echo -e "${LPURPLE}Working on: $host_username@$host_ip${WHITE}"
 

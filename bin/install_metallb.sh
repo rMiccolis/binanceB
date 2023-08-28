@@ -35,7 +35,7 @@ for h in "${hosts[@]}"; do
 # adding remote hosts to the hosts file
 host_string=()
 IFS='@' read -r -a host_string <<< "$h"
-host_ip=${host_string[1]}
+host_ip=${host_string[2]}
 cat << EOF | tee -a 'metallb_ipaddresspool.yaml' > /dev/null 2>&1
   - ${host_ip}/32
 EOF

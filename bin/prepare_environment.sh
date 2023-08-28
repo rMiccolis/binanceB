@@ -87,9 +87,10 @@ host_string=()
 IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
-printable_hosts+=("$host_username - $host_ip")
+vpn_host_ip=${host_string[2]}
+printable_hosts+=("$host_username - $host_ip - $vpn_host_ip")
 if [ "${host_username:0:1}" == "m" ]; then
-    control_plane_hosts_string+=", $host_ip"
+    control_plane_hosts_string+=", $host_ip, $vpn_host_ip"
 fi
 # add host to hosts file
 sudo tee -a /etc/hosts << EOF > /dev/null

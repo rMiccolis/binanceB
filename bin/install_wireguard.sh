@@ -41,9 +41,9 @@ IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 
+wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
 if [ "${host_username}" == "m1" ]; then
-wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 sudo chmod -R u+rw /etc/wireguard/
 master_host_ip=$host_ip
 master_host_ip_vpn="10.10.1.${counter}/16"
@@ -58,8 +58,6 @@ EOF
 
 counter=1
 else
-
-wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait

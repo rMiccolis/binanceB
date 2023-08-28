@@ -30,7 +30,6 @@ master_host_name=""
 master_host_ip_vpn=""
 mkdir wireguard_keys
 cd wireguard_keys
-declare -i counter=1
 
 sudo apt install wireguard -y
 umask 077
@@ -40,13 +39,14 @@ host_string=()
 IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
+host_ip_vpn=${host_string[2]}
 
 wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
 if [ "${host_username}" == "m1" ]; then
 
 master_host_ip=$host_ip
-master_host_ip_vpn="10.10.1.${counter}/16"
+master_host_ip_vpn="${host_ip_vpn}/16"
 master_host_name=$host_username
 
 sudo chown root:${host_username} /etc/wireguard/
@@ -54,14 +54,12 @@ sudo chmod -R 770 /etc/wireguard/
 
 sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
 [Interface]
-Address = 10.10.1.${counter}/16
+Address = ${host_ip_vpn}/16
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 
 EOF
 
-
-counter+=1
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -75,7 +73,7 @@ wait
 sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 [Interface]
 ListenPort = 51820
-Address = 10.10.1.${counter}/24
+Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
 
 [Peer]
@@ -89,7 +87,7 @@ sudo cat << EOF | tee -a /etc/wireguard/wg0.conf > /dev/null
 [Peer]
 # $host_username
 PublicKey = $(cat ${host_username}_publickey)
-AllowedIPs = 10.10.1.${counter}/32
+AllowedIPs = ${host_ip_vpn}/32
 
 EOF
 

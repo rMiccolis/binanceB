@@ -62,7 +62,9 @@ ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait
 
 ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &
+wait
 ssh ${host_username}@$host_ip "umask 077" &
+wait
 
 sudo cat << EOF | sudo tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 [Interface]

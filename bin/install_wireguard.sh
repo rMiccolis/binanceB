@@ -56,7 +56,7 @@ PrivateKey = $(cat ${host_username}_privatekey)
 
 EOF
 
-chown root:${host_username} /etc/wireguard/
+sudo chown root:${host_username} /etc/wireguard/
 sudo chmod -R 770 /etc/wireguard/
 
 counter+=1
@@ -91,7 +91,7 @@ AllowedIPs = 10.10.1.${counter}/32
 
 EOF
 
-ssh ${host_username}@$host_ip "chown root:${host_username} /etc/wireguard/"&
+ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/wireguard/"&
 wait
 ssh ${host_username}@$host_ip "sudo chmod -R 770 /etc/wireguard/"&
 wait

@@ -119,6 +119,8 @@ $master_host_ip = ""
 $decimal_host = 3
 $unit_host = 0
 
+$last_user=""
+
 # Loop for each host and create its own virtual machine
 for ($i=0;$i -lt $all_hosts.Length; $i++) {
     
@@ -128,6 +130,8 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $host_user=$host_info[0]
     # Save host ip
     $host_ip=$host_info[1]
+
+    $last_user="$host_user@$host_ip"
 
     # Write host into hosts dictionary
     $hosts[$host_user]=$host_ip
@@ -206,6 +210,10 @@ write_files:
    path: /home/$($host_user)/.ssh/known_hosts
    permissions: '0777'
    defer: true
+power_state:
+   mode: reboot
+   timeout: 30
+   condition: True
 runcmd:
  - "ssh-keyscan github.com >> /home/$($host_user)/.ssh/known_hosts"
 "@
@@ -285,7 +293,6 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
         # Check if cloud-init status: if cloud-init has done we can proceed with the git clone
         $cloud_init_status = ssh $master_host_name@$master_host_ip "cloud-init status"
         if ($cloud_init_status -Match "done") {
-            ssh $master_host_name@$master_host_ip "sudo shutdown -r now"
             Start-Sleep -Seconds 90
             if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
                 $work = 0

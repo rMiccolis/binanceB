@@ -285,17 +285,21 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
         # Check if cloud-init status: if cloud-init has done we can proceed with the git clone
         $cloud_init_status = ssh $master_host_name@$master_host_ip "cloud-init status"
         if ($cloud_init_status -Match "done") {
-            $work = 0
-            # ssh-keyscan $master_host_ip | Out-File -Filepath "$HOME/.ssh/known_hosts" -Append
-            echo "Cloning branch $github_branch_name..."
-            # Cloning the github repository code of the specified branch
-            ssh $master_host_name@$master_host_ip "git clone --single-branch --branch $github_branch_name 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
-            ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
-            # Open a cmd shell and automatically ssh into master virtual machine
-            Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh m1@192.168.1.200 && pause"
-            # Copy to clipboard the command to be executed on the just opened cmd shell to run all the infrastructure setup
-            # You just have to paste the command and then enter
-            Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
+            ssh $master_host_name@$master_host_ip "sudo shutdown -r now"
+            Start-Sleep -Seconds 90
+            if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
+                $work = 0
+                # ssh-keyscan $master_host_ip | Out-File -Filepath "$HOME/.ssh/known_hosts" -Append
+                echo "Cloning branch $github_branch_name..."
+                # Cloning the github repository code of the specified branch
+                ssh $master_host_name@$master_host_ip "git clone --single-branch --branch $github_branch_name 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
+                ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
+                # Open a cmd shell and automatically ssh into master virtual machine
+                Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh m1@192.168.1.200 && pause"
+                # Copy to clipboard the command to be executed on the just opened cmd shell to run all the infrastructure setup
+                # You just have to paste the command and then enter
+                Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
+            }
         } else {
             echo "$master_host_name@$master_host_ip => cloud-init $cloud_init_status"
         }

@@ -32,14 +32,15 @@ mkdir wireguard_keys
 cd wireguard_keys
 declare -i counter=1
 
+sudo apt install wireguard -y
+umask 077
+
 for h in "${hosts[@]}"; do
 host_string=()
 IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 
-sudo apt install wireguard -y
-umask 077
 wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
 if [ "${host_username}" == "m1" ]; then
@@ -56,6 +57,9 @@ EOF
 
 $counter+=1
 else
+
+ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &
+ssh ${host_username}@$host_ip "umask 077" &
 
 sudo cat << EOF | sudo tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 [Interface]

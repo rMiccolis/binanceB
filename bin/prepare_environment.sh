@@ -19,10 +19,6 @@ cat << EOF | sudo tee -a /etc/hosts > /dev/null
 $master_host_ip $master_host_name
 EOF
 
-# install yq library to read and parse json files
-echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
-sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
-
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 
 # list of hosts IP that will join the cluster

@@ -31,9 +31,17 @@ done
 
 if [ -z "$config_file_path" ]; then usage; exit; fi
 
+
 # export colors to highlight output text in console
 . ./binanceB/bin/export_colors.sh # executed this way: . ./filename to let exported variables into the script to be added to (this) main process
                                   # if executed this other way: ./filename filename open a new shell that is closed when script ends. So exported variables are not visible here
+
+# install yq library to read and parse json files
+echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
+
+echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
+. ./binanceB/bin/install_wireguard.sh -c config_file_path
 
 echo -e "${LGREEN}Starting phase 0 / 10: Reading data and preparing working environment:${WHITE}"
 export config_file_path=$config_file_path

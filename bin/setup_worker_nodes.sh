@@ -151,7 +151,7 @@ for h in ${host_list[@]}; do
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
+  ssh -q $host_vpn_ssh_string "echo -n "KUBELET_EXTRA_ARGS='--node-ip $host_ip'" | cat >> /etc/default/kubelet"
   
   echo -e "${LBLUE}Joining $host_username@$host_ip to the cluster${WHITE}"
   if [ "${host_username:0:1}" == "m" ]; then
@@ -169,6 +169,7 @@ for h in ${host_list[@]}; do
     ssh -q $host_vpn_ssh_string "$join_worker" &
     wait
   fi
+
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 

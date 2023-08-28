@@ -92,7 +92,7 @@ host_ip=${host_string[1]}
 vpn_host_ip=${host_string[2]}
 printable_hosts+=("$host_username - $host_ip - $vpn_host_ip")
 if [ "${host_username:0:1}" == "m" ]; then
-    control_plane_hosts_string+=", $host_ip, $vpn_host_ip"
+    control_plane_hosts_string+="$host_ip, $vpn_host_ip"
 fi
 # add host to hosts file
 sudo tee -a /etc/hosts << EOF > /dev/null
@@ -102,7 +102,7 @@ done
 
 export control_plane_hosts_string=$control_plane_hosts_string
 
-echo -e "${LBLUE}externalIPs: [$master_host_ip $control_plane_hosts_string]${WHITE}"
+echo -e "${LBLUE}externalIPs: [$control_plane_hosts_string]${WHITE}"
 
 echo -e "${LPURPLE}----------------${WHITE}"
 echo -e "${LPURPLE}Cluster worker host list:${WHITE}"

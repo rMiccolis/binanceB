@@ -58,6 +58,9 @@ EOF
 $counter+=1
 else
 
+ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
+wait
+
 ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &
 ssh ${host_username}@$host_ip "umask 077" &
 

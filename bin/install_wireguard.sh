@@ -38,7 +38,7 @@ IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 
-sudo apt install wireguard
+sudo apt install wireguard -y
 umask 077
 wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
 
@@ -81,7 +81,7 @@ EOF
 scp -q /etc/wireguard/${host_username}_wg0.conf $host_ip:/etc/wireguard/wg0.conf &
 wait
 
-ssh $host_ip "sudo wg-quick up wg0" &
+ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
 wait
 fi
 

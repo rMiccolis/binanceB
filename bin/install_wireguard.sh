@@ -60,6 +60,8 @@ PrivateKey = $(cat ${host_username}_privatekey)
 
 EOF
 
+sudo wg-quick up wg0
+
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -83,13 +85,8 @@ AllowedIPs = 10.10.0.0/16
 PersistentKeepalive = 30
 EOF
 
-sudo cat << EOF | tee -a /etc/wireguard/wg0.conf > /dev/null
-[Peer]
-# $host_username
-PublicKey = $(cat ${host_username}_publickey)
-AllowedIPs = ${host_ip_vpn}/32
-
-EOF
+wg set wg0 peer "$(cat ${host_username}_publickey)" allowed-ips ${host_ip_vpn}/32
+ip -4 route add ${host_ip_vpn}/32 dev wg0
 
 ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/wireguard/" &
 wait
@@ -104,5 +101,3 @@ wait
 fi
 
 done
-
-sudo wg-quick up wg0

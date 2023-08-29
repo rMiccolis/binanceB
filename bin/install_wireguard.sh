@@ -54,6 +54,9 @@ master_host_name=$host_username
 sudo chown root:${host_username} /etc/wireguard/
 sudo chmod -R 777 /etc/wireguard/
 
+sudo chown root:${host_username} /etc/sysctl.d
+sudo chmod -R 777 /etc/sysctl.d
+
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
 [Interface]
@@ -64,6 +67,13 @@ PrivateKey = $(cat ${host_username}_privatekey)
 EOF
 
 echo -e "${LBLUE}Activating wg0 Interface for $host_username ${WHITE}"
+sudo cat << EOF | tee -a /etc/sysctl.d/70-wireguard-routing.conf > /dev/null
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.proxy_arp = 1
+EOF
+
+sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
+
 sudo wg-quick up wg0
 
 else
@@ -96,8 +106,20 @@ wait
 ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/wireguard/" &
 wait
 
+ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/sysctl.d" &
+wait
+ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/sysctl.d" &
+wait
+
 echo -e "${LBLUE}Sending peer Configuration to $host_username ${WHITE}"
 scp -q /etc/wireguard/${host_username}_wg0.conf ${host_username}@$host_ip:/etc/wireguard/wg0.conf &
+wait
+
+echo -e "${LBLUE}setting IP forwarding configuration ${WHITE}"
+scp -q /etc/sysctl.d/70-wireguard-routing.conf ${host_username}@$host_ip:/etc/sysctl.d/70-wireguard-routing.conf &
+wait
+
+ssh ${host_username}@$host_ip "sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w" &
 wait
 
 echo -e "${LBLUE}Applying peer Configuration to $host_username ${WHITE}"

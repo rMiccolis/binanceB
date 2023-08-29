@@ -63,5 +63,5 @@ echo -e "${LBLUE}Available at /home/$USER/wireguard/config_files/${peer_name}_wg
 echo "Text configuration at: $(cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf)"
 cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf | qrencode -t ansiutf8 
 
-sudo wg-quick down wg0
-sudo wg-quick up wg0
+# sudo wg-quick down wg0
+# sudo wg-quick up wg0

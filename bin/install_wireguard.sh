@@ -28,8 +28,11 @@ hosts+=($(yq '.hosts[]' $config_file_path))
 master_host_ip=""
 master_host_name=""
 master_host_ip_vpn=""
-mkdir wireguard_keys
-cd wireguard_keys
+mkdir wireguard
+cd wireguard
+mkdir keys
+mkdir config_files
+cd keys
 
 echo -e "${LBLUE}Installing Wireguard...${WHITE}"
 sudo apt install wireguard -y

@@ -28,12 +28,16 @@ wg genkey | tee ${peer_name}_privatekey | wg pubkey > ${peer_name}_publickey
 
 cd /home/$USER/wireguard/wireguard/config_files
 
-declare -i counter=1
+declare -i counter=50
 
 if [ -f /home/$USER/wireguard/config_files/counter ]; then
     counter=$(cat /home/$USER/wireguard/config_files/counter)
 fi
 
+counter+=1
+cat << EOF | tee /home/$USER/wireguard/config_files/counter
+$counter
+EOF
 peer_ip=10.10.1.${counter}
 
 echo -e "${LBLUE}Generating Configuration for $peer_name ${WHITE}"

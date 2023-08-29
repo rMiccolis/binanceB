@@ -52,7 +52,7 @@ master_host_ip_vpn="${host_ip_vpn}/16"
 master_host_name=$host_username
 
 sudo chown root:${host_username} /etc/wireguard/
-sudo chmod -R 770 /etc/wireguard/
+sudo chmod -R 777 /etc/wireguard/
 
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
@@ -93,7 +93,7 @@ EOF
 
 ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/wireguard/" &
 wait
-ssh ${host_username}@$host_ip "sudo chmod -R 770 /etc/wireguard/" &
+ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/wireguard/" &
 wait
 
 echo -e "${LBLUE}Sending peer Configuration to $host_username ${WHITE}"

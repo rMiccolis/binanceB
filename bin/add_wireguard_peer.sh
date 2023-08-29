@@ -60,4 +60,5 @@ sudo ip -4 route add ${peer_ip}/32 dev wg0
 
 echo -e "${LBLUE}This is the Configuration file for $peer_name ${WHITE}"
 echo -e "${LBLUE}Available at /home/$USER/wireguard/config_files/${peer_name}_wg0.conf ${WHITE}"
-cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf
+echo "you can find text configuration at: /home/$USER/wireguard/config_files/${peer_name}_wg0.conf"
+cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf | qrencode -t ansiutf8 

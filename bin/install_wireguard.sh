@@ -22,6 +22,9 @@ while getopts ":c:" opt; do
   esac
 done
 
+# install qrencode to print a QR code to be scanned by smartphone to join vpn on wireguard app
+sudo apt install qrencode
+
 hosts=()
 hosts+=($(yq '.master_host' $config_file_path))
 hosts+=($(yq '.hosts[]' $config_file_path))

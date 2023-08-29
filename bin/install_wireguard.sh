@@ -71,6 +71,7 @@ sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
 Address = ${host_ip_vpn}/16
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
+SaveConfig = true
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE;
 
@@ -143,3 +144,6 @@ sudo ip -4 route add ${host_ip_vpn}/32 dev wg0
 fi
 
 done
+
+sudo wg-quick down wg0
+sudo wg-quick up wg0

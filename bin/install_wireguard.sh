@@ -23,7 +23,7 @@ while getopts ":c:" opt; do
 done
 
 # install qrencode to print a QR code to be scanned by smartphone to join vpn on wireguard app
-sudo apt install qrencode
+sudo apt install qrencode -y
 
 hosts=()
 hosts+=($(yq '.master_host' $config_file_path))

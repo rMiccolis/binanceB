@@ -46,7 +46,6 @@ sudo cat << EOF | tee -a /home/$USER/wireguard/config_files/${peer_name}_wg0.con
 ListenPort = 51820
 Address = $peer_ip/24
 PrivateKey = $(cat ${peer_name}_privatekey)
-DNS = 8.8.8.8
 
 [Peer]
 PublicKey = $(cat /home/$USER/wireguard/keys/${master_host_name}_publickey)

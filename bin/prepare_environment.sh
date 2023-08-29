@@ -8,6 +8,7 @@ echo -e "${LBLUE}Getting Master host info...${WHITE}"
 # export master_host_ip=${ip_addr[1]}
 master_host_vpn_ip=()
 IFS='@' read -r -a master_host_vpn_ip <<< "$(yq '.master_host' $config_file_path)"
+export master_host_ip_eth0=${master_host_vpn_ip[1]}
 export master_host_ip=${master_host_vpn_ip[2]}
 export master_host_name=$(whoami)
 echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
@@ -24,6 +25,7 @@ EOF
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 
 # list of hosts IP that will join the cluster
+export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
 export hosts=($(yq '.hosts[]' $config_file_path))
@@ -45,6 +47,7 @@ export host_list="$(yq '.hosts[]' $config_file_path)"
 
 # export variables at login
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
+export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
 export hosts="${hosts[@]}"

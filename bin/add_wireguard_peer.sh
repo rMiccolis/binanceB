@@ -49,7 +49,7 @@ PrivateKey = $(cat ${peer_name}_privatekey)
 
 [Peer]
 PublicKey = $(cat /home/$USER/wireguard/keys/${master_host_name}_publickey)
-Endpoint = ${master_host_ip}:51820
+Endpoint = ${master_host_ip_eth0}:51820
 AllowedIPs = 10.10.0.0/16
 PersistentKeepalive = 30
 EOF

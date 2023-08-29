@@ -26,7 +26,7 @@ done
 cd wireguard/keys
 wg genkey | tee ${peer_name}_privatekey | wg pubkey > ${peer_name}_publickey
 
-cd /home/$USER/wireguard/wireguard/config_files
+# cd /home/$USER/wireguard/config_files
 
 declare -i counter=50
 

@@ -54,20 +54,9 @@ AllowedIPs = 10.10.0.0/16
 PersistentKeepalive = 30
 EOF
 
-
-
 echo -e "${LBLUE}Adding peer $peer_name to server Configuration ${WHITE}"
-# sudo wg set wg0 peer "$(cat /home/$USER/wireguard/keys/${peer_name}_publickey)" allowed-ips ${peer_ip}/32
-# sudo ip -4 route add ${peer_ip}/32 dev wg0
-sudo cat << EOF | sudo tee -a /etc/wireguard/wg0.conf > /dev/null
-[Peer]
-# ${peer_name}
-PublicKey = "$(cat ${peer_name}_publickey)"
-AllowedIPs = ${peer_ip}/32
-
-EOF
-
-sudo systemctl reload wg-quick@wg0
+sudo wg set wg0 peer "$(cat /home/$USER/wireguard/keys/${peer_name}_publickey)" allowed-ips ${peer_ip}/32
+sudo ip -4 route add ${peer_ip}/32 dev wg0
 
 echo -e "${LBLUE}This is the Configuration file for $peer_name ${WHITE}"
 echo -e "${LBLUE}Available at /home/$USER/wireguard/config_files/${peer_name}_wg0.conf ${WHITE}"

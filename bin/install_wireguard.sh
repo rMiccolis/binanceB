@@ -171,4 +171,6 @@ fi
 done
 
 sudo wg-quick down wg0
+sudo chown -R root:${host_username} /etc/wireguard/
+sudo chmod -R 777 /etc/wireguard/
 sudo wg-quick up wg0

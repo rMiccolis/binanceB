@@ -1,8 +1,8 @@
 ---
 # infrastructure info:
-environment: 'dev' # this will cause cluster (and application) to be reachable at master_host IP (192.168.1.200). Set to "production" to make the cluster (and application) reachable to cluster_public_ip (in this case)
-cluster_dns_name: 'cluster.com' # public dns name where app will be reachable
-cluster_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)
+environment: 'dev' # this will cause cluster (and application) to be reachable at master_host IP (192.168.1.200). Set to "production" to make the cluster (and application) reachable to load_balancer_public_ip (in this case)
+load_balancer_dns_name: 'cluster.com' # public dns name where app will be reachable
+load_balancer_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)
 master_host: 'm1@192.168.1.200' # kubernetes master host IP from which everything is executed: provide it from internal interface (192.168...)
 hosts: # list of ONLY worker and other control plane nodes: made in the form of: USERNAME@IP_ADDRESS
 - 'm1@192.168.1.201' # hosts starting with 'm' will be considered as control plane nodes

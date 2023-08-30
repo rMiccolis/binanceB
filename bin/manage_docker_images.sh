@@ -52,8 +52,8 @@ if [ "$client" == "1" ]; then
 echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"
 cluster_ip=$master_host_ip
 if [ "$environment" == "production" ]; then
-echo -e "${LBLUE}Setting Server Public IP address: $cluster_public_ip ${WHITE}"
-cluster_ip=$cluster_public_ip
+echo -e "${LBLUE}Setting Server Public IP address: $load_balancer_public_ip ${WHITE}"
+cluster_ip=$load_balancer_public_ip
 fi
 # before building images we have to set a .env file to pass client its environment variables
 echo -e "${LBLUE}Setting Server IP for client environment...${WHITE}"

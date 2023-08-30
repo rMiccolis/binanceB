@@ -37,7 +37,7 @@ if [ -f /home/$USER/wireguard/config_files/counter ]; then
 fi
 
 counter+=1
-cat << EOF | tee /home/$USER/wireguard/config_files/counter
+cat << EOF | tee /home/$USER/wireguard/config_files/counter > /dev/null
 $counter
 EOF
 peer_ip=10.10.1.${counter}

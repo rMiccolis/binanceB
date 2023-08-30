@@ -31,9 +31,14 @@ wg genkey | tee ${peer_name}_privatekey | wg pubkey > ${peer_name}_publickey
 # cd /home/$USER/wireguard/config_files
 
 declare -i counter=50
+server_ip=$master_host_ip_eth0
 
 if [ -f /home/$USER/wireguard/config_files/counter ]; then
     counter=$(cat /home/$USER/wireguard/config_files/counter)
+fi
+
+if [ "$environment" == "production" ]; then
+  server_ip=$load_balancer_public_ip
 fi
 
 counter+=1
@@ -43,7 +48,7 @@ EOF
 peer_ip=10.10.1.${counter}
 
 echo -e "${LBLUE}Generating Configuration for $peer_name ${WHITE}"
-sudo cat << EOF | tee -a /home/$USER/wireguard/config_files/${peer_name}_wg0.conf > /dev/null
+sudo cat << EOF | tee /home/$USER/wireguard/config_files/${peer_name}_wg0.conf > /dev/null
 [Interface]
 ListenPort = 51820
 Address = $peer_ip/24

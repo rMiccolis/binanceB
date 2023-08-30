@@ -25,6 +25,9 @@ done
 # install qrencode to print a QR code to be scanned by smartphone to join vpn on wireguard app
 sudo apt install qrencode -y
 
+load_balancer_public_ip=$(yq '.load_balancer_public_ip' $config_file_path)
+environment=$(yq '.environment' $config_file_path)
+
 hosts=()
 hosts+=($(yq '.master_host' $config_file_path))
 hosts+=($(yq '.hosts[]' $config_file_path))
@@ -58,6 +61,11 @@ if [ "${host_username}" == "m1" ]; then
 master_host_ip=$host_ip
 master_host_ip_vpn="${host_ip_vpn}/16"
 master_host_name=$host_username
+
+if [ "$environment" == "production" ]; then
+echo -e "${LBLUE}Setting Server Public IP address: $load_balancer_public_ip ${WHITE}"
+master_host_ip=$load_balancer_public_ip
+fi
 
 sudo chown root:${host_username} /etc/wireguard/
 sudo chmod -R 777 /etc/wireguard/

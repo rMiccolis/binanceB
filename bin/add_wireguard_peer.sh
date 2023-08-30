@@ -38,7 +38,7 @@ if [ -f /home/$USER/wireguard/config_files/counter ]; then
 fi
 
 if [ "$environment" == "production" ]; then
-  server_ip=$load_balancer_public_ip
+    server_ip=$load_balancer_public_ip
 fi
 
 counter+=1
@@ -56,7 +56,7 @@ PrivateKey = $(cat ${peer_name}_privatekey)
 
 [Peer]
 PublicKey = $(cat /home/$USER/wireguard/keys/${master_host_name}_publickey)
-Endpoint = ${master_host_ip_eth0}:51820
+Endpoint = ${server_ip}:51820
 AllowedIPs = 10.10.0.0/16
 PersistentKeepalive = 30
 EOF

@@ -3,10 +3,11 @@
 environment: 'dev' # this will cause cluster (and application) to be reachable at master_host IP (192.168.1.200). Set to "production" to make the cluster (and application) reachable to load_balancer_public_ip (in this case)
 load_balancer_dns_name: 'cluster.com' # public dns name where app will be reachable
 load_balancer_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)
-master_host: 'm1@192.168.1.200' # kubernetes master host IP from which everything is executed: provide it from internal interface (192.168...)
+# For each of the following hosts must be provided: host_username@internal_ip_address@desired_vpn_ip
+master_host: 'm1@192.168.1.200@10.10.1.1' # kubernetes master host IP from which everything is executed: provide it from internal interface (192.168...)
 hosts: # list of ONLY worker and other control plane nodes: made in the form of: USERNAME@IP_ADDRESS
-- 'm1@192.168.1.201' # hosts starting with 'm' will be considered as control plane nodes
-- 'w2@192.168.1.202' # hosts starting with 'w' will be considered as worker nodes
+- 'm1@192.168.1.201@10.10.1.2' # hosts starting with 'm' will be considered as control plane nodes
+- 'w2@192.168.1.202@10.10.1.3' # hosts starting with 'w' will be considered as worker nodes
 vm_cpu_count: '2' # Virtual machine's cpu number
 vm_min_ram: '2GB' # Virtual machine's minimum amount of RAM 
 vm_max_ram: '4GB' # Virtual machine's maximum amount of RAM

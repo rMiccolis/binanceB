@@ -77,13 +77,15 @@ PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACC
 
 EOF
 
-echo -e "${LBLUE}Activating wg0 Interface for $host_username ${WHITE}"
-sudo cat << EOF | tee -a /etc/sysctl.d/70-wireguard-routing.conf > /dev/null
-net.ipv4.ip_forward = 1
-net.ipv4.conf.all.proxy_arp = 1
-EOF
+echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwarding${WHITE}"
+# sudo cat << EOF | tee -a /etc/sysctl.d/70-wireguard-routing.conf > /dev/null
+# net.ipv4.ip_forward = 1
+# net.ipv4.conf.all.proxy_arp = 1
+# EOF
+# sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
 
-sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
+sed -i '/net.ipv4.ip_forward/s/^#//g'sudo nano /etc/sysctl.conf
+sysctl -w net.ipv4.ip_forward=1
 
 sudo wg-quick up wg0
 
@@ -118,18 +120,18 @@ wait
 ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/wireguard/" &
 wait
 
-ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/sysctl.d" &
-wait
-ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/sysctl.d" &
-wait
+# ssh ${host_username}@$host_ip "sudo chown root:${host_username} /etc/sysctl.d" &
+# wait
+# ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/sysctl.d" &
+# wait
 
 echo -e "${LBLUE}Sending peer Configuration to $host_username ${WHITE}"
 scp -q /etc/wireguard/${host_username}_wg0.conf ${host_username}@$host_ip:/etc/wireguard/wg0.conf &
 wait
 
-echo -e "${LBLUE}setting IP forwarding configuration ${WHITE}"
-scp -q /etc/sysctl.d/70-wireguard-routing.conf ${host_username}@$host_ip:/etc/sysctl.d/70-wireguard-routing.conf &
-wait
+# echo -e "${LBLUE}setting IP forwarding configuration ${WHITE}"
+# scp -q /etc/sysctl.d/70-wireguard-routing.conf ${host_username}@$host_ip:/etc/sysctl.d/70-wireguard-routing.conf &
+# wait
 
 ssh ${host_username}@$host_ip "sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w" &
 wait

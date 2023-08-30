@@ -23,6 +23,8 @@ while getopts ":p:" opt; do
   esac
 done
 
+source /home/$USER/.profile
+
 cd wireguard/keys
 wg genkey | tee ${peer_name}_privatekey | wg pubkey > ${peer_name}_publickey
 

@@ -84,8 +84,8 @@ echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwa
 # EOF
 # sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
 
-sed -i '/net.ipv4.ip_forward/s/^#//g'sudo nano /etc/sysctl.conf
-sysctl -w net.ipv4.ip_forward=1
+sudo sed -i '/net.ipv4.ip_forward/s/^#//g'sudo nano /etc/sysctl.conf
+sudo sysctl -w net.ipv4.ip_forward=1
 
 sudo wg-quick up wg0
 

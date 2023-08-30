@@ -101,7 +101,7 @@ sudo sysctl -w net.ipv4.ip_forward=1
 sudo systemctl enable wg-quick@wg0.service
 sudo systemctl daemon-reload
 sudo systemctl start wg-quick@wg0
-systemctl status wg-quick@wg0
+# systemctl status wg-quick@wg0
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -157,8 +157,8 @@ ssh ${host_username}@$host_ip "sudo systemctl daemon-reload" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start wg-quick@wg0" &
 wait
-ssh ${host_username}@$host_ip "systemctl status wg-quick@wg0" &
-wait
+# ssh ${host_username}@$host_ip "systemctl status wg-quick@wg0" &
+# wait
 # ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
 # wait
 

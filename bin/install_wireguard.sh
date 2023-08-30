@@ -92,7 +92,7 @@ echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwa
 # EOF
 # sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
 
-sudo sed -i '/net.ipv4.ip_forward/s/^#//g'sudo nano /etc/sysctl.conf
+sudo sed -i '/net.ipv4.ip_forward/s/^#//g' /etc/sysctl.conf
 sudo sysctl -w net.ipv4.ip_forward=1
 
 sudo wg-quick up wg0
@@ -141,8 +141,8 @@ wait
 # scp -q /etc/sysctl.d/70-wireguard-routing.conf ${host_username}@$host_ip:/etc/sysctl.d/70-wireguard-routing.conf &
 # wait
 
-ssh ${host_username}@$host_ip "sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w" &
-wait
+# ssh ${host_username}@$host_ip "sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w" &
+# wait
 
 echo -e "${LBLUE}Applying peer Configuration to $host_username ${WHITE}"
 ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &

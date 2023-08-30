@@ -92,11 +92,16 @@ echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwa
 # EOF
 # sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
 
+# Enable IP Forwarding on the server:
+# This tells the server it should pass along any traffic that is meant for a different computer on its network.
 sudo sed -i '/net.ipv4.ip_forward/s/^#//g' /etc/sysctl.conf
 sudo sysctl -w net.ipv4.ip_forward=1
 
-sudo wg-quick up wg0
-
+# make wireguard start on boot
+sudo systemctl enable wg-quick@wg0.service
+sudo systemctl daemon-reload
+sudo systemctl start wg-quick@wg0
+systemctl status wg-quick@wg0
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
@@ -144,13 +149,23 @@ wait
 # ssh ${host_username}@$host_ip "sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w" &
 # wait
 
-echo -e "${LBLUE}Applying peer Configuration to $host_username ${WHITE}"
-ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
+echo -e "${LBLUE}Applying peer Configuration to $host_username${WHITE}"
+# make wireguard start on boot
+ssh ${host_username}@$host_ip "sudo systemctl enable wg-quick@wg0.service" &
 wait
+ssh ${host_username}@$host_ip "sudo systemctl daemon-reload" &
+wait
+ssh ${host_username}@$host_ip "sudo systemctl start wg-quick@wg0" &
+wait
+ssh ${host_username}@$host_ip "systemctl status wg-quick@wg0" &
+wait
+# ssh ${host_username}@$host_ip "sudo wg-quick up wg0" &
+# wait
 
 echo -e "${LBLUE}Adding peer $host_username to server Configuration ${WHITE}"
 sudo wg set wg0 peer "$(cat ${host_username}_publickey)" allowed-ips ${host_ip_vpn}/32
 sudo ip -4 route add ${host_ip_vpn}/32 dev wg0
+
 fi
 
 done

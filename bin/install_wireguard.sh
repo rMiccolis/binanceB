@@ -84,7 +84,7 @@ sudo chmod -R 777 /etc/sysctl.d
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
 [Interface]
-Address = ${host_ip_vpn}/16
+Address = ${host_ip_vpn}/24
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 SaveConfig = true

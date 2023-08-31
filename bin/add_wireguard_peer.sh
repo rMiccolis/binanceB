@@ -79,4 +79,5 @@ echo "$(cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf)"
 cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf | qrencode -t ansiutf8 
 
 sudo wg-quick down wg0
+sleep 5
 sudo wg-quick up wg0

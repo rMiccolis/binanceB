@@ -169,7 +169,8 @@ for h in ${host_list[@]}; do
     ssh -q $host_vpn_ssh_string "sudo chown $(id -u):$(id -g) /home/$host_username/.kube/config" &
     wait
   else
-    echo "Joining worker node to the cluster"
+    echo -e "${LBLUE}Joining worker node to the cluster${WHITE}"
+    echo "$join_worker"
     ssh -q $host_vpn_ssh_string "$join_worker" &
     wait
   fi

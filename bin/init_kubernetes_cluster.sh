@@ -4,7 +4,7 @@
 
 # Select the right interface to be used
 interface_range=()
-IFS='.' read -r -a interface_range <<< "$master_host_ip_vpn"
+IFS='.' read -r -a interface_range <<< "$master_host_ip"
 interface_1=${interface_range[0]}
 interface_2=${interface_range[1]}
 interface_3=${interface_range[2]}

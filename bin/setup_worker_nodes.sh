@@ -170,7 +170,6 @@ for h in ${host_list[@]}; do
     wait
   else
     echo -e "${LBLUE}Joining worker node to the cluster${WHITE}"
-    echo "$join_worker"
     ssh -q $host_vpn_ssh_string "$join_worker" &
     wait
   fi

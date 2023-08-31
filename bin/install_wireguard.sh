@@ -46,6 +46,8 @@ echo -e "${LBLUE}Installing Wireguard...${WHITE}"
 sudo apt install wireguard -y
 umask 077
 
+interface_range=()
+
 for h in "${hosts[@]}"; do
 host_string=()
 IFS='@' read -r -a host_string <<< "$h"
@@ -61,6 +63,12 @@ if [ "${host_username}" == "m1" ]; then
 master_host_ip=$host_ip
 master_host_ip_vpn="${host_ip_vpn}/16"
 master_host_name=$host_username
+
+IFS='.' read -r -a interface_range <<< "$master_host_ip_vpn"
+interface_1=${interface_range[0]}
+interface_2=${interface_range[1]}
+interface_3=${interface_range[2]}
+interface="$interface_1.$interface_2.0.0"
 
 if [ "$environment" == "production" ]; then
 echo -e "${LBLUE}Setting Server Public IP address: $load_balancer_public_ip ${WHITE}"
@@ -124,7 +132,7 @@ PrivateKey = $(cat ${host_username}_privatekey)
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)
 Endpoint = ${master_host_ip}:51820
-AllowedIPs = 10.10.0.0/16
+AllowedIPs = $interface/16
 PersistentKeepalive = 30
 EOF
 
@@ -171,6 +179,6 @@ fi
 done
 
 sudo wg-quick down wg0
-sudo chown -R root:${host_username} /etc/wireguard/
-sudo chmod -R 777 /etc/wireguard/
+# sudo chown -R root:${host_username} /etc/wireguard/
+# sudo chmod -R 777 /etc/wireguard/
 sudo wg-quick up wg0

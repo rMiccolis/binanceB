@@ -45,7 +45,14 @@ counter+=1
 cat << EOF | tee /home/$USER/wireguard/config_files/counter > /dev/null
 $counter
 EOF
-peer_ip=10.10.1.${counter}
+
+interface_range=()
+IFS='.' read -r -a interface_range <<< "$master_host_ip"
+interface_1=${interface_range[0]}
+interface_2=${interface_range[1]}
+interface_3=${interface_range[2]}
+interface="$interface_1.$interface_2.0.0"
+peer_ip="$interface_1.$interface_2.$interface_3.$counter"
 
 echo -e "${LBLUE}Generating Configuration for $peer_name ${WHITE}"
 sudo cat << EOF | tee /home/$USER/wireguard/config_files/${peer_name}_wg0.conf > /dev/null
@@ -57,7 +64,7 @@ PrivateKey = $(cat ${peer_name}_privatekey)
 [Peer]
 PublicKey = $(cat /home/$USER/wireguard/keys/${master_host_name}_publickey)
 Endpoint = ${server_ip}:51820
-AllowedIPs = 10.10.0.0/16
+AllowedIPs = $interface/16
 PersistentKeepalive = 30
 EOF
 
@@ -71,5 +78,5 @@ echo "Text configuration at:"
 echo "$(cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf)"
 cat /home/$USER/wireguard/config_files/${peer_name}_wg0.conf | qrencode -t ansiutf8 
 
-# sudo wg-quick down wg0
-# sudo wg-quick up wg0
+sudo wg-quick down wg0
+sudo wg-quick up wg0

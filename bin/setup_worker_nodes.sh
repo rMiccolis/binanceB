@@ -177,9 +177,12 @@ for h in ${host_list[@]}; do
   echo -e "${LBLUE}Setting $host_ip as internal IP for $host_username${WHITE}"
 
   set_ip_kubelet_command="echo -n "KUBELET_EXTRA_ARGS="'--node-ip $host_ip'"" | cat >> /etc/default/kubelet"
-  ssh $host_vpn_ssh_string $set_ip_kubelet_command
-  ssh $host_vpn_ssh_string "sudo systemctl daemon-reload"
-  ssh $host_vpn_ssh_string "sudo systemctl restart kubelet"
+  ssh $host_vpn_ssh_string "$set_ip_kubelet_command" &
+  wait
+  ssh $host_vpn_ssh_string "sudo systemctl daemon-reload" &
+  wait
+  ssh $host_vpn_ssh_string "sudo systemctl restart kubelet" &
+  wait
 
   sudo systemctl daemon-reload
   sudo systemctl restart kubelet

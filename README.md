@@ -4,14 +4,15 @@ Cloud-like application, with educational purposes, for cryptocurrency trading se
 This project is intended for educational purposes and to learn something new about IaC (Infrastructure as Code) and cloud development, for this reason some choices may result unusual because the project tries to simulate the cloud behavior but on bare metal. This choice is made to handle costs, given that the development of this project is performed in spare time (non-working time) and could take many months, so picking a real cloud provider could be very expensive.\
 Because of this, the projects offers a PowerShell script that creates linux (ubuntu cloud image) VMs (with hyper-v as hypervisor) on the fly and configures them using cloud-init.
 
-There are 4 main scripts that create and configure all the infrastructure and both need a configuration yaml file (main_config.yaml) to be executed (an example is found at main_config.example.yaml)
+There are 5 main scripts that create and configure all the infrastructure and both need a configuration yaml file (main_config.yaml) to be executed (an example is found at main_config.example.yaml)
 
 **Script Description:**
 
 - **infrastructure/windows/generate_hyperv_vms.ps1:** This is the script that manages the generation and configuration of ubuntu virtual machines. The script makes use of cloud-init in order to give the initial configuration to VMs. At the end of the script, it opens a cmd instance and copies to clipboard the command to be pasted in in order to start the start.sh script.
-- **infrastructure/start.sh**: This script is excecuted on the main VM and performs all the tasks to create a kubernetes cluster and install the client-server application on it.
-- **bin/manage_docker_images.sh**: This script is usefull when an update of server or client (or both) docker image is needed.
+- **infrastructure/start.sh:** This script is excecuted on the main VM and performs all the tasks to create a kubernetes cluster and install the client-server application on it.
+- **bin/manage_docker_images.sh:** This script is usefull when an update of server or client (or both) docker image is needed.
 - **bin/setup_worker_nodes.sh:** This script is usefull to join a new node to the cluster (control plane or worker) and configure it (install docker, kubernetes, ecc...)
+- **bin/add_wireguard_peer.sh:** Run this script to generate a Wireguard peer configuration. It prints out the qr code to be scanned by Android or IOS app to join the vpn.
 
 ## INSTRUCTION TO RUN THE INFRASTRUCTURE SETUP
 
@@ -40,7 +41,7 @@ After creating VM with a linux distro:
 - Add all cluster partecipating hosts to the hosts file
 - Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
 - Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
-- Open 80 and 27017 ports to let application and mongodb database to be reachable
+- Open 51820 port to let application and mongodb database to be reachable. This is the Wireguard VPN port.
 - Create a [docker access token](https://docs.docker.com/docker-hub/access-tokens/) (to be provided into main_config.yaml)
 - Create the client docker repository
 - Create the server docker repository
@@ -72,7 +73,7 @@ Is possible to launch 2 standalone scripts:
 
 - bin/setup_worker_nodes.sh   => Run this script to join a new node to the cluster (control plane or worker)
 - bin/manage_docker_images.sh => Run this script to build and deploy client and server images when you need to apply changes to server or client code
-
+- bin/add_wireguard_peer.sh => Run this script to generate a Wireguard peer configuration. It prints out the qr code to be scanned by Android or IOS app to join the vpn.
 
 --------------------------------------------
 

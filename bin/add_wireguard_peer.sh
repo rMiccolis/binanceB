@@ -38,7 +38,7 @@ if [ -f /home/$USER/wireguard/config_files/counter ]; then
 fi
 
 if [ "$environment" == "production" ]; then
-    server_ip=$load_balancer_public_ip
+    server_ip=$load_balancer_dns_name
 fi
 
 counter+=1

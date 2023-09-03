@@ -26,6 +26,7 @@ done
 sudo apt install qrencode -y
 
 load_balancer_public_ip=$(yq '.load_balancer_public_ip' $config_file_path)
+load_balancer_dns_name=$(yq '.load_balancer_dns_name' $config_file_path)
 environment=$(yq '.environment' $config_file_path)
 
 hosts=()
@@ -72,7 +73,7 @@ interface="$interface_1.$interface_2.0.0"
 
 if [ "$environment" == "production" ]; then
 echo -e "${LBLUE}Setting Server Public IP address: $load_balancer_public_ip ${WHITE}"
-master_host_ip=$load_balancer_public_ip
+master_host_ip=$load_balancer_dns_name
 fi
 
 sudo chown root:${host_username} /etc/wireguard/

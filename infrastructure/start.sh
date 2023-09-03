@@ -117,7 +117,7 @@ wait
 
 
 echo -e "${LGREEN}Application is correctly running!${WHITE}"
-echo -e "${LGREEN}Check it out at http://$load_balancer_dns_name/${WHITE}"
+echo -e "${LGREEN}Check it out at http://$master_host_ip/${WHITE}"
 end_time="$(date -u +%s)"
 elapsed_time=$(($end_time-$start_time))
 elapsed_time=$(($elapsed_time/60))

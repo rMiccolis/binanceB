@@ -3,7 +3,7 @@
   "appName": "binanceB",
   "webDir": "dist",
   "server": {
-    "url": "http://${load_balancer_public_ip}",
+    "url": "http://${master_host_VPN_ip}",
     "cleartext": true
   },
   "plugins": {

@@ -140,6 +140,6 @@ const startJobK8s = async () => {
     }
 };
 
-startJobK8s();
+// startJobK8s();
 
 // app.addListener();

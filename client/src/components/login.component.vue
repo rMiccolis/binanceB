@@ -4,7 +4,7 @@
       <v-img
         class="blur icon-center mb-2"
         width="50%"
-        src="binanceB_icon.png"
+        src="binanceB_android_icon-removebg-preview.svg"
         cover
       >
       </v-img>

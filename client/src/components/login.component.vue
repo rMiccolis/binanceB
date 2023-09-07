@@ -235,7 +235,7 @@ watch(
   display: block;
   margin-left: auto;
   margin-right: auto;
-  max-width: 40%;
+  max-width: 45%;
 }
 
 .img-container {

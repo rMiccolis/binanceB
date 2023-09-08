@@ -132,7 +132,7 @@ else
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait
 
-echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
+echo -e "${LBLUE}Installing Resolvconf for $host_username ${WHITE}"
 ssh ${host_username}@$host_ip "sudo apt install resolvconf" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
@@ -143,7 +143,7 @@ wait
 # wait
 
 ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
-wwait
+wait
 scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
 wait
 

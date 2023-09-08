@@ -44,8 +44,19 @@ mkdir keys
 mkdir config_files
 cd keys
 
-echo -e "${LBLUE}Installing Openresolv for $USER ${WHITE}"
-sudo apt install openresolv
+echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
+sudo apt install resolvconf
+sudo systemctl start resolvconf.service
+sudo systemctl start resolvconf.service
+sudo systemctl status resolvconf.service
+
+sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
+nameserver 8.8.8.8 
+nameserver 8.8.4.4
+EOF
+
+sudo systemctl restart resolvconf.service
+sudo systemctl restart systemd-resolved.service
 
 echo -e "${LBLUE}Installing Wireguard for $USER ${WHITE}"
 sudo apt install wireguard -y
@@ -121,9 +132,22 @@ else
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait
 
+echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
+ssh ${host_username}@$host_ip "sudo apt install resolvconf" &
+wait
+ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
+wait
+ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
+wait
+ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
+wait
 
-echo -e "${LBLUE}Installing Openresolv for $host_username ${WHITE}"
-ssh ${host_username}@$host_ip "sudo apt install openresolv" &
+scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
+wait
+
+ssh ${host_username}@$host_ip "sudo systemctl restart resolvconf.service" &
+wait
+ssh ${host_username}@$host_ip "sudo systemctl restart systemd-resolved.service" &
 wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"
@@ -139,7 +163,7 @@ sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 ListenPort = 51820
 Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
-Dns = ${master_host_ip_vpn_for_dns}
+Dns = ${master_host_ip_vpn_for_dns}, 8.8.8.8, 8.8.4.4
 
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)

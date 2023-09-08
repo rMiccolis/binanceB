@@ -142,6 +142,8 @@ wait
 # ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
 # wait
 
+ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
+wwait
 scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
 wait
 

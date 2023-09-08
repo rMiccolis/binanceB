@@ -40,11 +40,11 @@ if [ -z "$config_file_path" ]; then usage; exit; fi
 echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
 
-echo -e "${LGREEN}Installing BIND9 DNS server:${WHITE}"
-. ./binanceB/bin/install_bind9_dns_server.sh -c "$config_file_path"
-
 echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
 . ./binanceB/bin/install_wireguard.sh -c "$config_file_path"
+
+echo -e "${LGREEN}Installing BIND9 DNS server:${WHITE}"
+. ./binanceB/bin/install_bind9_dns_server.sh -c "$config_file_path"
 
 cd /home/$USER/
 

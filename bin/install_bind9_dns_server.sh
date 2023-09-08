@@ -37,9 +37,9 @@ interface_1=${interface_range[0]}
 interface_2=${interface_range[1]}
 interface_3=${interface_range[2]}
 
-sudo apt install bind9 -y
+sudo apt-get install -y bind9
 
-sudo apt install dnsutils -y
+sudo apt-get install dnsutils
 
 cat << EOF | sudo tee /etc/bind/named.conf.local > /dev/null
 //
@@ -51,13 +51,13 @@ cat << EOF | sudo tee /etc/bind/named.conf.local > /dev/null
 //include "/etc/bind/zones.rfc1918";
 zone "$application_dns_name" {
      type master;
-     file "/etc/bind/bot.$application_dns_name";
+     file "/etc/bind/db.$application_dns_name";
 };
 
 
 EOF
 
-cat << EOF | sudo tee /etc/bind/bot.$application_dns_name > /dev/null
+cat << EOF | sudo tee /etc/bind/db.$application_dns_name > /dev/null
 ;
 ; BIND data file for $application_dns_name
 ;
@@ -80,11 +80,11 @@ sudo systemctl restart bind9.service
 cat << EOF | sudo tee -a /etc/bind/named.conf.local > /dev/null
 zone "$interface_1.$interface_2.$interface_3.in-addr.arpa" {
      type master;
-     file "/etc/bind/bot.$interface_1";
+     file "/etc/bind/db.$interface_1";
 };
 EOF
 
-cat << EOF | sudo tee /etc/bind/bot.$interface_1 > /dev/null
+cat << EOF | sudo tee /etc/bind/db.$interface_1 > /dev/null
 ;
 ; BIND reverse data file for local $interface_1.$interface_2.$interface_3.XXX
 ;

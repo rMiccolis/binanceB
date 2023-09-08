@@ -50,13 +50,12 @@ sudo systemctl start resolvconf.service
 sudo systemctl start resolvconf.service
 # sudo systemctl status resolvconf.service
 
-sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
-nameserver 8.8.8.8 
-nameserver 8.8.4.4
-EOF
-
-sudo systemctl restart resolvconf.service
-sudo systemctl restart systemd-resolved.service
+# sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
+# nameserver 8.8.8.8 
+# nameserver 8.8.4.4
+# EOF
+# sudo systemctl restart resolvconf.service
+# sudo systemctl restart systemd-resolved.service
 
 echo -e "${LBLUE}Installing Wireguard for $USER ${WHITE}"
 sudo apt install wireguard -y
@@ -142,15 +141,14 @@ wait
 # ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
 # wait
 
-ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
-wait
-scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
-wait
-
-ssh ${host_username}@$host_ip "sudo systemctl restart resolvconf.service" &
-wait
-ssh ${host_username}@$host_ip "sudo systemctl restart systemd-resolved.service" &
-wait
+# ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
+# wait
+# scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
+# wait
+# ssh ${host_username}@$host_ip "sudo systemctl restart resolvconf.service" &
+# wait
+# ssh ${host_username}@$host_ip "sudo systemctl restart systemd-resolved.service" &
+# wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"
 ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &

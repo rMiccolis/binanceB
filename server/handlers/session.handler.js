@@ -64,7 +64,7 @@ const setTokens = async (tokenData, req, res, onlyAccessToken = false) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", //https
         sameSite: "Strict",
-        domain: '.binanceb.com',
+        // domain: '.binanceb.com',
     });
 
     tokenData.exp = currentTime + access_token_expiry;

@@ -61,7 +61,7 @@ wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publi
 
 if [ "${host_username}" == "m1" ]; then
 
-master_host_ip=$host_ip
+# master_host_ip=$host_ip
 master_host_ip_vpn="${host_ip_vpn}/16"
 master_host_name=$host_username
 
@@ -71,10 +71,10 @@ interface_2=${interface_range[1]}
 interface_3=${interface_range[2]}
 interface="$interface_1.$interface_2.0.0"
 
-if [ "$environment" == "production" ]; then
+# if [ "$environment" == "production" ]; then
 echo -e "${LBLUE}Setting Server Public IP address: $load_balancer_public_ip ${WHITE}"
 master_host_ip=$load_balancer_dns_name
-fi
+# fi
 
 sudo chown root:${host_username} /etc/wireguard/
 sudo chmod -R 777 /etc/wireguard/

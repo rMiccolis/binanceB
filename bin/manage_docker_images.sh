@@ -50,7 +50,7 @@ if [ -z "$client" ] && [ -z "$server" ]; then client=1; server=1; fi
 if [ "$client" == "1" ]; then
 # Set environment variable VITE_SERVER_URI
 echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"
-cluster_ip=$master_host_ip
+# cluster_ip=$master_host_ip
 # if [ "$environment" == "production" ]; then
 # echo -e "${LBLUE}Setting Server Public IP address: $load_balancer_public_ip ${WHITE}"
 # cluster_ip=$load_balancer_public_ip
@@ -58,7 +58,7 @@ cluster_ip=$master_host_ip
 # before building images we have to set a .env file to pass client its environment variables
 echo -e "${LBLUE}Setting Server IP for client environment...${WHITE}"
 cat << EOF | tee $repository_root_dir/binanceB/client/.env.production > /dev/null
-VITE_SERVER_URI="http://$cluster_ip/server/"
+VITE_SERVER_URI="http://$application_dns_name/server/"
 EOF
 
 envsubst < $repository_root_dir/binanceB/client/capacitor.config.json | tee $repository_root_dir/binanceB/client/capacitor.config.json > /dev/null

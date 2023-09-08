@@ -51,7 +51,7 @@ spec:
              key: MONGODB_DB_NAME
         - name: MONGODB_URI
           # value: $(MONGODB_SERVICE_HOST)
-          value: $cluster_ip
+          value: $application_dns_name
         - name: MONGODB_PORT
           # value: $(MONGODB_SERVICE_PORT)
           value: "27017"

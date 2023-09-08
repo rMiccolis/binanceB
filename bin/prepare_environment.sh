@@ -25,6 +25,7 @@ EOF
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 
 # list of hosts IP that will join the cluster
+export application_dns_name=$(yq '.application_dns_name' $config_file_path)
 export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
@@ -47,6 +48,7 @@ export host_list="$(yq '.hosts[]' $config_file_path)"
 
 # export variables at login
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
+export application_dns_name=$application_dns_name
 export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name

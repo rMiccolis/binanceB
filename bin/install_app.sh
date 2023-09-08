@@ -16,13 +16,6 @@ export mongo_root_username=$(echo -n $(yq '.mongo_root_username' $config_file_pa
 
 export mongo_root_password=$(echo -n $(yq '.mongo_root_password' $config_file_path) | base64)
 
-cluster_ip=$master_host_ip
-# if [ "$environment" == "production" ]; then
-# cluster_ip=$load_balancer_public_ip
-# fi
-
-export cluster_ip=$cluster_ip
-
 mkdir /home/$USER/temp
 cp -R $repository_root_dir/binanceB/kubernetes/app/* /home/$USER/temp
 envsubst < $repository_root_dir/binanceB/kubernetes/app/2-mongodb/3-mongodb-secrets.yaml | sudo tee /home/$USER/temp/2-mongodb/3-mongodb-secrets.yaml > /dev/null

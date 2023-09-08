@@ -37,9 +37,9 @@ if [ -f /home/$USER/wireguard/config_files/counter ]; then
     counter=$(cat /home/$USER/wireguard/config_files/counter)
 fi
 
-if [ "$environment" == "production" ]; then
-    server_ip=$load_balancer_dns_name
-fi
+# if [ "$environment" == "production" ]; then
+server_ip=$load_balancer_dns_name
+# fi
 
 counter+=1
 cat << EOF | tee /home/$USER/wireguard/config_files/counter > /dev/null

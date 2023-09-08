@@ -43,10 +43,12 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
 . ./binanceB/bin/install_wireguard.sh -c "$config_file_path"
 
-# cd /home/$USER/
+cd /home/$USER/
 
-# echo -e "${LGREEN}Installing BIND9 DNS server:${WHITE}"
-# . ./binanceB/bin/install_bind9_dns_server.sh -c "$config_file_path"
+sleep 5
+
+echo -e "${LGREEN}Installing BIND9 DNS server:${WHITE}"
+. ./binanceB/bin/install_bind9_dns_server.sh -c "$config_file_path"
 
 cd /home/$USER/
 

@@ -49,6 +49,7 @@ cat << EOF | sudo tee /etc/bind/named.conf.local > /dev/null
 // Consider adding the 1918 zones here, if they are not used in your
 // organization
 //include "/etc/bind/zones.rfc1918";
+
 zone "$application_dns_name" {
      type master;
      file "/etc/bind/db.$application_dns_name";
@@ -86,7 +87,7 @@ EOF
 
 cat << EOF | sudo tee /etc/bind/db.$interface_1 > /dev/null
 ;
-; BIND reverse data file for local $interface_1.$interface_2.$interface_3.XXX
+; BIND reverse data file for local $interface_1.$interface_2.$interface_3.XXX net
 ;
 $TTL    604800
 @       IN      SOA     ns.$application_dns_name. root.$application_dns_name. (
@@ -97,7 +98,7 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      ns.
-1       IN      PTR     ns.$application_dns_name.
+10      IN      PTR     ns.$application_dns_name.
 EOF
 
 sudo systemctl restart bind9.service

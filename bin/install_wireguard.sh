@@ -44,7 +44,10 @@ mkdir keys
 mkdir config_files
 cd keys
 
-echo -e "${LBLUE}Installing Wireguard...${WHITE}"
+echo -e "${LBLUE}Installing Openresolv for $USER ${WHITE}"
+sudo apt install openresolv
+
+echo -e "${LBLUE}Installing Wireguard for $USER ${WHITE}"
 sudo apt install wireguard -y
 umask 077
 
@@ -116,6 +119,11 @@ sudo systemctl start wg-quick@wg0
 else
 
 ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
+wait
+
+
+echo -e "${LBLUE}Installing Openresolv for $host_username ${WHITE}"
+ssh ${host_username}@$host_ip "sudo apt install openresolv" &
 wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"

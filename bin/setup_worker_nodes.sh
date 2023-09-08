@@ -64,6 +64,7 @@ export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
+export application_dns_name=$application_dns_name
 export host_list=(${host_list[@]})
 EOF
 

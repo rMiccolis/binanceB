@@ -34,6 +34,12 @@ if [ "$master_host_name" != "$(whoami)" ]; then
 # installing yq to parse and read json files
 echo -e "${LBLUE}Installing yq library on $(whoami) to read and parse YAML files...${WHITE}"
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
+
+echo -e "${LBLUE}Setting Master IP address into hosts file${WHITE}"
+# save host ip address into host file
+cat << EOF | sudo tee -a /etc/hosts > /dev/null
+$master_host_ip $master_host_name $application_dns_name
+EOF
 fi
 
 ###############################################################################

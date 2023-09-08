@@ -35,6 +35,7 @@ hosts+=($(yq '.hosts[]' $config_file_path))
 master_host_ip=""
 master_host_name=""
 master_host_ip_vpn=""
+master_host_ip_vpn_for_dns=""
 
 cd
 mkdir wireguard
@@ -63,6 +64,7 @@ if [ "${host_username}" == "m1" ]; then
 
 # master_host_ip=$host_ip
 master_host_ip_vpn="${host_ip_vpn}/16"
+master_host_ip_vpn_for_dns=${host_ip_vpn}
 master_host_name=$host_username
 
 IFS='.' read -r -a interface_range <<< "$master_host_ip_vpn"
@@ -129,7 +131,7 @@ sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 ListenPort = 51820
 Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
-Dns = ${master_host_ip}
+Dns = ${master_host_ip_vpn_for_dns}
 
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)

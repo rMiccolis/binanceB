@@ -62,7 +62,13 @@ cat << EOF | sudo tee /etc/bind/db.$application_dns_name > /dev/null
 ;
 ; BIND data file for $application_dns_name
 ;
+EOF
+
+cat << 'EOF' | sudo tee -a /etc/bind/db.$application_dns_name > /dev/null
 $TTL    604800
+EOF
+
+cat << EOF | sudo tee -a /etc/bind/db.$application_dns_name > /dev/null
 @       IN      SOA     $application_dns_name. root.$application_dns_name. (
                               2         ; Serial
                          604800         ; Refresh
@@ -89,7 +95,13 @@ cat << EOF | sudo tee /etc/bind/db.$interface_1 > /dev/null
 ;
 ; BIND reverse data file for local $interface_1.$interface_2.$interface_3.XXX net
 ;
+EOF
+
+cat << 'EOF' | sudo tee -a /etc/bind/db.$interface_1 > /dev/null
 $TTL    604800
+EOF
+
+cat << EOF | sudo tee -a /etc/bind/db.$interface_1 > /dev/null
 @       IN      SOA     ns.$application_dns_name. root.$application_dns_name. (
                               2         ; Serial
                          604800         ; Refresh

@@ -1,7 +1,7 @@
 ---
 # infrastructure info:
-environment: 'dev' # this will cause cluster (and application) to be reachable at master_host IP (192.168.1.200). Set to "production" to make the cluster (and application) reachable to load_balancer_public_ip (in this case)
-load_balancer_dns_name: 'cluster.com' # public dns name where app will be reachable
+application_dns_name: 'binanceb.com' # this will be the dns to reach the entire cluster from the vpn
+load_balancer_dns_name: 'cluster.ddns.com' # public dns name where main server is reachable. For a "domestic" use, adopt a free DDNS service (see no-ip.com website) to set this name.
 load_balancer_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)
 # For each of the following hosts must be provided: host_username@internal_ip_address@desired_vpn_ip
 master_host: 'm1@192.168.1.200@10.11.1.1' # kubernetes master host IP from which everything is executed: provide it from internal interface (192.168...)
@@ -21,6 +21,7 @@ docker_access_token: 'your_docker_access_token' # used to build and push docker 
 docker_server_repository_name: 'binanceb_nodejs_server' # used to push docker server image from repository and pull by kubernetes
 docker_client_repository_name: 'binanceb_vuejs_client' # used to push docker client image from repository and pull by kubernetes
 # application config parameters:
+environment: 'dev' # this will cause application to log less info instead of 'dev' option
 server_replica_count: '2'
 server_access_token_secret: 'server_access_token_secret'
 server_refresh_token_secret: 'server_refresh_token_secret'

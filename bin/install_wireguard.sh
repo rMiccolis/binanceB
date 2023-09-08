@@ -48,7 +48,7 @@ echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
 sudo apt install resolvconf
 sudo systemctl start resolvconf.service
 sudo systemctl start resolvconf.service
-sudo systemctl status resolvconf.service
+# sudo systemctl status resolvconf.service
 
 sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
 nameserver 8.8.8.8 
@@ -139,8 +139,8 @@ ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
-ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
-wait
+# ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
+# wait
 
 scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
 wait

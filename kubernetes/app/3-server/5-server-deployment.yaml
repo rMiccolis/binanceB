@@ -15,7 +15,6 @@ spec:
       labels:
         app: server
     spec:
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: server
         image: $docker_username/$docker_server_repository_name

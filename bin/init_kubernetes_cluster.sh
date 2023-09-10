@@ -20,6 +20,44 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
+
+# setting the "hosts" part of kubernetes coredns to recognize $master_host_ip as dns name $application_dns_name
+cat << EOF | tee /home/$USER/coredns_configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        hosts {
+        $master_host_ip $application_dns_name
+        fallthrough
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf {
+           max_concurrent 1000
+        }
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+EOF
+
+kubectl apply -f /home/$USER/coredns_configmap.yaml
+
 #install calico CNI to kubernetes cluster:
 echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O > /dev/null 2>&1

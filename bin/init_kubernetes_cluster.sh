@@ -22,7 +22,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
 # setting the "hosts" part of kubernetes coredns to recognize $master_host_ip as dns name $application_dns_name
-cat << EOF | tee /home/$USER/coredns_configmap.yaml
+cat << EOF | tee /home/$USER/coredns_configmap.yaml > /dev/null
 apiVersion: v1
 kind: ConfigMap
 metadata:

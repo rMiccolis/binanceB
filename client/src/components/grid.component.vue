@@ -35,7 +35,7 @@
     </div>
     <div v-else>
       <div v-if="data && data?.length == 0">No Data Available!</div>
-      <div v-else-if="!data">Loading Staking...</div>
+      <div v-else-if="!data">Loading data...</div>
     </div>
     <v-dialog v-model="openModal" scrollable>
       <v-card width="80vw" elevation="10" rounded="10">

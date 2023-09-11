@@ -58,7 +58,7 @@ echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"
 # before building images we have to set a .env file to pass client its environment variables
 echo -e "${LBLUE}Setting Server IP for client environment...${WHITE}"
 cat << EOF | tee $repository_root_dir/binanceB/client/.env.production > /dev/null
-VITE_SERVER_URI="http://$application_dns_name/server/"
+VITE_SERVER_URI="http://$app_server_addr/server/"
 EOF
 
 envsubst < $repository_root_dir/binanceB/client/capacitor.config.json | tee $repository_root_dir/binanceB/client/capacitor.config.json > /dev/null

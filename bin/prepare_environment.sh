@@ -18,6 +18,7 @@ sudo hostnamectl set-hostname $master_host_name
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 
 # list of hosts IP that will join the cluster
+export android_app_ready=$(yq '.android_app_ready' $config_file_path)
 export application_dns_name=$(yq '.application_dns_name' $config_file_path)
 export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip
@@ -38,6 +39,11 @@ export server_replica_count=$(yq '.server_replica_count' $config_file_path)
 #exporting host list as a string (so it can be exported as variable and read by other scripts)
 export host_list="$(yq '.hosts[]' $config_file_path)"
 
+export app_server_addr=$master_host_ip
+if [ "$android_app_ready" == "true" ]; then
+    export app_server_addr=$application_dns_name
+fi
+
 echo -e "${LBLUE}Setting Master IP address into hosts file${WHITE}"
 # save host ip address into host file
 cat << EOF | sudo tee -a /etc/hosts > /dev/null
@@ -46,6 +52,7 @@ EOF
 
 # export variables at login
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
+export app_server_addr=$app_server_addr
 export application_dns_name=$application_dns_name
 export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip

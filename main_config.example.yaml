@@ -1,5 +1,6 @@
 ---
 # infrastructure info:
+android_app_ready: 'true' # set to true to support the building of android app (in capacitor.config.json insert the ${master_host_VPN_ip} as for ex: 10.11.1.1 and not the dns name)
 application_dns_name: 'binanceb.com' # this will be the dns to reach the entire cluster from the vpn
 load_balancer_dns_name: 'cluster.ddns.com' # public dns name where main server is reachable. For a "domestic" use, adopt a free DDNS service (see no-ip.com website) to set this name.
 load_balancer_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)

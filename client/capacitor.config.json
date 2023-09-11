@@ -1,10 +1,14 @@
 {
-  "appId": "com.example.app",
+  "appId": "com.binanceb.app",
   "appName": "binanceB",
   "webDir": "dist",
   "server": {
-    "url": "http://10.11.1.1",
-    "cleartext": true
+    "androidScheme": "http",
+    "url": "http://binanceb.com/",
+    "allowNavigation": ["binanceb.com", "*.binanceb.com", "binanceb.com/*"]
+  },
+  "android": {
+    "allowMixedContent": true
   },
   "plugins": {
     "CapacitorCookies": {

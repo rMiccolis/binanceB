@@ -5,7 +5,8 @@
   "server": {
     "androidScheme": "http",
     "url": "http://binanceb.com/",
-    "allowNavigation": ["binanceb.com", "*.binanceb.com", "binanceb.com/*"]
+    "allowNavigation": ["binanceb.com", "*.binanceb.com", "binanceb.com/*"],
+    "cleartext": true
   },
   "android": {
     "allowMixedContent": true

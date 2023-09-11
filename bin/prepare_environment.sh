@@ -40,9 +40,9 @@ export server_replica_count=$(yq '.server_replica_count' $config_file_path)
 export host_list="$(yq '.hosts[]' $config_file_path)"
 
 export app_server_addr=$application_dns_name
-if [ "$android_app_ready" == "true" ]; then
-    export app_server_addr=$master_host_ip
-fi
+# if [ "$android_app_ready" == "true" ]; then
+#     export app_server_addr=$master_host_ip
+# fi
 
 echo -e "${LBLUE}Setting Master IP address into hosts file${WHITE}"
 # save host ip address into host file

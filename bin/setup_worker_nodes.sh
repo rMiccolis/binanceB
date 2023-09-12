@@ -188,7 +188,6 @@ for h in ${host_list[@]}; do
 
   sudo systemctl daemon-reload
   sudo systemctl restart kubelet
-
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -196,6 +195,7 @@ for h in ${host_list[@]}; do
 
 done
 
+sleep 5
 echo -e "${LBLUE}All remote hosts configured and joined to the cluster!${WHITE}"
 kubectl get nodes -o wide
 echo -e "${LBLUE}------------------------------------------------${WHITE}"

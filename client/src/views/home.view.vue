@@ -6,6 +6,7 @@
     <v-row>
       <v-col>
         This is the home page!
+        <p>You are logged in as: <span class="text-capitalize font-weight-bold">{{ mainStore.userId }}</span></p>
       </v-col>
     </v-row>
   </div>
@@ -19,7 +20,6 @@ import axios from "axios";
 const baseURL = import.meta.env.VITE_baseURL;
 
 const mainStore = useMainStore();
-const loginModal = ref(false);
 
 onMounted(async () => {
 });

@@ -4,6 +4,7 @@ import home from "../views/home.view.vue";
 import notFound from "../views/static/notFound.view.vue";
 import axios from "axios";
 const baseURL = import.meta.env.VITE_SERVER_URI;
+import { useMainStore } from "../store/useMainStore";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,13 +65,14 @@ const router = createRouter({
     ],
 });
 
-// router.beforeEach((to, from) => {
-//     const mainStore = useMainStore();
-//     const logged = mainStore.isUserloggedIn;
-//     if (!logged && to.name !== "login") {
-//         console.log("sending this", logged);
-//         return { name: "login", params: { isLoggedIn: false } };
-//     }
-// });
+router.beforeEach(async (to, from) => {
+    const mainStore = useMainStore();
+        let logged = await mainStore.isLoggedIn();
+        console.log(logged);
+        if (!logged && to.name != 'login') {
+            console.log(logged);
+            return { name: 'login' }
+        }
+});
 
 export default router;

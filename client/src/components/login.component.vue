@@ -3,7 +3,8 @@
     <div class="img-container">
       <v-img
         class="blur icon-center mb-2"
-        width="50%"
+        width="45%"
+        lazy-src="binanceB_android_icon-removebg-preview.svg"
         src="binanceB_android_icon-removebg-preview.svg"
         cover
       >
@@ -35,43 +36,46 @@
       clearable
     ></v-text-field>
 
-    <v-text-field
-      v-if="selectedTab == 'signup'"
-      v-model="confirmPassword"
-      shaped
-      prepend-inner-icon="mdi-key"
-      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
-      label="Confirm Password"
-      hint="For testing, Password is 'aa'"
-      :error="error('confirmPassword')"
-      :type="show ? 'text' : 'password'"
-      @click:append-inner="show = !show"
-      clearable
-    ></v-text-field>
+    <div>
 
-    <v-text-field
-      v-if="selectedTab == 'signup'"
-      v-model="publicApiKey"
-      shaped
-      prepend-inner-icon="mdi-key"
-      label="Public API_KEY"
-      :error="error('pubApyKey')"
-      @click:append-inner="show = !show"
-      clearable
-    ></v-text-field>
-
-    <v-text-field
-      v-if="selectedTab == 'signup'"
-      v-model="privateApiKey"
-      shaped
-      prepend-inner-icon="mdi-key"
-      :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
-      label="Private API_KEY"
-      :error="error('privApyKey')"
-      :type="show ? 'text' : 'password'"
-      @click:append-inner="show = !show"
-      clearable
-    ></v-text-field>
+      <v-text-field
+        v-if="selectedTab == 'signup'"
+        v-model="confirmPassword"
+        shaped
+        prepend-inner-icon="mdi-key"
+        :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
+        label="Confirm Password"
+        hint="For testing, Password is 'aa'"
+        :error="error('confirmPassword')"
+        :type="show ? 'text' : 'password'"
+        @click:append-inner="show = !show"
+        clearable
+      ></v-text-field>
+  
+      <v-text-field
+        v-if="selectedTab == 'signup'"
+        v-model="publicApiKey"
+        shaped
+        prepend-inner-icon="mdi-key"
+        label="Public API_KEY"
+        :error="error('pubApyKey')"
+        @click:append-inner="show = !show"
+        clearable
+      ></v-text-field>
+  
+      <v-text-field
+        v-if="selectedTab == 'signup'"
+        v-model="privateApiKey"
+        shaped
+        prepend-inner-icon="mdi-key"
+        :append-inner-icon="show ? 'mdi-eye b-pointer' : 'mdi-eye-off b-pointer'"
+        label="Private API_KEY"
+        :error="error('privApyKey')"
+        :type="show ? 'text' : 'password'"
+        @click:append-inner="show = !show"
+        clearable
+      ></v-text-field>
+    </div>
 
     <v-row>
       <v-col cols="12" v-if="selectedTab == 'signin'">
@@ -113,14 +117,14 @@
         <p
           v-if="selectedTab == 'signin'"
           @click="selectTab('signup')"
-          class="text-center text-caption text-blue"
+          class="text-center text-caption text-blue cursor-pointer"
         >
           Not registered? Sign up!
         </p>
         <p
           v-else
           @click="selectTab('signin')"
-          class="text-center text-caption text-blue"
+          class="text-center text-caption text-blue cursor-pointer"
         >
           Already registered? Sign in!
         </p>

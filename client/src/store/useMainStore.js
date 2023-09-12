@@ -69,7 +69,7 @@ export const useMainStore = defineStore("mainStore", () => {
                 withCredentials: true,
             });
 
-            if (response.data.isLoggedIn === true) {
+            if (response.data?.isLoggedIn === true) {
                 await setLoggedIn({
                     loggedIn: true,
                     sessionInfo: response.data.sessionInfo,

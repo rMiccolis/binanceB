@@ -223,17 +223,21 @@ const toggleDrawer = () => {
 };
 
 onBeforeMount(async () => {
-  const mainStore = useMainStore();
-  const logged = await mainStore.isLoggedIn();
-  if (!logged) {
-    router.push({ name: "login" });
-  }
+  // const mainStore = useMainStore();
+  // const logged = await mainStore.isLoggedIn();
+  // if (!logged) {
+  //   router.push({ name: "login" });
+  // }
 });
 </script>
 
 <style>
 .a {
   color: rgba(20, 19, 19, 0.678);
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .b-app-min-height {

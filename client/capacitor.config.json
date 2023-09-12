@@ -1,11 +1,11 @@
 {
-  "appId": "com.binanceb.app",
-  "appName": "binanceB",
+  "appId": "com.app-name.app",
+  "appName": "App Name",
   "webDir": "dist",
   "server": {
     "androidScheme": "http",
-    "url": "http://binanceb.com/",
-    "allowNavigation": ["binanceb.com", "*.binanceb.com", "binanceb.com/*"],
+    "url": "http://${app_server_addr}.com/",
+    "allowNavigation": ["${app_server_addr}.com", "*.${app_server_addr}.com", "${app_server_addr}.com/*"],
     "cleartext": true
   },
   "android": {

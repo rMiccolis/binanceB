@@ -87,9 +87,9 @@ for h in ${host_list[@]}; do
   ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
   wait
 
-  # # save host ip address
-  # ssh $host_vpn_ssh_string "sudo hostnamectl set-hostname $host_username" &
-  # wait
+  # save host ip address
+  ssh $host_vpn_ssh_string "sudo hostnamectl set-hostname $host_username" &
+  wait
 
   # executing config_file.sh on the remote host
   scp -q ~/config_file.sh $host_vpn_ssh_string:/home/$host_username/ &

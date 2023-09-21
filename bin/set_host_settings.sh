@@ -38,7 +38,7 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 echo -e "${LBLUE}Setting Master IP address into hosts file${WHITE}"
 # save host ip address into host file
 cat << EOF | sudo tee -a /etc/hosts > /dev/null
-$master_host_ip $master_host_name $application_dns_names
+$master_host_ip $master_host_name $application_dns_name
 EOF
 fi
 

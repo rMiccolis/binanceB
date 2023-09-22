@@ -215,7 +215,8 @@ power_state:
    timeout: 30
    condition: True
 runcmd:
- - "ssh-keyscan github.com >> /home/$($host_user)/.ssh/known_hosts"
+ - "echo 127.0.0.1 $($host_user) >> /etc/hosts"
+ - "ssh-keyscan github.com >> /home//.ssh/known_hosts"
 "@
 
     # Set temp path to store temporary files

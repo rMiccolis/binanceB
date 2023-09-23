@@ -63,5 +63,3 @@ kubectl apply -f calico.yaml > /dev/null 2>&1
 
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
 wait
-
-kubectl -n kube-system rollout restart deployment coredns

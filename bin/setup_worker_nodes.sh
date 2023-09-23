@@ -201,3 +201,7 @@ kubectl get nodes -o wide
 echo -e "${LBLUE}------------------------------------------------${WHITE}"
 kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
 wait
+
+kubectl -n kube-system rollout restart deployment coredns
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
+wait

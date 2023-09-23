@@ -90,6 +90,8 @@ echo -e "${LGREEN}Phase 5 / 10 ===> Operation Done!${WHITE}"
 echo -e "${LGREEN}Starting phase 6 / 10 ===> Setup worker nodes and joining them to cluster ${WHITE}"
 ./binanceB/bin/setup_worker_nodes.sh
 echo -e "${LGREEN}Phase 6 / 10 ===> Operation Done!${WHITE}"
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
+wait
 
 echo -e "${LGREEN}Starting phase 7 / 10 ===> Installing Helm (package manager for Kubernetes)${WHITE}"
 ./binanceB/bin/install_helm.sh

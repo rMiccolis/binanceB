@@ -199,3 +199,5 @@ sleep 5
 echo -e "${LBLUE}All remote hosts configured and joined to the cluster!${WHITE}"
 kubectl get nodes -o wide
 echo -e "${LBLUE}------------------------------------------------${WHITE}"
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
+wait

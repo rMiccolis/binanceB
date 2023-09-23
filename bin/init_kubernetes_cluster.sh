@@ -46,7 +46,7 @@ data:
         fallthrough
         }
         prometheus :9153
-        forward . $master_host_ip
+        forward . /etc/resolv.conf
         cache 30
         loop
         reload
@@ -60,3 +60,6 @@ kubectl apply -f /home/$USER/coredns_configmap.yaml
 echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O > /dev/null 2>&1
 kubectl apply -f calico.yaml > /dev/null 2>&1
+
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
+wait

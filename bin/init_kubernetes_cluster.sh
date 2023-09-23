@@ -46,9 +46,7 @@ data:
         fallthrough
         }
         prometheus :9153
-        forward . /etc/resolv.conf {
-           max_concurrent 1000
-        }
+        forward . $master_host_ip
         cache 30
         loop
         reload

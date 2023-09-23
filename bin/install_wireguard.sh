@@ -50,12 +50,12 @@ sudo systemctl start resolvconf.service
 sudo systemctl start resolvconf.service
 # sudo systemctl status resolvconf.service
 
-sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
-nameserver 8.8.8.8 
-nameserver 8.8.4.4
-EOF
-sudo systemctl restart resolvconf.service
-sudo systemctl restart systemd-resolved.service
+# sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
+# nameserver 8.8.8.8 
+# nameserver 8.8.4.4
+# EOF
+# sudo systemctl restart resolvconf.service
+# sudo systemctl restart systemd-resolved.service
 
 echo -e "${LBLUE}Installing Wireguard for $USER ${WHITE}"
 sudo apt install wireguard -y
@@ -120,7 +120,6 @@ echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwa
 # This tells the server it should pass along any traffic that is meant for a different computer on its network.
 sudo sed -i '/net.ipv4.ip_forward/s/^#//g' /etc/sysctl.conf
 sudo sysctl -w net.ipv4.ip_forward=1
-sudo sysctl -w net.ipv4.conf.all.proxy_arp=1
 
 # make wireguard start on boot
 sudo systemctl enable wg-quick@wg0.service
@@ -142,14 +141,14 @@ wait
 # ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
 # wait
 
-ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
-wait
-scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
-wait
-ssh ${host_username}@$host_ip "sudo systemctl restart resolvconf.service" &
-wait
-ssh ${host_username}@$host_ip "sudo systemctl restart systemd-resolved.service" &
-wait
+# ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
+# wait
+# scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
+# wait
+# ssh ${host_username}@$host_ip "sudo systemctl restart resolvconf.service" &
+# wait
+# ssh ${host_username}@$host_ip "sudo systemctl restart systemd-resolved.service" &
+# wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"
 ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &

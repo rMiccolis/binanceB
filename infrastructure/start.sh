@@ -121,12 +121,12 @@ elapsed_time=$(($elapsed_time/60))
 echo -e "${LGREEN}Elapsed time:'$(($elapsed_time))' minutes ${WHITE}"
 
 echo -e "${LGREEN}Waiting for the Application to get started...${WHITE}"
-kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=2500s &
+kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
 wait
 
 
 kubectl -n kube-system rollout restart deployment coredns
-kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
+kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
 wait
 
 echo -e "${LGREEN}Application is correctly running!${WHITE}"

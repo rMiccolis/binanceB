@@ -125,8 +125,17 @@ kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
 wait
 
 
-kubectl -n kube-system rollout restart deployment coredns
 kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
+wait
+
+kubectl wait --for=condition=Ready --all services --all-namespaces --timeout=3000s &
+wait
+kubectl -n kube-system rollout restart deployment coredns
+
+kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
+wait
+
+kubectl wait --for=condition=Ready --all services --all-namespaces --timeout=3000s &
 wait
 
 echo -e "${LGREEN}Application is correctly running!${WHITE}"

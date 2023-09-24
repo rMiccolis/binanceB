@@ -125,6 +125,10 @@ kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeo
 wait
 
 
+kubectl -n kube-system rollout restart deployment coredns
+kubectl wait --for=condition=ContainersReady --all pods --all-namespaces --timeout=3000s &
+wait
+
 echo -e "${LGREEN}Application is correctly running!${WHITE}"
 echo -e "${LGREEN}Check it out at http://$app_server_addr/${WHITE}"
 end_time="$(date -u +%s)"

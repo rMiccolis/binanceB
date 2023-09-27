@@ -1,8 +1,10 @@
 ---
 # infrastructure info:
-android_app_ready: 'true' # set to true to support the building of android app (in capacitor.config.json insert the ${master_host_VPN_ip} as for ex: 10.11.1.1 and not the dns name)
+noip_username: 'noip_username' # set to '' to not use noip for ddns for the load_balancer_dns_name
+noip_password: 'noip_password' # set to '' to not use noip for ddns for the load_balancer_dns_name
+android_app_ready: 'true' # set to true to support the building of android app (in capacitor.config.json insert the ${master_host_VPN_ip} as for ex: 10.11.1.1 and not the dns name). The app will be reachable at that IP (10.11.1.1)
 application_dns_name: 'binanceb.com' # this will be the dns to reach the entire cluster from the vpn
-load_balancer_dns_name: 'cluster.ddns.com' # public dns name where main server is reachable. For a "domestic" use, adopt a free DDNS service (see no-ip.com website) to set this name.
+load_balancer_dns_name: 'cluster.ddns.com' # public dns name where main server is reachable. For a "domestic" use, adopt a free DDNS service (see no-ip.com website) to set this name, in this case set the public ddns from no-ip
 load_balancer_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)
 # For each of the following hosts must be provided: host_username@internal_ip_address@desired_vpn_ip
 master_host: 'm1@192.168.1.200@10.11.1.1' # kubernetes master host IP from which everything is executed: provide it from internal interface (192.168...)

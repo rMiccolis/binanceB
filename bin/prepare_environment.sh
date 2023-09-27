@@ -20,6 +20,8 @@ echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 # list of hosts IP that will join the cluster
 export android_app_ready=$(yq '.android_app_ready' $config_file_path)
 export application_dns_name=$(yq '.application_dns_name' $config_file_path)
+export noip_username=$(yq '.noip_username' $config_file_path)
+export noip_password=$(yq '.noip_password' $config_file_path)
 export master_host_ip_eth0=$master_host_ip_eth0
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
@@ -52,6 +54,8 @@ EOF
 
 # export variables at login
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
+export noip_username=$noip_username
+export noip_password=$noip_password
 export app_server_addr=$app_server_addr
 export application_dns_name=$application_dns_name
 export master_host_ip_eth0=$master_host_ip_eth0

@@ -56,6 +56,10 @@ echo -e "${LGREEN}Starting phase 0 / 10: Reading data and preparing working envi
 export config_file_path=$config_file_path
 . ./binanceB/bin/prepare_environment.sh
 
+echo -e "${LGREEN}Installing No-Ip Dynamic Update Client:${WHITE}"
+cd /home/$USER/
+. ./binanceB/bin/install_NOIP_duc.sh
+
 echo -e "${LGREEN}Starting phase 1 / 10 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
 ./binanceB/bin/set_host_settings.sh
 echo -e "${LGREEN}Phase 1 / 10 ===> Operation Done!${WHITE}"

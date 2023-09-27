@@ -42,7 +42,7 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 
 echo -e "${LGREEN}Installing No-Ip Dynamic Update Client:${WHITE}"
 cd /home/$USER/
-./binanceB/bin/install_NOIP_duc.sh
+./binanceB/bin/install_NOIP_duc.sh -c "$config_file_path"
 
 echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
 . ./binanceB/bin/install_wireguard.sh -c "$config_file_path"

@@ -3,6 +3,27 @@
 # INSTALL NO-IP Dynamic Update Client to update IP address to the ddns 'A' record on no-ip.com
 ###############################################################################
 
+# usage info
+usage(){
+  echo " Run this script to install Dynamic Update Client for no-ip ddns update"
+  echo ""
+  echo "Usage:"
+  echo "  $0 -c /path/to/main_config.yaml"
+  echo ""
+  exit
+}
+
+while getopts ":c:" opt; do
+  case $opt in
+    c) config_file_path="$OPTARG"
+    ;;
+    \?) usage
+        exit
+    ;;
+  esac
+done
+
+
 if [ '$noip_username' != '' ]; then
 
 export application_dns_name=$(yq '.application_dns_name' $config_file_path)

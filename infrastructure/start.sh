@@ -40,6 +40,10 @@ if [ -z "$config_file_path" ]; then usage; exit; fi
 echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
 
+echo -e "${LGREEN}Installing No-Ip Dynamic Update Client:${WHITE}"
+cd /home/$USER/
+./binanceB/bin/install_NOIP_duc.sh
+
 echo -e "${LGREEN}Installing Wireguard VPN:${WHITE}"
 . ./binanceB/bin/install_wireguard.sh -c "$config_file_path"
 
@@ -55,10 +59,6 @@ cd /home/$USER/
 echo -e "${LGREEN}Starting phase 0 / 10: Reading data and preparing working environment:${WHITE}"
 export config_file_path=$config_file_path
 . ./binanceB/bin/prepare_environment.sh
-
-echo -e "${LGREEN}Installing No-Ip Dynamic Update Client:${WHITE}"
-cd /home/$USER/
-./binanceB/bin/install_NOIP_duc.sh
 
 cd /home/$USER/
 echo -e "${LGREEN}Starting phase 1 / 10 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"

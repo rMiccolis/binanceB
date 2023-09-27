@@ -5,6 +5,10 @@
 
 if [ '$noip_username' != '' ]; then
 
+export application_dns_name=$(yq '.application_dns_name' $config_file_path)
+export noip_username=$(yq '.noip_username' $config_file_path)
+export noip_password=$(yq '.noip_password' $config_file_path)
+
 mkdir noip
 cd noip
 wget https://dmej8g5cpdyqd.cloudfront.net/downloads/noip-duc_3.0.0-beta.7.tar.gz

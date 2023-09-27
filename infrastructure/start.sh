@@ -58,8 +58,9 @@ export config_file_path=$config_file_path
 
 echo -e "${LGREEN}Installing No-Ip Dynamic Update Client:${WHITE}"
 cd /home/$USER/
-. ./binanceB/bin/install_NOIP_duc.sh
+./binanceB/bin/install_NOIP_duc.sh
 
+cd /home/$USER/
 echo -e "${LGREEN}Starting phase 1 / 10 ===> Setting up host settings and dependencies: $(hostname -I)${WHITE}"
 ./binanceB/bin/set_host_settings.sh
 echo -e "${LGREEN}Phase 1 / 10 ===> Operation Done!${WHITE}"

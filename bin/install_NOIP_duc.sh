@@ -9,10 +9,10 @@ mkdir noip
 cd noip
 wget https://dmej8g5cpdyqd.cloudfront.net/downloads/noip-duc_3.0.0-beta.7.tar.gz
 tar xf noip-duc_3.0.0-beta.7.tar.gz
-cd /home/$USER/noip-duc_3.0.0-beta.7/binaries && sudo apt install ./noip-duc_3.0.0-beta.7_amd64.deb
+cd /home/$USER/noip/noip-duc_3.0.0-beta.7/binaries && sudo apt install ./noip-duc_3.0.0-beta.7_amd64.deb
 
 #make Dynamic Update Client run at system startup
-sudo cp /home/$USER/noip-duc_3.0.0-beta.7/debian/service /etc/systemd/system/noip-duc.service
+sudo cp /home/$USER/noip/noip-duc_3.0.0-beta.7/debian/service /etc/systemd/system/noip-duc.service
 cat << EOF | sudo tee /etc/default/noip-duc > /dev/null
 ## File: /etc/default/noip-duc
 NOIP_USERNAME=$noip_username

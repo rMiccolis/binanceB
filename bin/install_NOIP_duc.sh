@@ -3,6 +3,8 @@
 # INSTALL NO-IP Dynamic Update Client to update IP address to the ddns 'A' record on no-ip.com
 ###############################################################################
 
+if [ '$noip_username' != '' ]; then
+
 mkdir noip
 cd noip
 wget https://dmej8g5cpdyqd.cloudfront.net/downloads/noip-duc_3.0.0-beta.7.tar.gz
@@ -27,4 +29,4 @@ sudo systemctl start noip-duc
 
 # noip-duc --username $noip_username --password $noip_password --hostnames $load_balancer_dns_name
 
-
+fi

@@ -60,7 +60,7 @@ let getAccountData = async (binance) => {
         console.log(accountData);
         return accountData.data;
     } catch (error) {
-        console.log(error.response.data);
+        console.log(error);
         throw {error: true, message: "Error - Unable to retrieve account info!", devError: error.response.data}
     }
 }

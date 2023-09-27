@@ -32,7 +32,7 @@ console.logWarning = logHandler.logWarning;
 console.logError = logHandler.logError;
 console.logSuccess = logHandler.logSuccess;
 
-const corsOptions = { origin: ['http://10.11.1.1', 'http://binanceb.com'], credentials: true };
+const corsOptions = { origin: ['http://10.11.1.1', 'http://binanceb.com', 'http://localhost:8080'], credentials: true };
 
 //middlewares
 app.use(cors(corsOptions));

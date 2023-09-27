@@ -57,6 +57,7 @@ let getTotalSpentHistory = async (binance, dateFrom=new Date(2021,0,1)) => {
 let getAccountData = async (binance) => {
     try {
         let accountData = await binance.account('SPOT');
+        console.log(accountData);
         return accountData.data;
     } catch (error) {
         console.log(error.response.data);

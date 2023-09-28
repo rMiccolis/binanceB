@@ -26,7 +26,7 @@ done
 
 if [ '$noip_username' != '' ]; then
 
-export application_dns_name=$(yq '.application_dns_name' $config_file_path)
+export load_balancer_dns_name=$(yq '.load_balancer_dns_name' $config_file_path)
 export noip_username=$(yq '.noip_username' $config_file_path)
 export noip_password=$(yq '.noip_password' $config_file_path)
 
@@ -43,6 +43,7 @@ cat << EOF | sudo tee /etc/default/noip-duc > /dev/null
 NOIP_USERNAME=$noip_username
 NOIP_PASSWORD=$noip_password
 NOIP_HOSTNAMES=$load_balancer_dns_name
+NOIP_CHECK_INTERVAL=15m
 EOF
 
 # reload systemd daemon

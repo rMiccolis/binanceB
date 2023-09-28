@@ -138,17 +138,6 @@ ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
-# ssh ${host_username}@$host_ip "sudo systemctl status resolvconf.service" &
-# wait
-
-# ssh ${host_username}@$host_ip "sudo chmod -R 777 /etc/resolvconf/" &
-# wait
-# scp -q /etc/resolvconf/resolv.conf.d/head ${host_username}@$host_ip:/etc/resolvconf/resolv.conf.d/head &
-# wait
-# ssh ${host_username}@$host_ip "sudo systemctl restart resolvconf.service" &
-# wait
-# ssh ${host_username}@$host_ip "sudo systemctl restart systemd-resolved.service" &
-# wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"
 ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &
@@ -209,6 +198,24 @@ wait
 echo -e "${LBLUE}Adding peer $host_username to server Configuration ${WHITE}"
 sudo wg set wg0 peer "$(cat ${host_username}_publickey)" allowed-ips ${host_ip_vpn}/32
 sudo ip -4 route add ${host_ip_vpn}/32 dev wg0
+
+#############################################################
+
+#echo new cron into cron file
+cat << EOF | sudo tee -a /home/$USER/wg_ddns_update > /dev/null
+sudo wg set wg0 peer $(cat ${master_host_name}_publickey) endpoint ${master_host_ip}:51820
+EOF
+
+scp -q /home/$USER/wg_ddns_update ${host_username}@$host_ip:/home/$host_username/wg_ddns_update &
+wait
+#install new cron job
+cronjob="0 1 * * * /home/$host_username/wg_ddns_update.sh"
+ssh ${host_username}@$host_ip "(crontab -u $host_username -l; echo "$cronjob" ) | crontab -u $host_username -" &
+wait
+
+
+#############################################################
+
 
 fi
 

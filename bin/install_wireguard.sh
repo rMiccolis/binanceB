@@ -213,13 +213,13 @@ wait
 ssh ${host_username}@$host_ip "crontab -l > /home/$host_username/cron_ddns_wg_update" &
 wait
 #echo new cron into cron file
-ssh ${host_username}@$host_ip "echo "$cronjob" >> /home/$host_username/cron_ddns_wg_update" &
-wait
+# ssh ${host_username}@$host_ip "echo "$cronjob" >> /home/$host_username/cron_ddns_wg_update" &
+# wait
 #install new cron file
 ssh ${host_username}@$host_ip "crontab /home/$host_username/cron_ddns_wg_update" &
 wait
-ssh ${host_username}@$host_ip "rm /home/$host_username/cron_ddns_wg_update" &
-wait
+# ssh ${host_username}@$host_ip "rm /home/$host_username/cron_ddns_wg_update" &
+# wait
 
 #############################################################
 

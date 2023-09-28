@@ -209,12 +209,14 @@ EOF
 scp -q /home/$USER/wg_ddns_update ${host_username}@$host_ip:/home/$host_username/wg_ddns_update &
 wait
 
+#install new cron job
+cronjob=""
 #write out current crontab
 ssh ${host_username}@$host_ip "crontab -l > /home/$host_username/cron_ddns_wg_update" &
 wait
 #echo new cron into cron file
-# ssh ${host_username}@$host_ip "echo "$cronjob" >> /home/$host_username/cron_ddns_wg_update" &
-# wait
+ssh ${host_username}@$host_ip 'echo "0 1 * * * /home/$USER/wg_ddns_update.sh" >> /home/$USER/cron_ddns_wg_update' &
+wait
 #install new cron file
 ssh ${host_username}@$host_ip "crontab /home/$host_username/cron_ddns_wg_update" &
 wait

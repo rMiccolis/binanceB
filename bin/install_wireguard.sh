@@ -104,8 +104,8 @@ Address = ${host_ip_vpn}/24
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 SaveConfig = true
-PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A -m iprange --src-range 10.11.1.1-10.11.1.50 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -A -s 10.11.1.51 POSTROUTING -o eth0 -j MASQUERADE;
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D -m iprange --src-range 10.11.1.1-10.11.1.50 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -D -s 10.11.1.51 POSTROUTING -o eth0 -j MASQUERADE;
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A -s 10.11.1.1 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -A -s 10.11.1.2 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -A -s 10.11.1.3 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -A -s 10.11.1.51 POSTROUTING -o eth0 -j MASQUERADE;
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D -s 10.11.1.1 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -D -s 10.11.1.2 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -D -s 10.11.1.3 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -D -s 10.11.1.51 POSTROUTING -o eth0 -j MASQUERADE;
 EOF
 
 echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwarding${WHITE}"

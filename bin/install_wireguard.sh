@@ -104,8 +104,8 @@ Address = ${host_ip_vpn}/24
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 SaveConfig = true
-PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -d 192.168.1.200/24 -j MASQUERADE
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -d 192.168.1.200/24 -j MASQUERADE;
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.51 -d 192.168.1.200/24 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.11.1.51 -d 192.168.1.200/24 -j MASQUERADE;
 EOF
 
 echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwarding${WHITE}"

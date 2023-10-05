@@ -104,9 +104,6 @@ Address = ${host_ip_vpn}/24
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 SaveConfig = true
-PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -m iprange --src-range 10.11.1.50-10.11.1.200 -o eth0 -j MASQUERADE;
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE;
-
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A -m iprange --src-range 10.11.1.1-10.11.1.50 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -A -s 10.11.1.51 POSTROUTING -o eth0 -j MASQUERADE;
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D -m iprange --src-range 10.11.1.1-10.11.1.50 POSTROUTING -o eth0 -j MASQUERADE; iptables -t nat -D -s 10.11.1.51 POSTROUTING -o eth0 -j MASQUERADE;
 EOF

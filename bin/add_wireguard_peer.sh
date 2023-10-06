@@ -42,8 +42,8 @@ wg genkey | tee ${peer_name}_privatekey | wg pubkey > ${peer_name}_publickey
 
 # cd /home/$USER/wireguard/config_files
 
-declare -i counter=50
-declare -i counter_full_vpn_access=65
+declare -i counter=65
+declare -i counter_full_vpn_access=50
 server_ip=$master_host_ip_eth0
 declare -i counter_used=$counter
 
@@ -61,6 +61,10 @@ server_ip=$load_balancer_dns_name
 
 if [ "$admin" == "1" ]; then
 echo "Creating ADMIN user type..."
+if [ $counter_full_vpn_access -gt 61 ]; then
+echo "Admin users limit reached!"
+exit 1
+fi
 $counter_full_vpn_access+=1
 counter_used=$counter_full_vpn_access
 cat << EOF | tee /home/$USER/wireguard/config_files/counter_full_vpn > /dev/null
@@ -68,6 +72,10 @@ $counter_full_vpn_access
 EOF
 else
 echo "Creating normal user type..."
+if [ $counter_full_vpn_access -gt 124 ]; then
+echo "Normale users limit reached!"
+exit 1
+fi
 counter+=1
 counter_used=$counter
 cat << EOF | tee /home/$USER/wireguard/config_files/counter > /dev/null

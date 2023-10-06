@@ -22,7 +22,7 @@ while getopts ":p:a" opt; do
   case $opt in
     p) peer_name="$OPTARG"
     ;;
-    r) admin=1
+    a) admin=1
     ;;
     \?) usage
         exit
@@ -60,12 +60,14 @@ server_ip=$load_balancer_dns_name
 # fi
 
 if [ "$admin" == "1" ]; then
+echo "Creating ADMIN user type..."
 $counter_full_vpn_access+=1
 counter_used=$counter_full_vpn_access
 cat << EOF | tee /home/$USER/wireguard/config_files/counter_full_vpn > /dev/null
 $counter_full_vpn_access
 EOF
 else
+echo "Creating normal user type..."
 counter+=1
 counter_used=$counter
 cat << EOF | tee /home/$USER/wireguard/config_files/counter > /dev/null

@@ -97,6 +97,9 @@ sudo chmod -R 777 /etc/wireguard/
 sudo chown root:${host_username} /etc/sysctl.d
 sudo chmod -R 777 /etc/sysctl.d
 
+# set default iptables FORWARD chain policy to DROP
+sudo iptables -P FORWARD DROP
+
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
 [Interface]
@@ -104,8 +107,8 @@ Address = ${host_ip_vpn}/24
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 SaveConfig = true
-PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -s 10.11.1.1/26 -d 192.168.1.200/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.1/26 -d 192.168.1.200/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE;
+PostUp = iptables -I FORWARD -i %i -s 10.11.1.1/26 -d 192.168.1.200/24 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.1/26 -d 192.168.1.200/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.1/26 -d 192.168.1.200/24 -j MASQUERADE;
+PostDown = iptables -D FORWARD -i %i -s 10.11.1.1/26 -d 192.168.1.200/24 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.1/26 -d 192.168.1.200/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.1/26 -d 192.168.1.200/24 -j MASQUERADE;
 EOF
 
 echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwarding${WHITE}"

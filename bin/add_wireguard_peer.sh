@@ -17,18 +17,23 @@ usage(){
 }
 
 admin=0
-
+peer_name=""
 while getopts ":p:a" opt; do
   case $opt in
     p) peer_name="$OPTARG"
     ;;
-    r) admin="$OPTARG"
+    r) admin=1
     ;;
     \?) usage
         exit
     ;;
   esac
 done
+
+if [ "$peer_name" == ""]; then
+usage
+exit 1
+fi
 
 source /home/$USER/.profile
 

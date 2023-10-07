@@ -135,6 +135,9 @@ iptables -d FORWARD -o $WG_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -
 iptables -t nat -D POSTROUTING -o $MASQUERADE_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j MASQUERADE;
 EOF
 
+sudo chmod 777 /etc/wireguard/postup.sh
+sudo chmod 777 /etc/wireguard/postdown.sh
+
 # PostUp = iptables -I FORWARD -i %i -s 10.11.1.1/26 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.1/26 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.1/26 -j MASQUERADE; iptables -I FORWARD -i %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j MASQUERADE;
 # PostDown = iptables -D FORWARD -i %i -s 10.11.1.1/26 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.1/26 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.11.1.1/26 -j MASQUERADE; iptables -D FORWARD -i %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j MASQUERADE;
 

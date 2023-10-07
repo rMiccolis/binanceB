@@ -97,8 +97,50 @@ sudo chmod -R 777 /etc/wireguard/
 sudo chown root:${host_username} /etc/sysctl.d
 sudo chmod -R 777 /etc/sysctl.d
 
+sudo cat << EOF | tee /etc/wireguard/postup.sh > /dev/null
+#!/bin/bash
+
+WG_INTERFACE="wg0"
+MASQUERADE_INTERFACE="eth0"
+ADMIN_IPRANGE=10.11.1.1/26
+USERS_IPRANGE=10.11.1.64/26
+WG_LAN=10.11.1.1/24
+LAN_NETWORK=192.168.1.2/24
+
 # set default iptables FORWARD chain policy to DROP
 sudo iptables -P FORWARD DROP
+
+iptables -I FORWARD -i $WG_INTERFACE -s $ADMIN_IPRANGE -j ACCEPT;
+iptables -I FORWARD -o $WG_INTERFACE -s $ADMIN_IPRANGE -j ACCEPT;
+iptables -t nat -A POSTROUTING -o $MASQUERADE_INTERFACE -s $ADMIN_IPRANGE -j MASQUERADE;
+iptables -I FORWARD -i $WG_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j ACCEPT;
+iptables -I FORWARD -o $WG_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j ACCEPT;
+iptables -t nat -A POSTROUTING -o $MASQUERADE_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j MASQUERADE;
+EOF
+
+sudo cat << EOF | tee /etc/wireguard/postdown.sh > /dev/null
+#!/bin/bash
+
+WG_INTERFACE="wg0"
+MASQUERADE_INTERFACE="eth0"
+ADMIN_IPRANGE=10.11.1.1/26
+USERS_IPRANGE=10.11.1.64/26
+WG_LAN=10.11.1.1/24
+LAN_NETWORK=192.168.1.2/24
+
+# set default iptables FORWARD chain policy to ACCEPT
+sudo iptables -P FORWARD ACCEPT
+
+iptables -d FORWARD -i $WG_INTERFACE -s $ADMIN_IPRANGE -j ACCEPT;
+iptables -d FORWARD -o $WG_INTERFACE -s $ADMIN_IPRANGE -j ACCEPT;
+iptables -t nat -D POSTROUTING -o $MASQUERADE_INTERFACE -s $ADMIN_IPRANGE -j MASQUERADE;
+iptables -d FORWARD -i $WG_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j ACCEPT;
+iptables -d FORWARD -o $WG_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j ACCEPT;
+iptables -t nat -D POSTROUTING -o $MASQUERADE_INTERFACE -s $USERS_IPRANGE -d $LAN_NETWORK,$WG_LAN -j MASQUERADE;
+EOF
+
+# PostUp = iptables -I FORWARD -i %i -s 10.11.1.1/26 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.1/26 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.1/26 -j MASQUERADE; iptables -I FORWARD -i %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j MASQUERADE;
+# PostDown = iptables -D FORWARD -i %i -s 10.11.1.1/26 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.1/26 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.11.1.1/26 -j MASQUERADE; iptables -D FORWARD -i %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j MASQUERADE;
 
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 sudo cat << EOF | tee /etc/wireguard/wg0.conf > /dev/null
@@ -107,8 +149,8 @@ Address = ${host_ip_vpn}/24
 ListenPort = 51820
 PrivateKey = $(cat ${host_username}_privatekey)
 SaveConfig = true
-PostUp = iptables -I FORWARD -i %i -s 10.11.1.1/26 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.1/26 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.1/26 -j MASQUERADE; iptables -I FORWARD -i %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -I FORWARD -o %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j MASQUERADE;
-PostDown = iptables -D FORWARD -i %i -s 10.11.1.1/26 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.1/26 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.11.1.1/26 -j MASQUERADE; iptables -D FORWARD -i %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -D FORWARD -o %i -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.11.1.64/26 -d 192.168.1.2/24,10.11.1.1/24 -j MASQUERADE;
+PostUp = /etc/wireguard/postup.sh
+PostDown = /etc/wireguard/postdown.sh
 EOF
 
 echo -e "${LBLUE}Activating wg0 Interface for $host_username and Enable IP Forwarding${WHITE}"

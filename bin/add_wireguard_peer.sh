@@ -30,7 +30,7 @@ while getopts ":p:a" opt; do
   esac
 done
 
-if [ "$peer_name" == ""]; then
+if [ "$peer_name" == "" ]; then
 usage
 exit 1
 fi
@@ -65,7 +65,7 @@ if [ $counter_full_vpn_access -gt 61 ]; then
 echo "Admin users limit reached!"
 exit 1
 fi
-$counter_full_vpn_access+=1
+counter_full_vpn_access+=1
 counter_used=$counter_full_vpn_access
 cat << EOF | tee /home/$USER/wireguard/config_files/counter_full_vpn > /dev/null
 $counter_full_vpn_access

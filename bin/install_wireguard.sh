@@ -98,8 +98,6 @@ sudo chown root:${host_username} /etc/sysctl.d
 sudo chmod -R 777 /etc/sysctl.d
 
 sudo cat << EOF | tee /etc/wireguard/postup.sh > /dev/null
-#!/bin/bash
-
 WG_INTERFACE="wg0"
 MASQUERADE_INTERFACE="eth0"
 ADMIN_IPRANGE=10.11.1.1/26
@@ -119,8 +117,6 @@ iptables -t nat -A POSTROUTING -o $MASQUERADE_INTERFACE -s $USERS_IPRANGE -d $LA
 EOF
 
 sudo cat << EOF | tee /etc/wireguard/postdown.sh > /dev/null
-#!/bin/bash
-
 WG_INTERFACE="wg0"
 MASQUERADE_INTERFACE="eth0"
 ADMIN_IPRANGE=10.11.1.1/26

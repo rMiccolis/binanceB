@@ -84,48 +84,48 @@ for h in ${host_list[@]}; do
   echo -e "${LPURPLE}Working on: $host_username@$host_ip${WHITE}"
 
   echo -e "${LBLUE}Adding $host_ip to the list of known hosts...${WHITE}"
-  ssh-keyscan $host_ip >> ~/.ssh/known_hosts &>/dev/null & 
+  ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
   wait
 
   # save host ip address
-  ssh $host_vpn_ssh_string "sudo hostnamectl set-hostname $host_username" &>/dev/null & 
+  ssh $host_vpn_ssh_string "sudo hostnamectl set-hostname $host_username" &
   wait
 
   # executing config_file.sh on the remote host
-  scp -q ~/config_file.sh $host_vpn_ssh_string:/home/$host_username/ &>/dev/null & 
+  scp -q ~/config_file.sh $host_vpn_ssh_string:/home/$host_username/ &
   wait
-  ssh $host_vpn_ssh_string "chmod u+x /home/$host_username/config_file.sh" &>/dev/null & 
+  ssh $host_vpn_ssh_string "chmod u+x /home/$host_username/config_file.sh" &
   wait
-  ssh $host_vpn_ssh_string ". /home/$host_username/config_file.sh" &>/dev/null & 
+  ssh $host_vpn_ssh_string ". /home/$host_username/config_file.sh" &
   wait
 
   # add github to the list of known_hosts addresses
   echo -e "${LBLUE}Adding github.com to known_hosts addresses list...${WHITE}"
-  ssh -q $host_vpn_ssh_string "ssh-keyscan github.com >> ~/.ssh/known_hosts" &>/dev/null & 
+  ssh -q $host_vpn_ssh_string "ssh-keyscan github.com >> ~/.ssh/known_hosts" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
   
   # add master to the list of known_hosts addresses
   echo -e "${LBLUE}Adding master to known_hosts addresses list...${WHITE}"
-  ssh -q $host_vpn_ssh_string "ssh-keyscan $master_host_ip >> ~/.ssh/known_hosts" &>/dev/null & 
+  ssh -q $host_vpn_ssh_string "ssh-keyscan $master_host_ip >> ~/.ssh/known_hosts" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
   
   # clone github repository code 
   echo -e "${LBLUE}Cloning code repository...${WHITE}"
-  # ssh -A $h "git clone --single-branch --branch $github_branch_name git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &>/dev/null & 
+  # ssh -A $h "git clone --single-branch --branch $github_branch_name git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
   scp -q -r /home/$master_host_name/binanceB $host_vpn_ssh_string:/home/$host_username/
   # wait
-  ssh $host_vpn_ssh_string "chmod -R u+x ./binanceB" &>/dev/null & 
+  ssh $host_vpn_ssh_string "chmod -R u+x ./binanceB" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
   
   # Setting host settings and dependencies
   echo -e "${LBLUE}Setting host settings and dependencies...${WHITE}"
-  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/set_host_settings.sh" &>/dev/null & 
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/set_host_settings.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -133,7 +133,7 @@ for h in ${host_list[@]}; do
   # Installing Docker Engine
   echo -e "${LBLUE}Installing Docker Engine...${WHITE}"
   wait
-  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_docker.sh" &>/dev/null & 
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_docker.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -141,7 +141,7 @@ for h in ${host_list[@]}; do
   # Installing Cri-Docker (Container Runtime Interface)
   echo -e "${LBLUE}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
   wait
-  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_cri_docker.sh" &>/dev/null & 
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_cri_docker.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
@@ -149,41 +149,41 @@ for h in ${host_list[@]}; do
   # Installing Kubernetes
   echo -e "${LBLUE}Installing Kubernetes${WHITE}"
   wait
-  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_kubernetes.sh" &>/dev/null & 
+  ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/install_kubernetes.sh" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
 
-  ssh $host_vpn_ssh_string "sudo chown root:${host_username} /etc/default/" &>/dev/null & 
+  ssh $host_vpn_ssh_string "sudo chown root:${host_username} /etc/default/" &
   wait
-  ssh $host_vpn_ssh_string "sudo chmod -R 777 /etc/default/" &>/dev/null & 
+  ssh $host_vpn_ssh_string "sudo chmod -R 777 /etc/default/" &
   wait
   
   echo -e "${LBLUE}Joining $host_username@$host_ip to the cluster${WHITE}"
   if [ "${host_username:0:1}" == "m" ]; then
     echo "Joining control-plane node to the cluster"
-    ssh -q $host_vpn_ssh_string "$join_control_plane" &>/dev/null & 
+    ssh -q $host_vpn_ssh_string "$join_control_plane" &
     wait
-    ssh -q $host_vpn_ssh_string "mkdir -p /home/$host_username/.kube" &>/dev/null & 
+    ssh -q $host_vpn_ssh_string "mkdir -p /home/$host_username/.kube" &
     wait
-    ssh -q $host_vpn_ssh_string "sudo cp -i /etc/kubernetes/admin.conf /home/$host_username/.kube/config" &>/dev/null & 
+    ssh -q $host_vpn_ssh_string "sudo cp -i /etc/kubernetes/admin.conf /home/$host_username/.kube/config" &
     wait
-    ssh -q $host_vpn_ssh_string "sudo chown $(id -u):$(id -g) /home/$host_username/.kube/config" &>/dev/null & 
+    ssh -q $host_vpn_ssh_string "sudo chown $(id -u):$(id -g) /home/$host_username/.kube/config" &
     wait
   else
     echo -e "${LBLUE}Joining worker node to the cluster${WHITE}"
-    ssh -q $host_vpn_ssh_string "$join_worker" &>/dev/null & 
+    ssh -q $host_vpn_ssh_string "$join_worker" &
     wait
   fi
 
   echo -e "${LBLUE}Setting $host_ip as internal IP for $host_username${WHITE}"
 
   set_ip_kubelet_command="echo -n "KUBELET_EXTRA_ARGS="'--node-ip $host_ip'"" | cat >> /etc/default/kubelet"
-  ssh $host_vpn_ssh_string "$set_ip_kubelet_command" &>/dev/null & 
+  ssh $host_vpn_ssh_string "$set_ip_kubelet_command" &
   wait
-  ssh $host_vpn_ssh_string "sudo systemctl daemon-reload" &>/dev/null & 
+  ssh $host_vpn_ssh_string "sudo systemctl daemon-reload" &
   wait
-  ssh $host_vpn_ssh_string "sudo systemctl restart kubelet" &>/dev/null & 
+  ssh $host_vpn_ssh_string "sudo systemctl restart kubelet" &
   wait
 
   sudo systemctl daemon-reload

@@ -32,9 +32,9 @@ export noip_password=$(yq '.noip_password' $config_file_path)
 
 mkdir noip
 cd noip
-wget https://dmej8g5cpdyqd.cloudfront.net/downloads/noip-duc_3.0.0-beta.7.tar.gz
-tar xf noip-duc_3.0.0-beta.7.tar.gz
-cd /home/$USER/noip/noip-duc_3.0.0-beta.7/binaries && sudo apt install ./noip-duc_3.0.0-beta.7_amd64.deb
+wget https://dmej8g5cpdyqd.cloudfront.net/downloads/noip-duc_3.0.0-beta.7.tar.gz > /dev/null 2>&1
+tar xf noip-duc_3.0.0-beta.7.tar.gz > /dev/null 2>&1
+cd /home/$USER/noip/noip-duc_3.0.0-beta.7/binaries && sudo apt install ./noip-duc_3.0.0-beta.7_amd64.deb > /dev/null 2>&1
 
 #make Dynamic Update Client run at system startup
 sudo cp /home/$USER/noip/noip-duc_3.0.0-beta.7/debian/service /etc/systemd/system/noip-duc.service
@@ -47,11 +47,11 @@ NOIP_CHECK_INTERVAL=15m
 EOF
 
 # reload systemd daemon
-sudo systemctl daemon-reload
+sudo systemctl daemon-reload > /dev/null 2>&1
 #Then enable the service:
-sudo systemctl enable noip-duc
+sudo systemctl enable noip-duc > /dev/null 2>&1
 # start the program:
-sudo systemctl start noip-duc
+sudo systemctl start noip-duc > /dev/null 2>&1
 
 # noip-duc --username $noip_username --password $noip_password --hostnames $load_balancer_dns_name
 

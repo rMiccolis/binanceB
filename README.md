@@ -31,7 +31,7 @@ After creating VM with a linux distro:
 - Disable windows secure boot
 - Set minimum 30GB of disk space
 - Set at least 2 cpus
-- Set at least 2048MB or RAM (if you have not enough set a max RAM usage, tipically 4096MB)
+- Set at least 4096MB or RAM
 - Set static MAC address and assign a fixed ip address to it from the router (EX: MAC address: 00 15 5D 38 01 30 and assign it to ip address 192.168.1.200)
 
 ## Mandatory OS OPerations before executing './infrastructure/start.sh' (follow these steps in the example paragraph)
@@ -66,13 +66,18 @@ Input parameter:
 powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.yaml"
 ```
 
+**Network Operations:**
+
+- Open 51820 port on router in order to make Wireguard work.
+- Assign static mac address to each ip address reserved to VM's. EX: 00 15 5D 38 01 30 for 192.168.1.200
+- If you don't have a static public IP, you need to setup NO-IP DDNS service in order to make wireguard work.
 
 ### SINGLE EXECUTABLE SCRIPTS
 
 Is possible to launch 2 standalone scripts:
 
 - bin/setup_worker_nodes.sh   => Run this script to join a new node to the cluster (control plane or worker)
-- bin/manage_docker_images.sh => Run this script to build and deploy client and server images when you need to apply changes to server or client code
+- bin/manage_docker_images.sh => Run this script to pull updates and build and deploy client and server images when you need to apply changes to server or client code
 - bin/add_wireguard_peer.sh => Run this script to generate a Wireguard peer configuration. It prints out the qr code to be scanned by Android or IOS app to join the vpn.
 
 --------------------------------------------

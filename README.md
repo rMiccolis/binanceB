@@ -60,25 +60,18 @@ TO LET THIS SCRIPT WORK, YOU **MUST**:
 
 Launch generate_hyperv_vms.ps1:
 Input parameter:
+
 - config_file_path => This is the path to the configuration file and MUST be called "main_config.yaml". This is the yaml file to configure virtual machines and application (example [HERE](https://github.com/rMiccolis/binanceB/blob/master/main_config.example.yaml))
 
 ```powershell
 powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.yaml"
 ```
 
-**Network Operations:**
+### Network Operations
 
 - Open 51820 port on router in order to make Wireguard work.
 - Assign static mac address to each ip address reserved to VM's. EX: 00 15 5D 38 01 30 for 192.168.1.200
 - If you don't have a static public IP, you need to setup NO-IP DDNS service in order to make wireguard work.
-
-### SINGLE EXECUTABLE SCRIPTS
-
-Is possible to launch 2 standalone scripts:
-
-- bin/setup_worker_nodes.sh   => Run this script to join a new node to the cluster (control plane or worker)
-- bin/manage_docker_images.sh => Run this script to pull updates and build and deploy client and server images when you need to apply changes to server or client code
-- bin/add_wireguard_peer.sh => Run this script to generate a Wireguard peer configuration. It prints out the qr code to be scanned by Android or IOS app to join the vpn.
 
 --------------------------------------------
 
@@ -147,5 +140,5 @@ EOF
 **Run ./infrastructure/start.sh script on the master remote host:**
 
 ```bash
-./infrastructure/start.sh -u docker_username -p docker_access_token -c "/home/m1/main_config.yaml"
+./infrastructure/start.sh -c "/home/m1/main_config.yaml"
 ```

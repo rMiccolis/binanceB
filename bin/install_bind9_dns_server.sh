@@ -37,11 +37,11 @@ interface_1=${interface_range[0]}
 interface_2=${interface_range[1]}
 interface_3=${interface_range[2]}
 
-sudo apt-get install -y bind9 > /dev/null
+sudo apt-get install -y bind9 > /dev/null 2>&1
 
-sudo apt-get install dnsutils > /dev/null
+sudo apt-get install dnsutils > /dev/null 2>&1
 
-cat << EOF | sudo tee /etc/bind/named.conf.local > /dev/null
+cat << EOF | sudo tee /etc/bind/named.conf.local > /dev/null 2>&1
 //
 // Do any local configuration here
 //
@@ -82,7 +82,7 @@ cat << EOF | sudo tee -a /etc/bind/db.$application_dns_name > /dev/null
 ns      IN      A       $master_ip_vpn
 EOF
 
-sudo systemctl restart bind9.service
+sudo systemctl restart bind9.service > /dev/null 2>&1
 
 cat << EOF | sudo tee -a /etc/bind/named.conf.local > /dev/null
 zone "$interface_1.$interface_2.$interface_3.in-addr.arpa" {
@@ -113,4 +113,4 @@ cat << EOF | sudo tee -a /etc/bind/db.$interface_1 > /dev/null
 10      IN      PTR     ns.$application_dns_name.
 EOF
 
-sudo systemctl restart bind9.service
+sudo systemctl restart bind9.service > /dev/null 2>&1

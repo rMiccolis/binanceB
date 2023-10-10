@@ -23,7 +23,7 @@ while getopts ":c:" opt; do
 done
 
 # install qrencode to print a QR code to be scanned by smartphone to join vpn on wireguard app
-sudo apt install qrencode -y > /dev/null
+sudo apt install qrencode -y > /dev/null 2>&1
 
 load_balancer_public_ip=$(yq '.load_balancer_public_ip' $config_file_path)
 load_balancer_dns_name=$(yq '.load_balancer_dns_name' $config_file_path)
@@ -45,9 +45,9 @@ mkdir config_files
 cd keys
 
 echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
-sudo apt install resolvconf > /dev/null
-sudo systemctl start resolvconf.service
-sudo systemctl start resolvconf.service
+sudo apt install resolvconf > /dev/null 2>&1
+sudo systemctl start resolvconf.service > /dev/null 2>&1
+sudo systemctl start resolvconf.service > /dev/null 2>&1
 # sudo systemctl status resolvconf.service
 
 # sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
@@ -58,7 +58,7 @@ sudo systemctl start resolvconf.service
 # sudo systemctl restart systemd-resolved.service
 
 echo -e "${LBLUE}Installing Wireguard for $USER ${WHITE}"
-sudo apt install wireguard -y > /dev/null
+sudo apt install wireguard -y > /dev/null 2>&1
 umask 077
 
 interface_range=()
@@ -166,9 +166,9 @@ sudo sed -i '/net.ipv4.ip_forward/s/^#//g' /etc/sysctl.conf
 sudo sysctl -w net.ipv4.ip_forward=1
 
 # make wireguard start on boot
-sudo systemctl enable wg-quick@wg0.service
-sudo systemctl daemon-reload
-sudo systemctl start wg-quick@wg0
+sudo systemctl enable wg-quick@wg0.service > /dev/null 2>&1
+sudo systemctl daemon-reload > /dev/null 2>&1
+sudo systemctl start wg-quick@wg0 > /dev/null 2>&1
 # systemctl status wg-quick@wg0
 else
 
@@ -176,7 +176,7 @@ ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait
 
 echo -e "${LBLUE}Installing Resolvconf for $host_username ${WHITE}"
-ssh ${host_username}@$host_ip "sudo apt install resolvconf > /dev/null" &
+ssh ${host_username}@$host_ip "sudo apt install resolvconf > /dev/null 2>&1" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
@@ -184,7 +184,7 @@ ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"
-ssh ${host_username}@$host_ip "sudo apt install wireguard -y > /dev/null" &
+ssh ${host_username}@$host_ip "sudo apt install wireguard -y > /dev/null 2>&1" &
 wait
 ssh ${host_username}@$host_ip "umask 077" &
 wait
@@ -228,11 +228,11 @@ wait
 
 echo -e "${LBLUE}Applying peer Configuration to $host_username${WHITE}"
 # make wireguard start on boot
-ssh ${host_username}@$host_ip "sudo systemctl enable wg-quick@wg0.service" &
+ssh ${host_username}@$host_ip "sudo systemctl enable wg-quick@wg0.service > /dev/null 2>&1" &
 wait
-ssh ${host_username}@$host_ip "sudo systemctl daemon-reload" &
+ssh ${host_username}@$host_ip "sudo systemctl daemon-reload > /dev/null 2>&1" &
 wait
-ssh ${host_username}@$host_ip "sudo systemctl start wg-quick@wg0" &
+ssh ${host_username}@$host_ip "sudo systemctl start wg-quick@wg0 > /dev/null 2>&1" &
 wait
 # ssh ${host_username}@$host_ip "systemctl status wg-quick@wg0" &
 # wait

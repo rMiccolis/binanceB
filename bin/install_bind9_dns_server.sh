@@ -37,9 +37,9 @@ interface_1=${interface_range[0]}
 interface_2=${interface_range[1]}
 interface_3=${interface_range[2]}
 
-sudo apt-get install -y bind9
+sudo apt-get install -y bind9 > /dev/null
 
-sudo apt-get install dnsutils
+sudo apt-get install dnsutils > /dev/null
 
 cat << EOF | sudo tee /etc/bind/named.conf.local > /dev/null
 //

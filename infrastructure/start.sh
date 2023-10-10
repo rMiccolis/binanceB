@@ -38,7 +38,7 @@ if [ -z "$config_file_path" ]; then usage; exit; fi
 
 # install yq library to read and parse json files
 echo -e "${LBLUE}Installing yq library to read and parse YAML files...${WHITE}"
-sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq && sudo chmod +x /usr/bin/yq > /dev/null
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -q -O /usr/bin/yq > /dev/null && sudo chmod +x /usr/bin/yq > /dev/null
 
 echo -e "${LGREEN}Installing No-Ip Dynamic Update Client:${WHITE}"
 cd /home/$USER/

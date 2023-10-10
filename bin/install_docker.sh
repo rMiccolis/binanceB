@@ -33,5 +33,5 @@ sudo systemctl start docker > /dev/null 2>&1
 sudo systemctl enable docker > /dev/null 2>&1
 
 # Verify installation
-sudo docker run hello-world
+# sudo docker run hello-world > /dev/null
 ###############################################################################

@@ -23,7 +23,7 @@ while getopts ":c:" opt; do
 done
 
 # install qrencode to print a QR code to be scanned by smartphone to join vpn on wireguard app
-sudo apt install qrencode -y
+sudo apt install qrencode -y > /dev/null
 
 load_balancer_public_ip=$(yq '.load_balancer_public_ip' $config_file_path)
 load_balancer_dns_name=$(yq '.load_balancer_dns_name' $config_file_path)
@@ -45,7 +45,7 @@ mkdir config_files
 cd keys
 
 echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
-sudo apt install resolvconf
+sudo apt install resolvconf > /dev/null
 sudo systemctl start resolvconf.service
 sudo systemctl start resolvconf.service
 # sudo systemctl status resolvconf.service
@@ -58,7 +58,7 @@ sudo systemctl start resolvconf.service
 # sudo systemctl restart systemd-resolved.service
 
 echo -e "${LBLUE}Installing Wireguard for $USER ${WHITE}"
-sudo apt install wireguard -y
+sudo apt install wireguard -y > /dev/null
 umask 077
 
 interface_range=()
@@ -176,7 +176,7 @@ ssh-keyscan $host_ip >> ~/.ssh/known_hosts &
 wait
 
 echo -e "${LBLUE}Installing Resolvconf for $host_username ${WHITE}"
-ssh ${host_username}@$host_ip "sudo apt install resolvconf" &
+ssh ${host_username}@$host_ip "sudo apt install resolvconf > /dev/null" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
@@ -184,7 +184,7 @@ ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait
 
 echo -e "${LBLUE}Installing Wireguard for $host_username ${WHITE}"
-ssh ${host_username}@$host_ip "sudo apt install wireguard -y" &
+ssh ${host_username}@$host_ip "sudo apt install wireguard -y > /dev/null" &
 wait
 ssh ${host_username}@$host_ip "umask 077" &
 wait

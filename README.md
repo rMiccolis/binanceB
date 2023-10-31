@@ -26,22 +26,23 @@ There are 5 main scripts that create and configure all the infrastructure and bo
 - Cri-dockerd version: 0.3.4
 - Kubernetes version 1.27.4
 
-After creating VM with a linux distro:
+After creating VM with a linux distro: (Skip these steps if launching infrastructure from "generate_hyperv_vms.ps1")
 
 - Disable windows secure boot
 - Set minimum 30GB of disk space
 - Set at least 2 cpus
 - Set at least 4096MB or RAM
-- Set static MAC address and assign a fixed ip address to it from the router (EX: MAC address: 00 15 5D 38 01 30 and assign it to ip address 192.168.1.200)
 
 ## Mandatory OS OPerations before executing './infrastructure/start.sh' (follow these steps in the example paragraph)
 
 - **Choose a linux distro which makes use of systemd as init service**
-- Install an ssh server
-- Add all cluster partecipating hosts to the hosts file
-- Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt
-- Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]
-- Open 51820 port to let application and mongodb database to be reachable. This is the Wireguard VPN port.
+- **Set static MAC address and assign a fixed ip address to it from the router** (EX: MAC address: 00 15 5D 38 01 30 and assign it to ip address 192.168.1.200. MAC address list =>  00 15 5D 38 01 30,  00 15 5D 38 01 31,  00 15 5D 38 01 32...)
+- **If you don't have a static public IP, you need to setup NO-IP DDNS service in order to make wireguard work.**
+- **Install an ssh server** (Skip this step if launching infrastructure from "generate_hyperv_vms.ps1")
+- **Add all cluster partecipating hosts to the hosts file**
+- **Copy ssh public key into .ssh authorized_keys file of the remote host to use ssh connection without password prompt** (Skip this step if launching infrastructure from "generate_hyperv_vms.ps1")
+- **Enable passwordless sudo to the system user account to which connect through ssh (in sudoers file append using sudo visudo: $USER ALL=(ALL) NOPASSWD: ALL) [Where $USER is your username on your system ]** (Skip this step if launching infrastructure from "generate_hyperv_vms.ps1")
+- Open 51820 port (the Wireguard VPN port) on the modem/router to let application and mongodb database to be reachable.
 - Create a [docker access token](https://docs.docker.com/docker-hub/access-tokens/) (to be provided into main_config.yaml)
 - Create the client docker repository
 - Create the server docker repository
@@ -66,12 +67,6 @@ Input parameter:
 ```powershell
 powershell.exe -noprofile -executionpolicy bypass -file "E:\Desktop\binanceB\infrastructure\windows\generate_hyperv_vms.ps1" -config_file_path "E:\Download\main_config.yaml"
 ```
-
-### Network Operations
-
-- Open 51820 port on router in order to make Wireguard work.
-- Assign static mac address to each ip address reserved to VM's. EX: 00 15 5D 38 01 30 for 192.168.1.200
-- If you don't have a static public IP, you need to setup NO-IP DDNS service in order to make wireguard work.
 
 --------------------------------------------
 

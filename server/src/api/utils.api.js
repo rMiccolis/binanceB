@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const { Spot } = require("@binance/connector");
-const walletInfo = require("../src/wallet/walletInfo");
+const walletInfo = require("../wallet/walletInfo");
 const axios = require("axios");
 const fs = require("fs");
 

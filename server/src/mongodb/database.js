@@ -29,11 +29,11 @@ async function connectToMongo(db_host = "", db_port = "", db_username = "", db_p
 }
 
 async function loadDefaultData(params) {
-    let fileNames = fs.readdirSync("./mongodb/data");
+    let fileNames = fs.readdirSync("./src/mongodb/data");
 
     for (const fileName of fileNames) {
         let name = fileName.split(".")[0];
-        let fileContent = JSON.parse(fs.readFileSync(`./mongodb/data/${name}.json`, "utf8"));
+        let fileContent = JSON.parse(fs.readFileSync(`./src/mongodb/data/${name}.json`, "utf8"));
         console.log(`reading file: ${name}`);
         let collection = dynamicModel(name);
         let count = await collection.count();

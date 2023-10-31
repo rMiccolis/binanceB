@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const { Spot } = require("@binance/connector");
-const walletInfo = require("../src/wallet/walletInfo");
-const earn = require("../src/wallet/earn");
+const walletInfo = require("../wallet/walletInfo");
+const earn = require("../wallet/earn");
 const auth = require("../middleware/auth.middleware");
 
 router.use(auth.checkJWT);

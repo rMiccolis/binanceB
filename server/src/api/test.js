@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../mongodb/database');
-const testStrategy = require('../src/test');
-const testws = require('../src/testws');
+const testStrategy = require('../test');
+const testws = require('../testws');
 
 /* PREFIX: /test */
 router.get('/', async (req, res) => {

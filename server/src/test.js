@@ -1,6 +1,6 @@
 const { Spot } = require("@binance/connector");
 const walletInfo = require("./wallet/walletInfo");
-const db = require("../mongodb/database");
+const db = require("./mongodb/database");
 const statistics = require("./realTimeData/statistics");
 const trades = require("./trades/trades");
 

@@ -5,18 +5,18 @@ const logger = require("morgan");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
-const testApi = require("./api/test");
-const walletApi = require("./api/wallet.api");
-const db = require("./mongodb/database");
-const exitHandler = require("./handlers/exit.handler");
-const authApi = require("./api/auth.api");
-const logHandler = require("./handlers/log.handler");
-const utilsApi = require("./api/utils.api");
-const generalRouter = require("./api/general.api");
+const testApi = require("./src/api/test");
+const walletApi = require("./src/api/wallet.api");
+const db = require("./src/mongodb/database");
+const exitHandler = require("./src/handlers/exit.handler");
+const authApi = require("./src/api/auth.api");
+const logHandler = require("./src/handlers/log.handler");
+const utilsApi = require("./src/api/utils.api");
+const generalRouter = require("./src/api/general.api");
 const os = require("os");
 const k8s = require('@kubernetes/client-node');
 const {v4 : uuidv4} = require('uuid')
-const { createJob } = require("./kubernetes/job")
+const { createJob } = require("./src/kubernetes/job")
 
 
 // Initialize global session variable

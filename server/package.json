@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@binance/connector": "^3.0.0",
-    "@kubernetes/client-node": "^0.18.1",
+    "@kubernetes/client-node": "^0.20.0",
     "axios": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

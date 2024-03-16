@@ -7,7 +7,7 @@ Get-PackageProvider -Name "NuGet" -ForceBootstrap | out-null
 Set-PSRepository PSGallery -InstallationPolicy Trusted | out-null
 if (!(Get-Module -ListAvailable -Name powershell-yaml)) {
     Install-Module powershell-yaml
-} 
+}
 
 # READ ALL CONFIGURATION KEYS
 Import-Module powershell-yaml
@@ -46,7 +46,7 @@ $oscdimgPath = $config.oscdimg_path
 # Read qemuImg path. Quemu to convert ubuntu cloud-image to a virtual hard drive to be used by virtual machines
 $qemuImgPath = $config.qemuimg_path
 
-# Read the path where all the virtual machines will be stored 
+# Read the path where all the virtual machines will be stored
 $vm_store_path = $config.vm_store_path
 
 # Read the path where to find cloud-image of your linux distro
@@ -84,7 +84,7 @@ $eth_adapter=$eth_adapter.InterfaceDescription
 # Check for an existing network adapter named: "vEthernet (VM)"
 $vm_adapter=Get-NetAdapter -Name "vEthernet (VM)" -ErrorAction SilentlyContinue
 # If it does not exists, create it
-if (!$vm_adapter) { 
+if (!$vm_adapter) {
     echo "generating Virtual switch 'VM' with adapter: $eth_adapter..."
     New-VMSwitch -Name "VM" -NetAdapterName "Ethernet" | Out-Null
 }
@@ -99,18 +99,21 @@ for ($j=0;$j -lt $all_hosts.Length; $j++) {
     $host_ip=$host_info[1]
     $existing_vm=Get-VM -Name $host_user -ErrorAction SilentlyContinue
     if ($existing_vm) {
+        echo "Removing $host_user VM from Hyper-V"
         Stop-VM -Name $host_user -ErrorAction SilentlyContinue
         Remove-VMHardDiskDrive -VMName $host_user -ControllerType SCSI -ControllerNumber 0 -ControllerLocation 0
         Remove-VM -Name $host_user -Force
+        Remove-Item -LiteralPath $vm_store_path\$host_user -Recurse
     }
 }
 
 # if $vm_store_path exists then remove it and generate it from scatch
-if (Test-Path -Path $vm_store_path) {
-    Remove-Item -LiteralPath $vm_store_path -Recurse
+if (!(Test-Path -Path $vm_store_path)) {
+    # Remove-Item -LiteralPath $vm_store_path -Recurse
+    echo "Generating $vm_store_path folder... Here will be stored all virtual machines."
+    New-Item -Path $vm_store_path -ItemType Directory
 }
-echo "Generating $vm_store_path folder... Here will be stored all virtual machines."
-New-Item -Path $vm_store_path -ItemType Directory
+
 
 $master_host_name = ""
 $master_host_ip = ""
@@ -123,7 +126,7 @@ $last_user=""
 
 # Loop for each host and create its own virtual machine
 for ($i=0;$i -lt $all_hosts.Length; $i++) {
-    
+
     # Read USERNAME@IP and split based on @
     $host_info=$all_hosts[$i].split("@")
     # Save host username
@@ -152,7 +155,7 @@ for ($i=0;$i -lt $all_hosts.Length; $i++) {
     $VMName = $host_user
     # Set Virtual Switch Name
     $virtualSwitchName = 'VM'
-    
+
     if ($unit_host -gt 9) {
         $decimal_host += 1
         $unit_host = 0
@@ -231,7 +234,7 @@ runcmd:
     # If virtual machine with same name already exists, delete it
     $VM_exist = Get-VM -name $VMName -ErrorAction SilentlyContinue | ConvertTo-Json | ConvertFrom-Json
     $VM_exist_name = $VM_exist.Name
-    if ($VM_exist_name) { 
+    if ($VM_exist_name) {
         echo "Removing already existing VM $VM_exist_name..."
         Remove-VM -Name $VMName -Force
         if (Test-Path -Path "$vm_store_path\$host_user") {
@@ -290,7 +293,7 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
     while ($work -eq 1) {
         $seconds = $seconds + 5
         Start-Sleep -Seconds $seconds
-        
+
         # Check if cloud-init status: if cloud-init has done we can proceed with the git clone
         $cloud_init_status = ssh $master_host_name@$master_host_ip "cloud-init status"
         if ($cloud_init_status -Match "done") {
@@ -303,7 +306,7 @@ if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "T
                 ssh $master_host_name@$master_host_ip "git clone --single-branch --branch $github_branch_name 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
                 ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
                 # Open a cmd shell and automatically ssh into master virtual machine
-                Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh m1@192.168.1.200 && pause"
+                Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh $master_host_name@$master_host_ip && pause"
                 # Copy to clipboard the command to be executed on the just opened cmd shell to run all the infrastructure setup
                 # You just have to paste the command and then enter
                 Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"

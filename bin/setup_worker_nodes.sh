@@ -105,15 +105,15 @@ for h in ${host_list[@]}; do
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
+
   # add master to the list of known_hosts addresses
   echo -e "${LBLUE}Adding master to known_hosts addresses list...${WHITE}"
   ssh -q $host_vpn_ssh_string "ssh-keyscan $master_host_ip >> ~/.ssh/known_hosts" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
-  # clone github repository code 
+
+  # clone github repository code
   echo -e "${LBLUE}Cloning code repository...${WHITE}"
   # ssh -A $h "git clone --single-branch --branch $github_branch_name git@github.com:rMiccolis/binanceB.git /home/$host_username/binanceB" &
   scp -q -r /home/$master_host_name/binanceB $host_vpn_ssh_string:/home/$host_username/
@@ -122,14 +122,14 @@ for h in ${host_list[@]}; do
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
+
   # Setting host settings and dependencies
   echo -e "${LBLUE}Setting host settings and dependencies...${WHITE}"
   ssh -t $host_vpn_ssh_string "/home/$host_username/binanceB/bin/set_host_settings.sh > /dev/null 2>&1" &
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
+
   # Installing Docker Engine
   echo -e "${LBLUE}Installing Docker Engine...${WHITE}"
   wait
@@ -137,7 +137,7 @@ for h in ${host_list[@]}; do
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
+
   # Installing Cri-Docker (Container Runtime Interface)
   echo -e "${LBLUE}Installing Cri-Docker (Container Runtime Interface)${WHITE}"
   wait
@@ -145,7 +145,7 @@ for h in ${host_list[@]}; do
   wait
   echo -e "${LBLUE}Operation Done!${WHITE}"
 
-  
+
   # Installing Kubernetes
   echo -e "${LBLUE}Installing Kubernetes${WHITE}"
   wait
@@ -158,7 +158,7 @@ for h in ${host_list[@]}; do
   wait
   ssh $host_vpn_ssh_string "sudo chmod -R 777 /etc/default/" &
   wait
-  
+
   echo -e "${LBLUE}Joining $host_username@$host_ip to the cluster${WHITE}"
   if [ "${host_username:0:1}" == "m" ]; then
     echo "Joining control-plane node to the cluster"

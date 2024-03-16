@@ -12,7 +12,7 @@ interface="$interface_1.$interface_2.0.0"
 
 # Init kubeadm cluster
 echo -e "${LBLUE}Init kubeadm cluster${WHITE}"
-sudo kubeadm init --pod-network-cidr=${interface}/16 --cri-socket=unix:///var/run/cri-dockerd.sock --control-plane-endpoint=$master_host_ip --upload-certs > /dev/null 2>&1
+sudo kubeadm init --pod-network-cidr=${interface}/16 --cri-socket=unix:///var/run/cri-dockerd.sock --control-plane-endpoint=$master_host_ip --upload-certs # > /dev/null 2>&1
 
 mkdir -p $HOME/.kube
 

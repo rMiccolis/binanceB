@@ -187,7 +187,9 @@ users:
    ssh-authorized-keys:
    - $($pub_key)
 keyboard:
-  layout: it
+    layout: us
+    model: pc105
+    variant: intl
 write_files:
  - encoding: b64
    owner: $($host_user):$($host_user)

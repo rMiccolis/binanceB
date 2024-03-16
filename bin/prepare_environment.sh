@@ -19,6 +19,7 @@ echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
 
 # list of hosts IP that will join the cluster
 export android_app_ready=$(yq '.android_app_ready' $config_file_path)
+export kubernetes_version=$(yq '.kubernetes_version' $config_file_path)
 export application_dns_name=$(yq '.application_dns_name' $config_file_path)
 export noip_username=$(yq '.noip_username' $config_file_path)
 export noip_password=$(yq '.noip_password' $config_file_path)
@@ -56,6 +57,7 @@ EOF
 cat << EOF | tee -a /home/$USER/.profile > /dev/null
 export noip_username=$noip_username
 export noip_password=$noip_password
+export kubernetes_version=$kubernetes_version
 export app_server_addr=$app_server_addr
 export application_dns_name=$application_dns_name
 export master_host_ip_eth0=$master_host_ip_eth0

@@ -62,6 +62,7 @@ export CYAN="\033[0;36m"
 export LCYAN="\033[1;36m"
 export LGRAY="\033[0;37m"
 export WHITE="\033[1;37m"
+export kubernetes_version=$kubernetes_version
 export master_host_ip=$master_host_ip
 export master_host_name=$master_host_name
 export application_dns_name=$application_dns_name

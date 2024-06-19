@@ -42,33 +42,33 @@ export join_worker="sudo $(sudo kubeadm token create --print-join-command) --cri
 touch ~/.ssh/known_hosts
 
 # create config_file.sh to export colors into the worker hosts
-touch ~/config_file.sh
-cat << EOF | tee ~/config_file.sh > /dev/null
-#!/bin/bash
-#export colors for colored output strings
-export BLACK="\033[0;30m"
-export DARK_GREY="\033[1;30m"
-export RED="\033[0;31m"
-export LRED="\033[1;31m"
-export GREEN="\033[0;32m"
-export LGREEN="\033[1;32m"
-export ORANGE="\033[0;33m"
-export YELLOW="\033[1;33m"
-export BLUE="\033[0;34m"
-export LBLUE="\033[1;34m"
-export PURPLE="\033[0;35m"
-export LPURPLE="\033[1;35m"
-export CYAN="\033[0;36m"
-export LCYAN="\033[1;36m"
-export LGRAY="\033[0;37m"
-export WHITE="\033[1;37m"
-export kubernetes_version=$kubernetes_version
-export master_host_ip=$master_host_ip
-export master_host_name=$master_host_name
-export application_dns_name=$application_dns_name
-export app_server_addr=$app_server_addr
-export host_list=(${host_list[@]})
+touch ~/env_variables
+cat << EOF | tee ~/env_variables > /dev/null
+BLACK="\033[0;30m"
+DARK_GREY="\033[1;30m"
+RED="\033[0;31m"
+LRED="\033[1;31m"
+GREEN="\033[0;32m"
+LGREEN="\033[1;32m"
+ORANGE="\033[0;33m"
+YELLOW="\033[1;33m"
+BLUE="\033[0;34m"
+LBLUE="\033[1;34m"
+PURPLE="\033[0;35m"
+LPURPLE="\033[1;35m"
+CYAN="\033[0;36m"
+LCYAN="\033[1;36m"
+LGRAY="\033[0;37m"
+WHITE="\033[1;37m"
+kubernetes_version=$kubernetes_version
+master_host_ip=$master_host_ip
+master_host_name=$master_host_name
+application_dns_name=$application_dns_name
+app_server_addr=$app_server_addr
+host_list=(${host_list[@]})
 EOF
+
+env_variables=$(cat ~/env_variables)
 
 echo -e "${LBLUE}Setting environment and installing dependencies to worker nodes which will join the cluster${WHITE}"
 echo -e "${LBLUE}list of worker nodes: ${host_list[@]}${WHITE}"
@@ -92,12 +92,14 @@ for h in ${host_list[@]}; do
   ssh $host_vpn_ssh_string "sudo hostnamectl set-hostname $host_username" &
   wait
 
-  # executing config_file.sh on the remote host
-  scp -q ~/config_file.sh $host_vpn_ssh_string:/home/$host_username/ &
-  wait
-  ssh $host_vpn_ssh_string "chmod u+x /home/$host_username/config_file.sh" &
-  wait
-  ssh $host_vpn_ssh_string ". /home/$host_username/config_file.sh" &
+  # executing env_variables.sh on the remote host
+  # scp -q ~/env_variables $host_vpn_ssh_string:/home/$host_username/ &
+  # wait
+  # ssh $host_vpn_ssh_string "chmod u+x /home/$host_username/env_variables" &
+  # wait
+  # ssh $host_vpn_ssh_string ". /home/$host_username/env_variables" &
+  # wait
+  ssh $host_vpn_ssh_string "echo $env_variables | sudo tee -a /etc/environment" &
   wait
 
   # add github to the list of known_hosts addresses

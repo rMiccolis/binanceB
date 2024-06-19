@@ -91,8 +91,8 @@ for h in ${host_list[@]}; do
   wait
 
   # executing env_variables.sh on the remote host
-  # scp -q ~/env_variables $host_vpn_ssh_string:/home/$host_username/ &
-  # wait
+  scp -q ~/env_variables $host_vpn_ssh_string:/home/$host_username/ &
+  wait
   # ssh $host_vpn_ssh_string "chmod u+x /home/$host_username/env_variables" &
   # wait
   # ssh $host_vpn_ssh_string ". /home/$host_username/env_variables" &

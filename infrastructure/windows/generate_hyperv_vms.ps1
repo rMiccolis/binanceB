@@ -285,7 +285,7 @@ runcmd:
 echo "Starting application installation..."
 
 echo "Waiting for $master_host_name virtual machine to fully boot up..."
-Start-Sleep -Seconds 90
+Start-Sleep -Seconds 120
 # Test periodically if the master vm is up to execute the clone of the code from repository
 if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
     $work = 1

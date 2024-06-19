@@ -16,7 +16,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl gpg > /dev/null
 # Download the Google Cloud public signing key:
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v${kubernetes_version}/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg >> /home/$USER/output.txt
 # Add the Kubernetes apt repository:
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null >> /home/$USER/output.txt # 2>&1
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v${kubernetes_version}/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null >> /home/$USER/output.txt # 2>&1
 
 # Update apt package index, install latest versions of kubelet, kubeadm and kubectl, and pin their version:
 echo -e "${LBLUE}Update apt package index, install latest versions of kubelet, kubeadm and kubectl, and pin their version${WHITE}"

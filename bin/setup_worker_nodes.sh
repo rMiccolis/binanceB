@@ -68,8 +68,6 @@ app_server_addr=$app_server_addr
 host_list=(${host_list[@]})
 EOF
 
-env_variables=$(cat ~/env_variables)
-
 echo -e "${LBLUE}Setting environment and installing dependencies to worker nodes which will join the cluster${WHITE}"
 echo -e "${LBLUE}list of worker nodes: ${host_list[@]}${WHITE}"
 
@@ -99,7 +97,7 @@ for h in ${host_list[@]}; do
   # wait
   # ssh $host_vpn_ssh_string ". /home/$host_username/env_variables" &
   # wait
-  ssh $host_vpn_ssh_string "echo $env_variables | sudo tee -a /etc/environment" &
+  ssh $host_vpn_ssh_string "cat ~/env_variables | sudo tee -a /etc/environment" &
   wait
 
   # add github to the list of known_hosts addresses

@@ -3,7 +3,7 @@
 ###############################################################################
 #disable swap
 echo -e "${LBLUE}Disabling swap...${WHITE}"
-/home/$USER/binanceB/bin/disable_swap.sh
+sudo /home/$USER/binanceB/bin/disable_swap.sh
 
 # Install Kubernetes
 # install kubeadm, kubelet and kubectl:

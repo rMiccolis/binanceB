@@ -10,7 +10,7 @@ sudo /home/$USER/binanceB/bin/disable_swap.sh
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 echo -e "${LBLUE}Update the apt package index and install packages needed to use the Kubernetes apt repository${WHITE}"
 sudo apt-get update > /dev/null >> /home/$USER/output.txt # 2>&1
-sudo apt-get upgrade -y -q > /dev/null >> /home/$USER/output.txt# 2>&1
+sudo apt-get upgrade -y -q > /dev/null >> /home/$USER/output.txt # 2>&1
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg > /dev/null >> /home/$USER/output.txt # 2>&1
 
 # Download the Google Cloud public signing key:

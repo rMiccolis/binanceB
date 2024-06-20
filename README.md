@@ -22,16 +22,16 @@ There are 5 main scripts that create and configure all the infrastructure and bo
 
 - Ubuntu version: focal-server-cloudimg-amd64 (20.04 LTS) - jammy-server-cloudimg-amd64 (22.04 LTS)
 - Kernel version: Linux 5.4.0-148-generic
-- Docker version: 23.0.5
-- Cri-dockerd version: 0.3.4
-- Kubernetes version 1.27.4
+- Docker version: 23.0.5 (scritps always try to install latest version)
+- Cri-dockerd version: 0.3.14 (scritps always try to install latest version)
+- Kubernetes version 1.30.2 (scritps always try to install latest version)
 
 After creating VM with a linux distro: (Skip these steps if launching infrastructure from "generate_hyperv_vms.ps1")
 
 - Disable windows secure boot
-- Set minimum 30GB of disk space
+- Set minimum 50GB of disk space
 - Set at least 2 cpus
-- Set at least 4096MB or RAM
+- Set at least 4096MB of RAM
 
 ## Mandatory OS OPerations before executing './infrastructure/start.sh' (follow these steps in the example paragraph)
 

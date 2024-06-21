@@ -66,6 +66,7 @@ master_host_name=$master_host_name
 application_dns_name=$application_dns_name
 app_server_addr=$app_server_addr
 host_list=(${host_list[@]})
+host_ip_index=$host_ip_index
 EOF
 
 echo -e "${LBLUE}Setting environment and installing dependencies to worker nodes which will join the cluster${WHITE}"
@@ -75,7 +76,7 @@ for h in ${host_list[@]}; do
   host_string=()
   IFS='@' read -r -a host_string <<< "$h"
   host_username=${host_string[0]}
-  host_ip=${host_string[2]}
+  host_ip=${host_string[$host_ip_index]}
 
   host_vpn_ssh_string=$host_username@$host_ip
 

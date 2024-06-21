@@ -11,14 +11,13 @@ IFS='@' read -r -a master_host_vpn_ip <<< "$(yq '.master_host' $config_file_path
 export master_host_ip_eth0=${master_host_vpn_ip[1]}
 export master_host_ip=${master_host_vpn_ip[2]}
 export master_host_name=$(whoami)
-echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
 echo -e "${LBLUE}Setting Master host name ===> $master_host_name${WHITE}"
 sudo hostnamectl set-hostname $master_host_name
 
 echo -e "${LBLUE}Processing data from input JSON config file...${WHITE}"
-
 # list of hosts IP that will join the cluster
 export android_app_ready=$(yq '.android_app_ready' $config_file_path)
+export app_run_on_vpn=$(yq '.app_run_on_vpn' $config_file_path)
 export kubernetes_version=$(yq '.kubernetes_version' $config_file_path)
 export application_dns_name=$(yq '.application_dns_name' $config_file_path)
 export noip_username=$(yq '.noip_username' $config_file_path)
@@ -47,6 +46,16 @@ if [ "$android_app_ready" == "true" ]; then
     export app_server_addr=$master_host_ip
 fi
 
+host_eth_ip_index=1
+host_vpn_ip_index=2
+export host_ip_index=1
+if [ "$app_run_on_vpn" == "true" ]; then
+    export host_ip_index=2
+fi
+export master_host_ip=${master_host_vpn_ip[$host_ip_index]}
+echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
+echo -e "${LBLUE}USING ETH0 IP ADDRESS FOR APPLICATION${WHITE}"
+
 echo -e "${LBLUE}Setting Master IP address into hosts file${WHITE}"
 # save host ip address into host file
 cat << EOF | sudo tee -a /etc/hosts > /dev/null
@@ -58,6 +67,7 @@ cat << EOF | tee -a /home/$USER/.profile > /dev/null
 export noip_username=$noip_username
 export noip_password=$noip_password
 export kubernetes_version=$kubernetes_version
+export host_ip_index=$host_ip_index
 export app_server_addr=$app_server_addr
 export application_dns_name=$application_dns_name
 export master_host_ip_eth0=$master_host_ip_eth0

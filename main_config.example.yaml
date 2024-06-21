@@ -3,6 +3,7 @@
 noip_username: 'noip_username' # set to '' to not use noip for ddns for the load_balancer_dns_name
 noip_password: 'noip_password' # set to '' to not use noip for ddns for the load_balancer_dns_name
 android_app_ready: 'true' # set to true to support the building of android app (in capacitor.config.json insert the ${master_host_VPN_ip} as for ex: 10.11.1.1 and not the dns name). The app will be reachable at that IP (10.11.1.1)
+app_run_on_vpn: 'false' # set to true if you want app to work behind a vpn. Set to false if you want to use https protocol. IMPORTANT: even if you set false, variables for vpn configuration are needed.
 application_dns_name: 'binanceb.com' # this will be the dns to reach the entire cluster from the vpn
 load_balancer_dns_name: 'cluster.ddns.com' # public dns name where main server is reachable. For a "domestic" use, adopt a free DDNS service (see no-ip.com website) to set this name, in this case set the public ddns from no-ip
 load_balancer_public_ip: '2.42.42.133' # this is the cluster public IP (your load balancer public IP)

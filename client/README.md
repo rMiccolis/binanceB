@@ -55,7 +55,7 @@ npm install @capacitor/cli @capacitor/core
 
 npx cap init
 
-npm install @capacitor/android @capacitor/ios 
+npm install @capacitor/android @capacitor/ios
 ```
 
 1. Delete 'android' folder if already exists in the ./client/ dir
@@ -63,7 +63,7 @@ npm install @capacitor/android @capacitor/ios
 3. Edit capacitor.config.json: in "server.url" insert server ip with this format: "http://2.44.128.35" (if https used, replace http with https)
 4. Create the project build: ```npm run build```
 5. Create the android project folder (to be then imported on Android Studio) => ```npx cap add android```
-   
+
 To make cookies persist, insert the following function into the 'MainActivity.java' class:
 
 ```java

@@ -64,7 +64,7 @@ npm install @capacitor/android @capacitor/ios
 4. Create the project build: ```npm run build```
 5. Create the android project folder (to be then imported on Android Studio) => ```npx cap add android```
 
-To make cookies persist, insert the following function into the 'MainActivity.java' class:
+6. To make cookies persist, insert the following function into the 'MainActivity.java' class and let Android Studio auto import the "CookieManager" class:
 
 ```java
 @Override
@@ -73,6 +73,13 @@ To make cookies persist, insert the following function into the 'MainActivity.ja
 
         CookieManager.getInstance().flush();
     }
+```
+
+7. Add this to you AndroidManifest.xml in the application element
+
+```xml
+<application
+    android:usesCleartextTraffic="true"
 ```
 
 ### Change default application icons

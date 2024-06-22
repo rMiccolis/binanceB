@@ -41,7 +41,7 @@ export server_replica_count=$(yq '.server_replica_count' $config_file_path)
 #exporting host list as a string (so it can be exported as variable and read by other scripts)
 export host_list="$(yq '.hosts[]' $config_file_path)"
 
-export app_server_addr=$application_dns_name
+export app_server_addr=$load_balancer_dns_name
 
 host_eth_ip_index=1
 host_vpn_ip_index=2
@@ -51,7 +51,7 @@ if [ "$app_run_on_vpn" == "true" ]; then
 fi
 export master_host_ip=${master_host_vpn_ip[$host_ip_index]}
 if [ "$android_app_ready" == "true" ]; then
-    export app_server_addr=$load_balancer_public_ip
+    export app_server_addr=$load_balancer_dns_name
 fi
 
 if [ "$app_run_on_vpn" == "true" ]; then
@@ -64,7 +64,7 @@ echo -e "${LBLUE}USING ETH0 IP ADDRESS FOR APPLICATION${WHITE}"
 echo -e "${LBLUE}Setting Master IP address into hosts file${WHITE}"
 # save host ip address into host file
 cat << EOF | sudo tee -a /etc/hosts > /dev/null
-$master_host_ip $master_host_name $application_dns_name
+$master_host_ip $master_host_name $load_balancer_dns_name
 EOF
 
 # export variables at login

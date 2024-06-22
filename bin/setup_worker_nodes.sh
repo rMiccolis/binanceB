@@ -64,6 +64,7 @@ kubernetes_version=$kubernetes_version
 master_host_ip=$master_host_ip
 master_host_name=$master_host_name
 application_dns_name=$application_dns_name
+load_balancer_dns_name=$load_balancer_dns_name
 app_server_addr=$app_server_addr
 host_list=(${host_list[@]})
 host_ip_index=$host_ip_index

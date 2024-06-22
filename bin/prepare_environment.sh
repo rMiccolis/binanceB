@@ -42,9 +42,6 @@ export server_replica_count=$(yq '.server_replica_count' $config_file_path)
 export host_list="$(yq '.hosts[]' $config_file_path)"
 
 export app_server_addr=$application_dns_name
-if [ "$android_app_ready" == "true" ]; then
-    export app_server_addr=$master_host_ip
-fi
 
 host_eth_ip_index=1
 host_vpn_ip_index=2
@@ -53,6 +50,9 @@ if [ "$app_run_on_vpn" == "true" ]; then
     export host_ip_index=2
 fi
 export master_host_ip=${master_host_vpn_ip[$host_ip_index]}
+if [ "$android_app_ready" == "true" ]; then
+    export app_server_addr=$master_host_ip
+fi
 echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
 echo -e "${LBLUE}USING ETH0 IP ADDRESS FOR APPLICATION${WHITE}"
 

@@ -179,7 +179,7 @@ $userdata = @"
 package_update: true
 package_upgrade: true
 users:
- - default
+ - deult
  - name: $($host_user)
    groups: [adm, audio, cdrom, dialout, floppy, video, plugdev, dip, netdev, sudo, users, admin, lxd]
    shell: /bin/bash
@@ -285,34 +285,38 @@ runcmd:
 echo "Starting application installation..."
 
 echo "Waiting for $master_host_name virtual machine to fully boot up..."
-Start-Sleep -Seconds 120
+$vm_ready = $False
 # Test periodically if the master vm is up to execute the clone of the code from repository
-if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
-    $work = 1
-    $seconds = 30
-    while ($work -eq 1) {
-        $seconds = $seconds + 5
-        Start-Sleep -Seconds $seconds
+while ($vm_ready -eq $False) {
+    Start-Sleep -Seconds 120
+    if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
+        $work = 1
+        $seconds = 30
+        while ($work -eq 1) {
+            $seconds = $seconds + 5
+            Start-Sleep -Seconds $seconds
 
-        # Check if cloud-init status: if cloud-init has done we can proceed with the git clone
-        $cloud_init_status = ssh $master_host_name@$master_host_ip "cloud-init status"
-        if ($cloud_init_status -Match "done") {
-            Start-Sleep -Seconds 90
-            if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
-                $work = 0
-                # ssh-keyscan $master_host_ip | Out-File -Filepath "$HOME/.ssh/known_hosts" -Append
-                echo "Cloning branch $github_branch_name..."
-                # Cloning the github repository code of the specified branch
-                ssh $master_host_name@$master_host_ip "git clone --single-branch --branch $github_branch_name 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
-                ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
-                # Open a cmd shell and automatically ssh into master virtual machine
-                Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh $master_host_name@$master_host_ip && pause"
-                # Copy to clipboard the command to be executed on the just opened cmd shell to run all the infrastructure setup
-                # You just have to paste the command and then enter
-                Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
+            # Check if cloud-init status: if cloud-init has done we can proceed with the git clone
+            $cloud_init_status = ssh $master_host_name@$master_host_ip "cloud-init status"
+            if ($cloud_init_status -Match "done") {
+                Start-Sleep -Seconds 90
+                if (Test-NetConnection $master_host_name | Where-Object {$_.PingSucceeded -eq "True"}) {
+                    $work = 0
+                    $vm_ready = $True
+                    # ssh-keyscan $master_host_ip | Out-File -Filepath "$HOME/.ssh/known_hosts" -Append
+                    echo "Cloning branch $github_branch_name..."
+                    # Cloning the github repository code of the specified branch
+                    ssh $master_host_name@$master_host_ip "git clone --single-branch --branch $github_branch_name 'git@github.com:rMiccolis/binanceB.git' '/home/$master_host_name/binanceB'"
+                    ssh $master_host_name@$master_host_ip "chmod u+x /home/$master_host_name/binanceB -R"
+                    # Open a cmd shell and automatically ssh into master virtual machine
+                    Start-Process -Verb RunAs cmd.exe -Args '/c', "ssh $master_host_name@$master_host_ip && pause"
+                    # Copy to clipboard the command to be executed on the just opened cmd shell to run all the infrastructure setup
+                    # You just have to paste the command and then enter
+                    Set-Clipboard -Value "./binanceB/infrastructure/start.sh -c '/home/$master_host_name/main_config.yaml'"
+                }
+            } else {
+                echo "$master_host_name@$master_host_ip => cloud-init $cloud_init_status"
             }
-        } else {
-            echo "$master_host_name@$master_host_ip => cloud-init $cloud_init_status"
         }
     }
 }

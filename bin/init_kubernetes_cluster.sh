@@ -56,6 +56,41 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # kubectl apply -f /home/$USER/coredns_configmap.yaml
 
+# setting the "hosts" part of kubernetes coredns to recognize $master_host_ip as dns name $application_dns_name
+cat << EOF | tee /home/$USER/coredns_configmap.yaml > /dev/null
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        hosts {
+        $master_host_ip $application_dns_name
+        fallthrough
+        }
+        prometheus :9153
+        forward . 8.8.8.8
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+EOF
+
+kubectl apply -f /home/$USER/coredns_configmap.yaml
+
 kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
 wait
 

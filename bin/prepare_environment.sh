@@ -51,8 +51,13 @@ if [ "$app_run_on_vpn" == "true" ]; then
 fi
 export master_host_ip=${master_host_vpn_ip[$host_ip_index]}
 if [ "$android_app_ready" == "true" ]; then
+    export app_server_addr=$load_balancer_public_ip
+fi
+
+if [ "$app_run_on_vpn" == "true" ]; then
     export app_server_addr=$master_host_ip
 fi
+
 echo -e "${LBLUE}Master name and IP address found ===> $master_host_name - $master_host_ip${WHITE}"
 echo -e "${LBLUE}USING ETH0 IP ADDRESS FOR APPLICATION${WHITE}"
 

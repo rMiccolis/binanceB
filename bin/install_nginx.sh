@@ -4,8 +4,23 @@ echo -e "${LBLUE}Installing NGINX to be reachble on $master_host_ip.${WHITE}"
 #add nginx helm repository (kubernetes version)
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx > /dev/null
 helm repo update > /dev/null
-externalIPs="$master_host_ip"
 
+# NGINX DOCUMENTATION:
+# see https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+# see https://kubernetes.github.io/ingress-nginx
+
+# create a certificate for https protocol
+KEY_FILE=nginx-key-cert
+CERT_FILE=filecert
+$HOST=$app_server_addr
+cert_file_name='https-nginx-cert'
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
+kubectl create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}
+
+# to set a tls certificate pass to helm: --set controller.extraArgs.default-ssl-certificate="__NAMESPACE__/_SECRET__"
+# or set it into helm config file (like we do in next rows)
+
+# externalIPs="$master_host_ip"
 # externalIPs: [$master_host_ip $control_plane_hosts_string]
 
 #tcp:
@@ -14,6 +29,8 @@ cat << EOF | tee nginx_helm_config.yaml > /dev/null
 tcp:
   27017: "mongodb/mongodb:27017"
 controller:
+  extraArgs:
+    default-ssl-certificate: default/$cert_file_name
   service:
     externalTrafficPolicy: Local
   affinity:

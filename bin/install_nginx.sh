@@ -9,17 +9,6 @@ helm repo update > /dev/null
 # see https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
 # see https://kubernetes.github.io/ingress-nginx
 
-# create a certificate for https protocol
-KEY_FILE=nginx-key-cert
-CERT_FILE=filecert
-$HOST=$app_server_addr
-cert_file_name='https-nginx-cert'
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
-kubectl create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}
-
-# to set a tls certificate pass to helm: --set controller.extraArgs.default-ssl-certificate="__NAMESPACE__/_SECRET__"
-# or set it into helm config file (like we do in next rows)
-
 # externalIPs="$master_host_ip"
 # externalIPs: [$master_host_ip $control_plane_hosts_string]
 
@@ -64,6 +53,17 @@ cat << 'EOF' | tee -a nginx_helm_config.yaml > /dev/null
 EOF
 
 kubectl create namespace ingress-nginx
+# create a certificate for https protocol
+KEY_FILE=nginx-key-cert
+CERT_FILE=filecert
+$HOST=$app_server_addr
+cert_file_name='https-nginx-cert'
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
+kubectl -n ingress-nginx create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}
+
+# to set a tls certificate pass to helm: --set controller.extraArgs.default-ssl-certificate="__NAMESPACE__/_SECRET__"
+# or set it into helm config file (like we do in next rows)
+
 helm install --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml > /dev/null
 # to expose port 27017 with nginx
 # --set tcp.PORT="namespace/service_name:PORT"

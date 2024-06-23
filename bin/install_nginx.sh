@@ -54,9 +54,9 @@ EOF
 
 kubectl create namespace ingress-nginx
 # create a certificate for https protocol
-KEY_FILE=nginx-key-cert
-CERT_FILE=filecert
-$HOST=$app_server_addr
+KEY_FILE='nginx-key-cert'
+CERT_FILE='filecert'
+HOST="$app_server_addr"
 cert_file_name='https-nginx-cert'
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
 kubectl -n ingress-nginx create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}

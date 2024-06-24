@@ -1,15 +1,9 @@
 {
-  "appId": "com.app-name.app",
-  "appName": "App Name",
+  "appId": "com.binanceb.app",
+  "appName": "BinanceB",
   "webDir": "dist",
   "server": {
-    "androidScheme": "http",
-    "url": "http://${app_server_addr}.com/",
-    "allowNavigation": ["${app_server_addr}.com", "*.${app_server_addr}.com", "${app_server_addr}.com/*"],
-    "cleartext": true
-  },
-  "android": {
-    "allowMixedContent": true
+    "androidScheme": "https"
   },
   "plugins": {
     "CapacitorCookies": {

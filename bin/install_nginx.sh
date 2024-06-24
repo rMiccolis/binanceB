@@ -12,6 +12,21 @@ helm repo update > /dev/null
 # externalIPs="$master_host_ip"
 # externalIPs: [$master_host_ip $control_plane_hosts_string]
 
+
+# setting variables for tls certificate
+KEY_FILE='nginx-key-cert'
+CERT_FILE='filecert'
+HOST="$app_server_addr"
+cert_file_name='https-nginx-cert'
+kubectl create namespace ingress-nginx
+# create a certificate for https protocol
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
+# creating tls certificate in 'default' namespace
+kubectl create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}
+
+# to set a tls certificate pass to helm: --set controller.extraArgs.default-ssl-certificate="__NAMESPACE__/_SECRET__"
+# or set it into helm config file (like we do in next rows)
+
 #tcp:
 #  27017: "mongodb/mongodb:27017" => tcp_port_to_expose: namespace/service_name:service_port
 cat << EOF | tee nginx_helm_config.yaml > /dev/null
@@ -51,18 +66,6 @@ cat << 'EOF' | tee -a nginx_helm_config.yaml > /dev/null
     enable-underscores-in-headers: true
     log-format-upstream: '{"time": "$time_iso8601", "proxy_add_x_forwarded_for": "$proxy_add_x_forwarded_for", "remote_addr": "$remote_addr" }'
 EOF
-
-kubectl create namespace ingress-nginx
-# create a certificate for https protocol
-KEY_FILE='nginx-key-cert'
-CERT_FILE='filecert'
-HOST="$app_server_addr"
-cert_file_name='https-nginx-cert'
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
-kubectl -n ingress-nginx create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}
-
-# to set a tls certificate pass to helm: --set controller.extraArgs.default-ssl-certificate="__NAMESPACE__/_SECRET__"
-# or set it into helm config file (like we do in next rows)
 
 helm install --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx -f nginx_helm_config.yaml > /dev/null
 # to expose port 27017 with nginx

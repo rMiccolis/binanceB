@@ -33,8 +33,8 @@ cat << EOF | tee nginx_helm_config.yaml > /dev/null
 tcp:
   27017: "mongodb/mongodb:27017"
 controller:
-  extraArgs:
-    default-ssl-certificate: default/$cert_file_name
+#  extraArgs:
+#    default-ssl-certificate: default/$cert_file_name
   service:
     externalTrafficPolicy: Local
   affinity:

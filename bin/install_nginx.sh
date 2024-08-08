@@ -22,6 +22,7 @@ kubectl create namespace ingress-nginx
 # create a certificate for https protocol
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}" -addext "subjectAltName = DNS:${HOST}"
 # creating tls certificate in 'default' namespace
+kubectl create namespace binance-b
 kubectl -n binance-b create secret tls $cert_file_name --key ${KEY_FILE} --cert ${CERT_FILE}
 
 # to set a tls certificate pass to helm: --set controller.extraArgs.default-ssl-certificate="__NAMESPACE__/_SECRET__"

@@ -116,10 +116,10 @@ echo -e "${LGREEN}Starting phase 9 / 10 ===> Building server and client docker i
 echo -e "${LGREEN}Phase 9 / 10 ===> Operation Done!${WHITE}"
 
 echo -e "${LGREEN}Instaling cert-manager for a let's encrypt certificate${WHITE}"
-./install_cert_manager.sh
-echo -e "${LGREEN}cert-manager installed ===> Operation Done!${WHITE}"
+./binanceB/bin/install_cert_manager.sh
 kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=2000s &
 wait
+echo -e "${LGREEN}cert-manager installed ===> Operation Done!${WHITE}"
 
 echo -e "${LGREEN}Starting phase 10 / 10 ===> Applying configuration file and deployng the application to the cluster${WHITE}"
 ./binanceB/bin/install_app.sh

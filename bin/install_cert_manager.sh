@@ -6,7 +6,8 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.9
 kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=5000s &
 wait
 
-cat << EOF | tee $HOME/temp/clusterissuer.yaml
+mkdir $HOME/cert-manager
+cat << EOF | tee $HOME/cert-manager/clusterissuer.yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer # I'm using ClusterIssuer here
 metadata:
@@ -23,5 +24,5 @@ spec:
           class: nginx
 EOF
 
-kubectl apply -f $HOME/temp/clusterissuer.yaml
+kubectl apply -f $HOME/cert-manager/clusterissuer.yaml
 

@@ -6,12 +6,13 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/upstream-hash-by: $remote_addr
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    cert-manager.io/cluster-issuer: letsencrypt-certificate
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
     - ${app_server_addr}
-    secretName: https-nginx-cert
+    secretName: letsencrypt-certificate
   rules:
   - host: ${app_server_addr}
     http:

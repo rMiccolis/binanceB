@@ -6,12 +6,13 @@ metadata:
   annotations:
     # kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-certificate
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
     - ${app_server_addr}
-    secretName: https-nginx-cert
+    secretName: letsencrypt-certificate
   rules:
   - host: ${app_server_addr}
     http:

@@ -36,7 +36,6 @@ console.logSuccess = logHandler.logSuccess;
 const corsOptions = { origin: true, credentials: true, origin: "*" };
 
 //middlewares
-app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(helmet());
 app.use(express.json());
@@ -58,6 +57,7 @@ app.use("/auth", authApi);
 app.use("/api/utils", utilsApi);
 app.use("/test", testApi);
 app.use("/api/wallet", walletApi);
+app.use(cors(corsOptions));
 
 // process.stdin.resume(); //so the program will not close instantly
 

@@ -3,7 +3,7 @@
   "appName": "BinanceB",
   "webDir": "dist",
   "server": {
-    "hostname": "bob617.ddns.net",
+    "hostname": "test.net",
     "androidScheme": "https"
   },
   "android": {

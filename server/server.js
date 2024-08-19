@@ -52,10 +52,10 @@ app.use((req, res, next) => {
 });
 
 //routes
-app.use(cors(corsOptions));
 app.use("/", generalRouter);
 
 app.use("/auth", authApi);
+app.use(cors(corsOptions));
 app.use("/api/utils", utilsApi);
 app.use("/test", testApi);
 app.use("/api/wallet", walletApi);

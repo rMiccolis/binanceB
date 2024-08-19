@@ -3,7 +3,7 @@
   "appName": "BinanceB",
   "webDir": "dist",
   "server": {
-    "hostname": "bob617.ddns.net",
+    "hostname": "ddns.net",
     "androidScheme": "https"
   },
   "android": {
@@ -11,9 +11,6 @@
   },
   "plugins": {
     "CapacitorCookies": {
-      "enabled": true
-    },
-    "CapacitorHttp": {
       "enabled": true
     }
   }

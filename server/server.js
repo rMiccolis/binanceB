@@ -34,7 +34,7 @@ console.logSuccess = logHandler.logSuccess;
 
 // const corsOptions = { origin: ['http://10.11.1.1', 'http://bob617.ddns.net/', 'https://bob617.ddns.net/', 'http://bob617.ddns.net', 'https://bob617.ddns.net', 'http://localhost/', 'http://localhost'], credentials: true };
 // const corsOptions = { origin: true, credentials: true, origin: "*" };
-const corsOptions = { origin: false, credentials: true};
+const corsOptions = { origin: true, credentials: true};
 
 //middlewares
 app.use(logger("dev"));

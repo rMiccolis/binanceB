@@ -33,7 +33,8 @@ console.logError = logHandler.logError;
 console.logSuccess = logHandler.logSuccess;
 
 // const corsOptions = { origin: ['http://10.11.1.1', 'http://bob617.ddns.net/', 'https://bob617.ddns.net/', 'http://bob617.ddns.net', 'https://bob617.ddns.net', 'http://localhost/', 'http://localhost'], credentials: true };
-const corsOptions = { origin: true, credentials: true, origin: "*" };
+// const corsOptions = { origin: true, credentials: true, origin: "*" };
+const corsOptions = { origin: false, credentials: true};
 
 //middlewares
 app.use(logger("dev"));
@@ -51,13 +52,13 @@ app.use((req, res, next) => {
 });
 
 //routes
+app.use(cors(corsOptions));
 app.use("/", generalRouter);
 
 app.use("/auth", authApi);
 app.use("/api/utils", utilsApi);
 app.use("/test", testApi);
 app.use("/api/wallet", walletApi);
-app.use(cors(corsOptions));
 
 // process.stdin.resume(); //so the program will not close instantly
 

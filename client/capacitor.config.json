@@ -3,8 +3,9 @@
   "appName": "BinanceB",
   "webDir": "dist",
   "server": {
-    "hostname": "ddns.net",
-    "androidScheme": "https"
+    "hostname": "${load_balancer_dns_name}",
+    "androidScheme": "https",
+    "url": "https://${load_balancer_dns_name}"
   },
   "android": {
     "allowMixedContent": true

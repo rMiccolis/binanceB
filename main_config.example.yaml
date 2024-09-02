@@ -13,13 +13,14 @@ hosts: # list of ONLY worker and other control plane nodes: made in the form of:
 - 'm1@192.168.1.201@10.11.1.2' # hosts starting with 'm' will be considered as control plane nodes
 - 'w2@192.168.1.202@10.11.1.3' # hosts starting with 'w' will be considered as worker nodes
 vm_cpu_count: '2' # Virtual machine's cpu number
-vm_min_ram: '2GB' # Virtual machine's minimum amount of RAM 
+vm_min_ram: '2GB' # Virtual machine's minimum amount of RAM
 vm_max_ram: '4GB' # Virtual machine's maximum amount of RAM
 github_branch_name: 'develop' # the branch to pull the code from
 oscdimg_path: 'C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg\oscdimg.exe' # You must provide the oscdimg.exe path. https://learn.microsoft.com/it-it/windows-hardware/get-started/adk-install . Oscdimg is used to write the CIDATA image (containing meta-data and user-data files) for cloud init as a ISO 9660 image
 qemuimg_path: 'E:\Download\qemu-img\qemu-img.exe' # http://www.cloudbase.it/qemu-img-windows/. Quemu is used to convert ubuntu cloud-image to a virtual hard drive to be used by virtual machines
 vm_store_path: 'F:\VM' # the path where all the virtual machines will be stored
 os_image_path: 'E:\Desktop\torrent downloads\SO\focal-server-cloudimg-amd64.img' # the operating system path to be installed on all virtual machines. You must pick up a cloud-image, cloud-init configuration won't work otherwise
+kubernetes_version: '1.30'
 docker_username: 'docker_username' # used to build and push docker images to repository
 docker_access_token: 'your_docker_access_token' # used to build and push docker images to repository. To not confuse with password
 docker_server_repository_name: 'binanceb_nodejs_server' # used to push docker server image from repository and pull by kubernetes

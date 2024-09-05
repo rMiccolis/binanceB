@@ -32,7 +32,7 @@ console.logWarning = logHandler.logWarning;
 console.logError = logHandler.logError;
 console.logSuccess = logHandler.logSuccess;
 
-// const corsOptions = { origin: ['http://10.11.1.1', 'http://bob617.ddns.net/', 'https://bob617.ddns.net/', 'http://bob617.ddns.net', 'https://bob617.ddns.net', 'http://localhost/', 'http://localhost'], credentials: true };
+// const corsOptions = { origin: ['http://10.11.1.1', 'http://bob617.ddns.net/', 'https://bob617.ddns.net/', 'http://bob617.ddns.net', 'https://bob617.ddns.net', 'http://localhost:8080/', 'http://localhost:8080'], credentials: true };
 // const corsOptions = { origin: true, credentials: true, origin: "*" };
 const corsOptions = { origin: true, credentials: true};
 
@@ -52,10 +52,10 @@ app.use((req, res, next) => {
 });
 
 //routes
+app.use(cors(corsOptions));
 app.use("/", generalRouter);
 
 app.use("/auth", authApi);
-app.use(cors(corsOptions));
 app.use("/api/utils", utilsApi);
 app.use("/test", testApi);
 app.use("/api/wallet", walletApi);

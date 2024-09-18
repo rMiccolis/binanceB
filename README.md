@@ -45,7 +45,7 @@ After creating VM with a linux distro: (Skip these steps if launching infrastruc
 - Open 51820 port (the Wireguard VPN port) on the modem/router to let application and mongodb database to be reachable (if VPN is selected).
 - Open 27017 port (the default MongoDB port) on the modem/router to let application and mongodb database to be reachable.
 - Open 443 port on the modem/router to let application be reachable with SSL encryption and have a secure connection over HTTPS.
-- Open 80 port on the modem/router to let script automatically obtain a Let's Encrypy SSL certificate to be used for HTTPS connection.
+- Open 80 port on the modem/router to let script automatically obtain a Let's Encrypy SSL certificate to be used for HTTPS connection (it can be turned off after script ends).
 - Create a [docker access token](https://docs.docker.com/docker-hub/access-tokens/) (to be provided into main_config.yaml)
 - Create the client docker repository
 - Create the server docker repository

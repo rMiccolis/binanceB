@@ -18,10 +18,11 @@ LATEST_CRI_DOCKERD_VERSION=$(echo $LATEST_CRI_DOCKERD_VERSION | sed -e 's/.*"tag
 
 # download latest cri-dockerd version
 echo -e "${LBLUE}Downloading package...${WHITE}"
-FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION}-linux-amd64.tar.gz"
-RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
-wget $RELEASE_URL > /dev/null 2>&1
+# FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION}-linux-amd64.tar.gz"
+# RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
+# wget $RELEASE_URL > /dev/null 2>&1
 FILE_NAME="cri-dockerd-${LATEST_CRI_DOCKERD_VERSION:1}.amd64.tgz"
+echo -e "${LPURPLE}DOWNLOADING CRI-DOCKERD FILE NAME: $FILE_NAME ${WHITE}"
 RELEASE_URL="https://github.com/Mirantis/cri-dockerd/releases/download/$LATEST_CRI_DOCKERD_VERSION/$FILE_NAME"
 wget $RELEASE_URL > /dev/null 2>&1
 
@@ -37,7 +38,7 @@ mkdir -p /usr/local/bin
 sudo install -o root -g root -m 0755 ./cri-dockerd /usr/local/bin/cri-dockerd > /dev/null 2>&1
 
 
-# edit original installed files 
+# edit original installed files
 # check these file from https://github.com/Mirantis/cri-dockerd/tree/master/packaging/systemd
 # edit line 'ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint fd://'
 # into: 'ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd:// --network-plugin=cni'

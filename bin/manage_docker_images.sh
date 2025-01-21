@@ -59,6 +59,7 @@ echo -e "${LBLUE}Setting Server IP address: Public or Private...${WHITE}"
 echo -e "${LBLUE}Setting Server IP for client environment...${WHITE}"
 protocol='http'
 if [ "$host_ip_index" == "1" ]; then
+    echo -e "${ORANGE}SETTING APPLICATION WITH =====> HTTPS PROTOCOL${WHITE}"
     protocol='https'
 fi
 cat << EOF | tee $repository_root_dir/binanceB/client/.env.production > /dev/null

@@ -178,7 +178,7 @@ wait
 echo -e "${LBLUE}Installing Resolvconf for $host_username ${WHITE}"
 ssh ${host_username}@$host_ip "sudo apt install resolvconf > /dev/null 2>&1" &
 wait
-ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
+ssh ${host_username}@$host_ip "sudo systemctl enable resolvconf.service" &
 wait
 ssh ${host_username}@$host_ip "sudo systemctl start resolvconf.service" &
 wait

@@ -46,12 +46,12 @@ cd keys
 
 echo -e "${LBLUE}Installing Resolvconf for $USER ${WHITE}"
 sudo apt install resolvconf > /dev/null 2>&1
-sudo systemctl start resolvconf.service > /dev/null 2>&1
+sudo systemctl enable resolvconf.service > /dev/null 2>&1
 sudo systemctl start resolvconf.service > /dev/null 2>&1
 # sudo systemctl status resolvconf.service
 
 # sudo cat << EOF | sudo tee -a /etc/resolvconf/resolv.conf.d/head > /dev/null
-# nameserver 8.8.8.8 
+# nameserver 8.8.8.8
 # nameserver 8.8.4.4
 # EOF
 # sudo systemctl restart resolvconf.service

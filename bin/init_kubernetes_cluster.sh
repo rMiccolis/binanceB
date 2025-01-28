@@ -98,7 +98,7 @@ wait
 
 #install calico CNI to kubernetes cluster:
 echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml -O > /dev/null 2>&1
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.1/manifests/calico.yaml -O > /dev/null 2>&1
 kubectl apply -f calico.yaml > /dev/null 2>&1
 
 kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &

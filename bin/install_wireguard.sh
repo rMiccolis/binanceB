@@ -197,7 +197,7 @@ sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 ListenPort = 51820
 Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
-PostUp = resolvectl dns %10.11.1.1 8.8.8.8 8.8.4.4; resolvectl domain %i ~
+PostUp = resolvectl dns %i 10.11.1.1 8.8.8.8 8.8.4.4; resolvectl domain %i ~
 
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)

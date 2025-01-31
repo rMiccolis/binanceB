@@ -35,6 +35,7 @@ hosts+=($(yq '.hosts[]' $config_file_path))
 master_host_ip=""
 master_host_name=""
 master_host_ip_vpn=""
+master_host_ip_vpn_addr=""
 master_host_ip_vpn_for_dns=""
 
 cd
@@ -77,6 +78,7 @@ if [ "${host_username}" == "m1" ]; then
 
 # master_host_ip=$host_ip
 master_host_ip_vpn="${host_ip_vpn}/16"
+master_host_ip_vpn_addr="${host_ip_vpn}"
 master_host_ip_vpn_for_dns=${host_ip_vpn}
 master_host_name=$host_username
 
@@ -192,12 +194,12 @@ wait
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 
 # Dns = ${master_host_ip_vpn_for_dns}, 8.8.8.8, 8.8.4.4
-# PostUp = resolvectl dns %i 10.0.0.2; resolvectl domain %i ~internal.example.com
 sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 [Interface]
 ListenPort = 51820
 Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
+PostUp = resolvectl dns %${master_host_ip_vpn_addr} 8.8.8.8 8.8.4.4; resolvectl domain %i ~
 
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)

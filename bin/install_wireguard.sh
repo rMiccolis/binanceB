@@ -191,12 +191,13 @@ wait
 
 echo -e "${LBLUE}Generating Configuration for $host_username ${WHITE}"
 
+# Dns = ${master_host_ip_vpn_for_dns}, 8.8.8.8, 8.8.4.4
 sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 [Interface]
 ListenPort = 51820
 Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
-Dns = ${master_host_ip_vpn_for_dns}, 8.8.8.8, 8.8.4.4
+PostUp = resolvectl dns %10.11.1.1 8.8.8.8 8.8.4.4; resolvectl domain %i ~
 
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)

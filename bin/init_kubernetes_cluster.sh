@@ -93,8 +93,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # kubectl apply -f /home/$USER/coredns_configmap.yaml
 
-# kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
-# wait
+kubectl wait --for=condition=Ready --all pods --all-namespaces --timeout=3000s &
+wait
 
 #install calico CNI to kubernetes cluster:
 echo -e "${LBLUE}Installing calico CNI to kubernetes cluster${WHITE}"

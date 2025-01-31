@@ -35,6 +35,7 @@ hosts+=($(yq '.hosts[]' $config_file_path))
 master_host_ip=""
 master_host_name=""
 master_host_ip_vpn=""
+master_host_ip_vpn_addr=""
 master_host_ip_vpn_for_dns=""
 
 cd
@@ -69,6 +70,7 @@ IFS='@' read -r -a host_string <<< "$h"
 host_username=${host_string[0]}
 host_ip=${host_string[1]}
 host_ip_vpn=${host_string[2]}
+master_host_ip_vpn_addr=${host_string[2]}
 
 echo -e "${LBLUE}Generating keys for $host_username ${WHITE}"
 wg genkey | tee ${host_username}_privatekey | wg pubkey > ${host_username}_publickey
@@ -197,7 +199,7 @@ sudo cat << EOF | tee -a /etc/wireguard/${host_username}_wg0.conf > /dev/null
 ListenPort = 51820
 Address = ${host_ip_vpn}/24
 PrivateKey = $(cat ${host_username}_privatekey)
-PostUp = resolvectl dns %i 10.11.1.1 8.8.8.8 8.8.4.4; resolvectl domain %i ~
+PostUp = resolvectl dns %i ${master_host_ip_vpn_addr} 8.8.8.8 8.8.4.4; resolvectl domain %i ~
 
 [Peer]
 PublicKey = $(cat ${master_host_name}_publickey)

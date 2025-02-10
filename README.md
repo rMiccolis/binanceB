@@ -20,7 +20,7 @@ There are 5 main scripts that create and configure all the infrastructure and bo
 
 ### tested versions
 
-- Ubuntu version: focal-server-cloudimg-amd64 (20.04 LTS) - jammy-server-cloudimg-amd64 (22.04 LTS)
+- Ubuntu version: Ubuntu Server 24.04 LTS (Noble Numbat) (QCow2 UEFI/GPT Bootable disk image)
 - Kernel version: Linux 5.4.0-148-generic
 - Docker version: 23.0.5 (scritps always try to install latest version)
 - Cri-dockerd version: 0.3.14 (scritps always try to install latest version)

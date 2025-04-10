@@ -140,3 +140,9 @@ EOF
 ```bash
 ./infrastructure/start.sh -c "/home/m1/main_config.yaml"
 ```
+
+## Copyright
+
+Copyright © 2025 Roberto Miccolis. Tutti i diritti riservati.
+
+Questo repository contiene il codice sorgente dell'applicazione BinanceB. Tutti i diritti di proprietà intellettuale sono riservati a Roberto Miccolis. L'utilizzo, la copia, la modifica o la distribuzione di questo codice per scopi commerciali o non personali sono vietati senza esplicita autorizzazione.

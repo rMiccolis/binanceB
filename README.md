@@ -145,4 +145,4 @@ EOF
 
 This project is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-See the [LICENSE](https://github.com/rMiccolis/HyperKube/blob/master/LICENSE) file for complete details.
+See the [LICENSE](https://github.com/rMiccolis/binanceB/blob/master/LICENSE) file for complete details.

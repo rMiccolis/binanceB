@@ -143,6 +143,6 @@ EOF
 
 ## License
 
-This project is released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+This project is released under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.html).
 
 See the [LICENSE](https://github.com/rMiccolis/binanceB/blob/master/LICENSE) file for complete details.

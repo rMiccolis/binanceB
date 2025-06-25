@@ -3,7 +3,6 @@
 ## ⚠️ Project Deprecated
 
 This project is no longer maintained. A reworked version can be found here: [new-project-link]([https://github.com/yourusername/new-project-name](https://github.com/rMiccolis/HyperKube))
-
 ##
 
 Cloud-like application, with educational purposes, for cryptocurrency trading served via browser and Android application. Based on microservices architecture, it implements the Infrastructure as Code process allowing the generation of virtual machines and creation of a Kubernetes cluster on which is automatically installed the application. \

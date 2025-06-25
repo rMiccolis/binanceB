@@ -4,6 +4,8 @@
 
 This project is no longer maintained. A reworked version can be found here: [new-project-link]([https://github.com/yourusername/new-project-name](https://github.com/rMiccolis/HyperKube))
 
+##
+
 Cloud-like application, with educational purposes, for cryptocurrency trading served via browser and Android application. Based on microservices architecture, it implements the Infrastructure as Code process allowing the generation of virtual machines and creation of a Kubernetes cluster on which is automatically installed the application. \
 This project is intended for educational purposes and to learn something new about IaC (Infrastructure as Code) and cloud development, for this reason some choices may result unusual because the project tries to simulate the cloud behavior but on bare metal. This choice is made to handle costs, given that the development of this project is performed in spare time (non-working time) and could take many months, so picking a real cloud provider could be very expensive.\
 Because of this, the projects offers a PowerShell script that creates linux (ubuntu cloud image) VMs (with hyper-v as hypervisor) on the fly and configures them using cloud-init.
